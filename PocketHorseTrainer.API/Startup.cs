@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -11,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using PocketHorseTrainer.API.Data;
 using PocketHorseTrainer.API.Models;
+using PocketHorseTrainer.API.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,8 +39,13 @@ namespace PocketHorseTrainer.API
             services.Configure<IdentityOptions>(o => {
                 o.SignIn.RequireConfirmedEmail = true;
             });
-            services.AddTransient<IMessageService, FileMessageService>();
-            services.AddCors();
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.Configure<SendGridEmailSenderOptions>(options =>
+            {
+                options.ApiKey = Configuration["ExternalProviders:SendGrid:ApiKey"];
+                options.SenderEmail = Configuration["ExternalProviders:SendGrid:SenderEmail"];
+                options.SenderName = Configuration["ExternalProviders:SendGrid:SenderName"];
+            });
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -69,11 +76,6 @@ namespace PocketHorseTrainer.API
                 endpoints.MapControllers();
             });
 
-            app.UseCors(b => b.WithOrigins("http://dev.localhost.com:4000")
-                .AllowAnyOrigin()
-                .AllowCredentials()
-                .AllowAnyMethod()
-                .AllowAnyHeader());
         }
     }
 }

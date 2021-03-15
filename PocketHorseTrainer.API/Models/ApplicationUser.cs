@@ -10,19 +10,12 @@ namespace PocketHorseTrainer.API.Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string DisplayName { get; set; }
 
-        private string displayName;
-        public string DisplayName
-        {
-            get
-            {
-                return displayName;
-            }
-            set
-            {
-                displayName = $"{FirstName} {LastName}";
-            }
-        }
         public DateTime DOB { get; set; }
+
+        public ApplicationUser()
+        {
+        }
     }
 }
