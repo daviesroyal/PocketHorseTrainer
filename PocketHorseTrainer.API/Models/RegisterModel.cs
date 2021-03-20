@@ -29,7 +29,6 @@ namespace PocketHorseTrainer.API.Models
         [Required(ErrorMessage = "Please enter a valid email.")]
         [EmailAddress]
         [Display(Name = "Email")]
-
         public string Email { get; set; }
 
         [DataType(DataType.Password)]

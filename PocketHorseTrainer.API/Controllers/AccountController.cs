@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PocketHorseTrainer.API.Controllers
 {
@@ -33,6 +34,7 @@ namespace PocketHorseTrainer.API.Controllers
             _emailSender = emailSender;
         }
 
+        [AllowAnonymous]
         [HttpPost]
         [Route("register")]
         public async Task<IActionResult> Register(RegisterModel input)
@@ -91,6 +93,7 @@ namespace PocketHorseTrainer.API.Controllers
             return new RedirectResult("http://localhost:62833");
         }
 
+        [AllowAnonymous]
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Login(LoginModel input)
@@ -117,6 +120,7 @@ namespace PocketHorseTrainer.API.Controllers
             return BadRequest();
         }
 
+        [Authorize]
         [HttpPost]
         [Route("logout")]
         public async Task<IActionResult> Logout()

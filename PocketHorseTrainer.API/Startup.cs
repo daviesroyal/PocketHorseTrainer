@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -34,19 +35,30 @@ namespace PocketHorseTrainer.API
         {
             services.AddDbContext<ApplicationDbContext>(options => options
                 .UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddDefaultIdentity<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
             services.Configure<IdentityOptions>(o => {
                 o.SignIn.RequireConfirmedEmail = true;
             });
+            services.AddAuthentication(o =>
+            {
+                o.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+            .AddCookie();
+
             services.AddTransient<IEmailSender, EmailSender>();
+
             services.Configure<SendGridEmailSenderOptions>(options =>
             {
                 options.ApiKey = Configuration["ExternalProviders:SendGrid:ApiKey"];
                 options.SenderEmail = Configuration["ExternalProviders:SendGrid:SenderEmail"];
                 options.SenderName = Configuration["ExternalProviders:SendGrid:SenderName"];
             });
+
             services.AddControllers();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PocketHorseTrainer.API", Version = "v1" });

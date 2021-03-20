@@ -7,6 +7,7 @@ namespace PocketHorseTrainer.API.Models
 {
     public class Goal
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public TimeSpan TimeSpan { get; set; }
         public DateTime StartDate { get; set; }
