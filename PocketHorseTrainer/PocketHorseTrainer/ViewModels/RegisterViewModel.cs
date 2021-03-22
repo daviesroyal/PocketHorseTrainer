@@ -32,11 +32,12 @@ namespace PocketHorseTrainer.ViewModels
 
                     if (isRegistered)
                     {
-                        Message = "Success :)";
+                        //navigate instead of message
+                        Message = $"Registration completed, please verify your email - {Email}";
                     }
                     else
                     {
-                        Message = "Please try again :(";
+                        Message = "Something went wrong. Please try again.";
                     }
                 });
             }

@@ -62,7 +62,7 @@ namespace PocketHorseTrainer.API.Controllers
                         Request.Scheme);
 
                     await _emailSender.SendEmailAsync(input.Email, "Verify your email", $"Click <a href=\"{tokenVerificationUrl}\">here</a> to verify your email");
-                    return Ok($"Registration completed, please verify your email - {input.Email}");
+                    return Ok();
                 }
                 else
                 {
@@ -88,9 +88,9 @@ namespace PocketHorseTrainer.API.Controllers
             var emailConfirmationResult = await _userManager.ConfirmEmailAsync(user, token);
             if (!emailConfirmationResult.Succeeded)
             {
-                return new RedirectToActionResult("Register", "Account", null);
+                return new LocalRedirectResult("/Account/Register");
             }
-            return new RedirectResult("http://localhost:62833");
+            return new LocalRedirectResult("/Main/Home");
         }
 
         [AllowAnonymous]
@@ -109,18 +109,17 @@ namespace PocketHorseTrainer.API.Controllers
                 {
                     return BadRequest("Email has not been confirmed for this account.");
                 }
-                var signInResult = await _signInManager.PasswordSignInAsync(user, input.Password, isPersistent: Convert.ToBoolean(input.RememberMe), lockoutOnFailure: false);
+                var signInResult = await _signInManager.PasswordSignInAsync(user, input.Password, isPersistent: input.RememberMe, lockoutOnFailure: false);
                 if (!signInResult.Succeeded)
                 {
                     return BadRequest("Invalid Login");
                 }
-                return Ok();
+                return Ok("Success");
             }
             //if we got this far, something went wrong
             return BadRequest();
         }
 
-        [Authorize]
         [HttpPost]
         [Route("logout")]
         public async Task<IActionResult> Logout()

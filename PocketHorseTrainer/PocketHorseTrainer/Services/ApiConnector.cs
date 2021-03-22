@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Net.Http.Headers;
 using PocketHorseTrainer.Models;
+using PocketHorseTrainer.ViewModels;
 
 namespace PocketHorseTrainer.Services
 {
@@ -43,6 +44,28 @@ namespace PocketHorseTrainer.Services
             }
 
             return false;
+        }
+
+        public async Task<string> LoginAsync(string userName, string password, bool rememberMe)
+        {
+            var client = new HttpClient();
+
+            var model = new LoginBindingModel
+            {
+                UserName = userName,
+                Password = password,
+                RememberMe = rememberMe
+            };
+
+            var json = JsonConvert.SerializeObject(model);
+
+            HttpContent httpContent = new StringContent(json);
+
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+            var response = await client.PostAsync(Constants.BaseAddress + "api/Account/Login", httpContent);
+            //do I need a token/cookie? unclear
+            return response.Content.ToString();
         }
     }
 }

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -39,14 +40,23 @@ namespace PocketHorseTrainer.API
             services.AddDefaultIdentity<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.Configure<IdentityOptions>(o => {
+            services.Configure<IdentityOptions>(o => 
+            {
                 o.SignIn.RequireConfirmedEmail = true;
             });
-            services.AddAuthentication(o =>
+            services.ConfigureApplicationCookie(o =>
             {
-                o.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            })
-            .AddCookie();
+                o.Cookie.HttpOnly = true;
+                o.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+                o.SlidingExpiration = true;
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.FallbackPolicy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build();
+            });
 
             services.AddTransient<IEmailSender, EmailSender>();
 

@@ -8,7 +8,7 @@ namespace PocketHorseTrainer.API.Models
     public class Report
     {
         public int Id { get; set; }
-        public TimeSpan TimeSpan { get; set; }
+        public TimeLength TimeSpan { get; set; }
         public float TimeHandling { get; set; }
         public float TimeRiding { get; set; }
         public string[] Issues { get; set; }

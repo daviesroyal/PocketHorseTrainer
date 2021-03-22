@@ -1,24 +1,41 @@
-﻿using PocketHorseTrainer.Views;
+﻿using PocketHorseTrainer.Services;
+using PocketHorseTrainer.Views;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace PocketHorseTrainer.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
-        public Command LoginCommand { get; }
+        private readonly ApiConnector _apiConnector = new ApiConnector();
 
-        public LoginViewModel()
+        public string UserName { get; set; }
+        public string Password { get; set; }
+        public bool RememberMe { get; set; }
+        public string Message { get; set; }
+
+        public ICommand LoginCommand
         {
-            LoginCommand = new Command(OnLoginClicked);
+            get
+            {
+                return new Command(async () =>
+                {
+                    var message = await _apiConnector.LoginAsync(UserName, Password, RememberMe);
+
+                    if(message != "Success")
+                    {
+                        Message = message;
+                    }
+                    else
+                    {
+                        //navigate to home page
+                    }
+                });
+            }
         }
 
-        private async void OnLoginClicked(object obj)
-        {
-            // Prefixing with `//` switches to a different navigation stack instead of pushing to the active one
-            await Shell.Current.GoToAsync($"//{nameof(AboutPage)}");
-        }
     }
 }

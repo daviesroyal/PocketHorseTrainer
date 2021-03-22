@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace PocketHorseTrainer.API.Models
 {
-    public enum TimeSpan
+    public enum TimeLength
     {
         daily,
         weekly,

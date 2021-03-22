@@ -15,7 +15,6 @@ namespace PocketHorseTrainer.Views
         public LoginPage()
         {
             InitializeComponent();
-            this.BindingContext = new LoginViewModel();
         }
     }
 }
