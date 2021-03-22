@@ -11,8 +11,8 @@ namespace PocketHorseTrainer.API.Models
         public TimeLength TimeSpan { get; set; }
         public float TimeHandling { get; set; }
         public float TimeRiding { get; set; }
-        public string[] Issues { get; set; }
-        public string[] Strengths { get; set; }
+        public string Issues { get; set; }
+        public string Strengths { get; set; }
 
     }
 }

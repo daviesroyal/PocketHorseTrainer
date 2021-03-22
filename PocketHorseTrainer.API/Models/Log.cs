@@ -7,6 +7,7 @@ namespace PocketHorseTrainer.API.Models
 {
     public class Log
     {
+        public int Id { get; set; }
         public DateTime Date { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
@@ -15,8 +16,8 @@ namespace PocketHorseTrainer.API.Models
         public string Weather { get; set; }
         public string Location { get; set; }
         public string Temperment { get; set; }
-        public string[] Issues { get; set; }
-        public string[] Strengths { get; set; }
+        public string Issues { get; set; }
+        public string Strengths { get; set; }
         public string Video { get; set; }
         public string Comments { get; set; }
         public ApplicationUser Trainer { get; set; }

@@ -24,6 +24,8 @@ namespace PocketHorseTrainer.API.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<HorseOwner>()
+                .HasKey(ho => new { ho.HorseId, ho.OwnerId});
             base.OnModelCreating(builder);
         }
     }

@@ -47,7 +47,7 @@ namespace PocketHorseTrainer.API
             services.ConfigureApplicationCookie(o =>
             {
                 o.Cookie.HttpOnly = true;
-                o.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+                o.ExpireTimeSpan = TimeSpan.FromMinutes(30);
                 o.SlidingExpiration = true;
             });
 
@@ -84,8 +84,10 @@ namespace PocketHorseTrainer.API
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PocketHorseTrainer.API v1"));
             }
-
-            app.UseHttpsRedirection();
+            else
+            {
+                app.UseHttpsRedirection();
+            }
 
             app.UseRouting();
 

@@ -10,7 +10,7 @@ namespace PocketHorseTrainer.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
-        private readonly ApiConnector _apiConnector = new ApiConnector();
+        private readonly ApiServices _apiConnector = new ApiServices();
 
         public string UserName { get; set; }
         public string Password { get; set; }

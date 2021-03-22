@@ -8,7 +8,7 @@ namespace PocketHorseTrainer.API.Models
 {
     public class HorseOwner
     {
-        public DbSet<HorseOwner> HorseOwnwers { get; set; }
+        public DbSet<HorseOwner> HorseOwners { get; set; }
 
         public int HorseId { get; set; }
         public Horse Horse { get; set; }

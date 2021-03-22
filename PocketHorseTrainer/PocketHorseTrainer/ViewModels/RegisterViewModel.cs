@@ -9,7 +9,7 @@ namespace PocketHorseTrainer.ViewModels
 {
     class RegisterViewModel
     {
-        private readonly ApiConnector _apiConnector = new ApiConnector();
+        private readonly ApiServices _apiConnector = new ApiServices();
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -17,6 +17,8 @@ namespace PocketHorseTrainer.ViewModels
         public string Email { get; set; }
         public string Phone { get; set; }
         public DateTime DOB { get; set; }
+        public DateTime MaxDate = DateTime.Today.AddYears(-13);
+        public DateTime MinDate = DateTime.Today.AddYears(-100);
         public string Password { get; set; }
         public string ConfirmPassword { get; set; }
 

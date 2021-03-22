@@ -13,7 +13,7 @@ namespace PocketHorseTrainer.API.Models
         public int Age { get; set; }
         public string Breed { get; set; }
         public string Color { get; set; }
-        public List<string> Markings { get; set; }
+        public string Markings { get; set; }
         public List<Goal> Goals { get; set; }
 
         public Horse()

@@ -5,6 +5,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:ViewModels="clr-namespace:PocketHorseTrainer.ViewModels"
              mc:Ignorable="d"
+             Shell.FlyoutBehavior="Disabled"
+             Shell.TabBarIsVisible="False"
+             Shell.PresentationMode="ModalAnimated"
+             Title="Login"
              x:Class="PocketHorseTrainer.Views.LoginPage"
              Shell.NavBarIsVisible="False">
     
@@ -29,9 +33,13 @@
                     </DataTrigger>
                 </Label.Triggers>
             </Label>
+            
             <Label Text="{Binding Message}"
                HorizontalOptions="Center"/>
             <Button VerticalOptions="Center" Text="Login" Command="{Binding LoginCommand}"/>
+
+            <Button Text="Register"
+                Clicked="Button_OnClicked"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

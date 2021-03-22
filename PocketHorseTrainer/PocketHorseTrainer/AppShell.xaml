@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Shell xmlns="http://xamarin.com/schemas/2014/forms" 
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-       xmlns:local="clr-namespace:PocketHorseTrainer.Views"
+       xmlns:local="clr-namespace:PocketHorseTrainer.Views" 
+       xmlns:pockethorsetrainer="clr-namespace:PocketHorseTrainer" 
+       x:DataType="pockethorsetrainer:AppShell"
        Title="PocketHorseTrainer"
        x:Class="PocketHorseTrainer.AppShell">
 
@@ -82,15 +84,22 @@
     <ShellContent Route="login"
               ContentTemplate="{DataTemplate local:LoginPage}">
     </ShellContent>
-    
-    
-    
+
     <!-- 
         When the Flyout is visible this defines the content to display in the flyout.
         FlyoutDisplayOptions="AsMultipleItems" will create a separate flyout item for each child element    
         https://docs.microsoft.com/dotnet/api/xamarin.forms.shellgroupitem.flyoutdisplayoptions?view=xamarin-forms
     -->
-
+    <FlyoutItem Route="main"
+                FlyoutDisplayOptions="AsMultipleItems" IsTabStop="False">
+        <ShellContent Route="home"
+                      IsTabStop="False"
+                      ContentTemplate="{DataTemplate local:MainPage}"
+                      Title="Home" />
+    </FlyoutItem>
+    
+    <MenuItem Text="Logout"
+              Command="{Binding ExecuteLogout}" />
 
     <!-- When the Flyout is visible this will be a menu item you can tie a click behavior to  -->
 
@@ -101,9 +110,6 @@
         content you can do so by calling 
         await Shell.Current.GoToAsync("//LoginPage");
     -->
-    <!--<TabBar>
-        <ShellContent Route="LoginPage" ContentTemplate="{DataTemplate local:LoginPage}" />
-    </TabBar>-->
 
     <!-- Optional Templates 
     // These may be provided inline as below or as separate classes.

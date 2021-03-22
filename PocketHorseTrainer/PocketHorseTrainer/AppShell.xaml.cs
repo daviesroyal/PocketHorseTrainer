@@ -2,6 +2,7 @@
 using PocketHorseTrainer.Views;
 using System;
 using System.Collections.Generic;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace PocketHorseTrainer
@@ -11,13 +12,13 @@ namespace PocketHorseTrainer
         public AppShell()
         {
             InitializeComponent();
-            Routing.RegisterRoute(nameof(ItemDetailPage), typeof(ItemDetailPage));
-            Routing.RegisterRoute(nameof(NewItemPage), typeof(NewItemPage));
+
+            Routing.RegisterRoute("registration", typeof(RegisterPage));
+            Routing.RegisterRoute("main/login", typeof(LoginPage));
+
+            BindingContext = this;
         }
 
-        private async void OnMenuItemClicked(object sender, EventArgs e)
-        {
-            await Shell.Current.GoToAsync("//LoginPage");
-        }
+        public ICommand ExecuteLogout => new Command(async () => await GoToAsync("main/login"));
     }
 }

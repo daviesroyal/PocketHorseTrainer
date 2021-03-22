@@ -1,32 +1,30 @@
-﻿using PocketHorseTrainer.Models;
-using PocketHorseTrainer.ViewModels;
-using PocketHorseTrainer.Views;
+﻿using PocketHorseTrainer.ViewModels;
+using Splat;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace PocketHorseTrainer.Views
 {
-    public partial class ItemsPage : ContentPage
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class LoadingPage : ContentPage
     {
-        ItemsViewModel _viewModel;
-
-        public ItemsPage()
+        public LoadingPage()
         {
             InitializeComponent();
-
-            BindingContext = _viewModel = new ItemsViewModel();
         }
+
+        internal LoadingViewModel ViewModel { get; set; } = Locator.Current.GetService<LoadingViewModel>();
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            _viewModel.OnAppearing();
+            ViewModel.Init();
         }
     }
 }

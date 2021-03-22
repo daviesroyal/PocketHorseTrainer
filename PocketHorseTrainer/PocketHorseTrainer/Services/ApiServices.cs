@@ -11,7 +11,7 @@ using PocketHorseTrainer.ViewModels;
 
 namespace PocketHorseTrainer.Services
 {
-    internal class ApiConnector
+    internal class ApiServices
     {
         public async Task<bool> RegisterUserAsync(string firstName, string lastName, string userName, string email, string phone, DateTime dob, string password, string confirmPassword)
         {
