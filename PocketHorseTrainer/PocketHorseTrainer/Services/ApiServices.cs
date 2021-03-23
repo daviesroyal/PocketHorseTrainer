@@ -36,7 +36,7 @@ namespace PocketHorseTrainer.Services
             httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
             var response = await client.PostAsync(
-                Constants.BaseAddress + "api/Account/Register", httpContent);
+                Constants.BaseAddress + "/api/Account/Register", httpContent);
 
             if (response.IsSuccessStatusCode)
             {
@@ -63,7 +63,7 @@ namespace PocketHorseTrainer.Services
 
             httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-            var response = await client.PostAsync(Constants.BaseAddress + "api/Account/Login", httpContent);
+            var response = await client.PostAsync(Constants.BaseAddress + "/api/Account/Login", httpContent);
             //do I need a token/cookie? unclear
             return response.Content.ToString();
         }
