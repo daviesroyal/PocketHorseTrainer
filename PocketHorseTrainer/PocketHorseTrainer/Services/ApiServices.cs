@@ -8,6 +8,7 @@ using Newtonsoft.Json.Linq;
 using System.Net.Http.Headers;
 using PocketHorseTrainer.Models;
 using PocketHorseTrainer.ViewModels;
+using System.Diagnostics;
 
 namespace PocketHorseTrainer.Services
 {
@@ -16,6 +17,8 @@ namespace PocketHorseTrainer.Services
         public async Task<bool> RegisterUserAsync(string firstName, string lastName, string userName, string email, string phone, DateTime dob, string password, string confirmPassword)
         {
             var client = new HttpClient();
+
+            Uri uri = new Uri(string.Format(Constants.BaseAddress + "/api/account/register", string.Empty));
 
             var model = new RegisterBindingModel
             {
@@ -35,8 +38,8 @@ namespace PocketHorseTrainer.Services
 
             httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-            var response = await client.PostAsync(
-                Constants.BaseAddress + "/api/Account/Register", httpContent);
+            HttpResponseMessage response = await client.PostAsync(
+                uri, httpContent);
 
             if (response.IsSuccessStatusCode)
             {
@@ -49,6 +52,8 @@ namespace PocketHorseTrainer.Services
         public async Task<string> LoginAsync(string userName, string password, bool rememberMe)
         {
             var client = new HttpClient();
+
+            Uri uri = new Uri(string.Format(Constants.BaseAddress + "/api/account/login", string.Empty));
 
             var model = new LoginBindingModel
             {
@@ -63,7 +68,7 @@ namespace PocketHorseTrainer.Services
 
             httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-            var response = await client.PostAsync(Constants.BaseAddress + "/api/Account/Login", httpContent);
+            var response = await client.PostAsync(uri, httpContent);
             //do I need a token/cookie? unclear
             return response.Content.ToString();
         }

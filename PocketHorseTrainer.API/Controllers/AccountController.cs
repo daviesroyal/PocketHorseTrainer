@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace PocketHorseTrainer.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/account")]
     [ApiController]
     public class AccountController : ControllerBase
     {
@@ -36,7 +36,7 @@ namespace PocketHorseTrainer.API.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        [Route("register")]
+        [Route("/register")]
         public async Task<IActionResult> Register(RegisterModel input)
         {
             if (ModelState.IsValid)
@@ -88,14 +88,14 @@ namespace PocketHorseTrainer.API.Controllers
             var emailConfirmationResult = await _userManager.ConfirmEmailAsync(user, token);
             if (!emailConfirmationResult.Succeeded)
             {
-                return new LocalRedirectResult("/Account/Register");
+                return new LocalRedirectResult("api/account/register");
             }
-            return new LocalRedirectResult("/Main/Home");
+            return new LocalRedirectResult("api/main/home");
         }
 
         [AllowAnonymous]
         [HttpPost]
-        [Route("login")]
+        [Route("/login")]
         public async Task<IActionResult> Login(LoginModel input)
         {
             if (ModelState.IsValid)
@@ -121,7 +121,7 @@ namespace PocketHorseTrainer.API.Controllers
         }
 
         [HttpPost]
-        [Route("logout")]
+        [Route("/logout")]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();

@@ -17,8 +17,8 @@ namespace PocketHorseTrainer.ViewModels
         public string Email { get; set; }
         public string Phone { get; set; }
         public DateTime DOB { get; set; }
-        public DateTime MaxDate = DateTime.Today.AddYears(-13);
-        public DateTime MinDate = DateTime.Today.AddYears(-100);
+        public DateTime MaxDate { get; set; } = DateTime.Today.AddYears(-13);
+        public DateTime MinDate { get; set; } = DateTime.Today.AddYears(-100);
         public string Password { get; set; }
         public string ConfirmPassword { get; set; }
 
