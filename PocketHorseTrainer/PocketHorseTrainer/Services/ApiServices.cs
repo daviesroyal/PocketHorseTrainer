@@ -16,9 +16,9 @@ namespace PocketHorseTrainer.Services
     {
         public async Task<bool> RegisterUserAsync(string firstName, string lastName, string userName, string email, string phone, DateTime dob, string password, string confirmPassword)
         {
-            var client = new HttpClient();
+            Uri baseAddress = new Uri(Constants.BaseAddress);
 
-            Uri uri = new Uri(string.Format(Constants.BaseAddress + "/api/account/register", string.Empty));
+            var client = new HttpClient { BaseAddress = baseAddress };
 
             var model = new RegisterBindingModel
             {
@@ -38,8 +38,13 @@ namespace PocketHorseTrainer.Services
 
             httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-            HttpResponseMessage response = await client.PostAsync(
-                uri, httpContent);
+            var request = new HttpRequestMessage(HttpMethod.Post, "/api/account/register")
+            {
+                Content = httpContent
+            };
+
+            var response = await client.SendAsync(
+                request);
 
             if (response.IsSuccessStatusCode)
             {
