@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using PocketHorseTrainer.Models;
+using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.Net.Http.Headers;
-using PocketHorseTrainer.Models;
-using PocketHorseTrainer.ViewModels;
-using System.Diagnostics;
 
 namespace PocketHorseTrainer.Services
 {
@@ -34,17 +30,12 @@ namespace PocketHorseTrainer.Services
 
             var json = JsonConvert.SerializeObject(model);
 
-            HttpContent httpContent = new StringContent(json);
+            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            HttpResponseMessage response = await client.PostAsync(
+                "/api/account/register", content);
 
-            var request = new HttpRequestMessage(HttpMethod.Post, "/api/account/register")
-            {
-                Content = httpContent
-            };
-
-            var response = await client.SendAsync(
-                request);
+            response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)
             {
@@ -56,25 +47,26 @@ namespace PocketHorseTrainer.Services
 
         public async Task<string> LoginAsync(string userName, string password, bool rememberMe)
         {
-            var client = new HttpClient();
+            Uri baseAddress = new Uri(Constants.BaseAddress);
 
-            Uri uri = new Uri(string.Format(Constants.BaseAddress + "/api/account/login", string.Empty));
+            var client = new HttpClient { BaseAddress = baseAddress };
 
             var model = new LoginBindingModel
             {
                 UserName = userName,
                 Password = password,
-                RememberMe = rememberMe
+                RememberMe = rememberMe //keeps defaulting to false
             };
 
             var json = JsonConvert.SerializeObject(model);
 
-            HttpContent httpContent = new StringContent(json);
+            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            HttpResponseMessage response = await client.PostAsync("/api/account/login", content);
 
-            var response = await client.PostAsync(uri, httpContent);
-            //do I need a token/cookie? unclear
+            response.EnsureSuccessStatusCode();
+            
+            //configure for token
             return response.Content.ToString();
         }
     }

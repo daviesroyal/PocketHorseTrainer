@@ -10,7 +10,7 @@
     </ContentPage.BindingContext>
     
     <ContentPage.Content>
-        
+
         <StackLayout Orientation="Vertical"
                  VerticalOptions="Center"
                  Spacing="20"
@@ -19,26 +19,33 @@
             <Entry Text="{Binding FirstName}"
                    Placeholder="First name" 
                    IsSpellCheckEnabled="false" />
+            
             <Entry Text="{Binding LastName}"
                    Placeholder="Last name" 
                    IsSpellCheckEnabled="false" />
+            
             <Entry Text="{Binding UserName}"
                    Placeholder="Username" 
                    IsSpellCheckEnabled="false" />
+            
             <Entry Text="{Binding Email}"
                    Placeholder="Email" 
                    Keyboard="Email"
                    IsSpellCheckEnabled="false" />
+            
             <Entry Text="{Binding Phone}"
                    Placeholder="Phone number" 
                    Keyboard="Telephone"/>
+            
             <DatePicker MinimumDate="{Binding MinDate}"
                         MaximumDate="{Binding MaxDate}"
                         Date="{Binding DOB}" />
+            
             <Entry Text="{Binding Password}" 
                    Placeholder="Password"
                    IsPassword="True"
                    IsSpellCheckEnabled="false" />
+            
             <Entry Text="{Binding ConfirmPassword}"
                    Placeholder="Confirm password"
                    IsPassword="True" 
@@ -52,7 +59,7 @@
 
             <Label Text="{Binding Message}"
                    HorizontalOptions="Center"/>
-
+            
             <Button Text="Login"
                     Clicked="Button_OnClicked"/>
 

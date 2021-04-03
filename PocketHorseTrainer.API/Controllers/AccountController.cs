@@ -1,23 +1,18 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
-using PocketHorseTrainer.API.Data;
 using PocketHorseTrainer.API.Models;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.AspNetCore.Authorization;
 
 namespace PocketHorseTrainer.API.Controllers
 {
-    [Route("api/account")]
+    //[Authorize]
     [ApiController]
+    [Route("api/account")]
     public class AccountController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -35,9 +30,8 @@ namespace PocketHorseTrainer.API.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost]
-        [Route("/register")]
-        public async Task<IActionResult> Register(RegisterModel input)
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody]RegisterModel input)
         {
             if (ModelState.IsValid)
             {
@@ -58,7 +52,7 @@ namespace PocketHorseTrainer.API.Controllers
                     var emailConfirmationToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var tokenVerificationUrl = Url.Action(
                         "VerifyEmail", "Account",
-                        new { Id = user.Id, token = emailConfirmationToken },
+                        new { user.Id, token = emailConfirmationToken },
                         Request.Scheme);
 
                     await _emailSender.SendEmailAsync(input.Email, "Verify your email", $"Click <a href=\"{tokenVerificationUrl}\">here</a> to verify your email");
@@ -94,9 +88,8 @@ namespace PocketHorseTrainer.API.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost]
-        [Route("/login")]
-        public async Task<IActionResult> Login(LoginModel input)
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody]LoginModel input)
         {
             if (ModelState.IsValid)
             {
@@ -120,8 +113,7 @@ namespace PocketHorseTrainer.API.Controllers
             return BadRequest();
         }
 
-        [HttpPost]
-        [Route("/logout")]
+        [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();

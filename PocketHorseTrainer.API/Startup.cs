@@ -1,24 +1,17 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using PocketHorseTrainer.API.Data;
+using PocketHorseTrainer.API.Middleware;
 using PocketHorseTrainer.API.Models;
 using PocketHorseTrainer.API.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PocketHorseTrainer.API
 {
@@ -43,20 +36,48 @@ namespace PocketHorseTrainer.API
             services.Configure<IdentityOptions>(o => 
             {
                 o.SignIn.RequireConfirmedEmail = true;
+                o.Password.RequiredLength = 8;
+                o.Password.RequireNonAlphanumeric = true;
+                o.Password.RequireLowercase = true;
+                o.Password.RequireUppercase = true;
+                o.Password.RequireDigit = true;
+                o.User.RequireUniqueEmail = true;
             });
+
             services.ConfigureApplicationCookie(o =>
             {
+                o.Cookie.Name = "PHTCookie";
                 o.Cookie.HttpOnly = true;
                 o.ExpireTimeSpan = TimeSpan.FromMinutes(30);
                 o.SlidingExpiration = true;
+                o.LoginPath = "/api/account/login";
             });
 
-            services.AddAuthorization(options =>
+            /*services.AddAuthentication(o =>
             {
-                options.FallbackPolicy = new AuthorizationPolicyBuilder()
-                    .RequireAuthenticatedUser()
-                    .Build();
-            });
+                o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                o.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(o => 
+                {
+                    o.RequireHttpsMetadata = false;
+                    o.SaveToken = true;
+                    o.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidIssuer = Configuration["JwtIssuer"],
+                        ValidAudience = Configuration["JwtIssuer"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtKey"])),
+                        ClockSkew = TimeSpan.Zero
+                    };
+                });
+
+            services.AddAuthorization(o => 
+            {
+                o.FallbackPolicy = new AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                .Build();
+            });*/
 
             services.AddTransient<IEmailSender, EmailSender>();
 
@@ -65,6 +86,14 @@ namespace PocketHorseTrainer.API
                 options.ApiKey = Configuration["ExternalProviders:SendGrid:ApiKey"];
                 options.SenderEmail = Configuration["ExternalProviders:SendGrid:SenderEmail"];
                 options.SenderName = Configuration["ExternalProviders:SendGrid:SenderName"];
+            });
+
+            services.AddCors(o =>
+            {
+                o.AddPolicy("DefaultCorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
             });
 
             services.AddControllers();
@@ -81,15 +110,19 @@ namespace PocketHorseTrainer.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PocketHorseTrainer.API v1"));
+                //app.UseSwagger();
+                //app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PocketHorseTrainer.API v1"));
             }
             else
             {
                 app.UseHttpsRedirection();
             }
 
+            app.UseCors("DefaultCorsPolicy");
+
             app.UseRouting();
+
+            app.UseMiddleware<RequestResponseLoggingMiddleware>();
 
             app.UseAuthentication();
 
