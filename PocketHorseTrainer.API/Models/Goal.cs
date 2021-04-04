@@ -9,6 +9,7 @@ namespace PocketHorseTrainer.API.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public Horse Horse { get; set; }
 
         public TimeLength TimeSpan { get; set; }
         public DateTime StartDate { get; set; }
@@ -16,12 +17,12 @@ namespace PocketHorseTrainer.API.Models
 
         //TODO: refine datatype for AOI - enum or list, etc
         public string AreaOfImprovement { get; set; }
-        public Horse Horse { get; set; }
+        public bool Completed { get; set; }
 
         public Goal()
         {
 
         }
-
+        
     }
 }

@@ -5,21 +5,32 @@ using System.Threading.Tasks;
 
 namespace PocketHorseTrainer.API.Models
 {
-    public class Log
+    public class JournalEntry
     {
         public int Id { get; set; }
 
         public DateTime Date { get; set; }
-        public DateTime StartTime { get; set; } //separate properties for TimeHandling and TimeRiding?
-        public DateTime EndTime { get; set; }
+        public float TimeHandling { get; set; }
+        public float TimeRiding { get; set; }
 
         public Horse Horse { get; set; }
 
         //TODO: refine datatypes for following properties - enums or lists, etc
-        public string Discipline { get; set; }
-        public string Weather { get; set; }
+        public enum Discipline
+        {
+            Western,
+            English,
+            Endurance,
+            Natural,
+            Stock,
+            Driving,
+            Groundwork
+        }
+        public Weather Weather { get; set; }
+        
+        //TODO: add map api for location
         public string Location { get; set; }
-        public string Temperment { get; set; }
+
         public string Issues { get; set; }
         public string Strengths { get; set; }
         public string Comments { get; set; }
@@ -29,7 +40,7 @@ namespace PocketHorseTrainer.API.Models
 
         public ApplicationUser Trainer { get; set; }
 
-        public Log()
+        public JournalEntry()
         {
 
         }

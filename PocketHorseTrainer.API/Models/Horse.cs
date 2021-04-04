@@ -1,8 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace PocketHorseTrainer.API.Models
 {
@@ -16,7 +12,7 @@ namespace PocketHorseTrainer.API.Models
         public string Breed { get; set; }
         public string Color { get; set; }
         public string Markings { get; set; }
-
+        
         public List<Goal> Goals { get; set; }
 
         public Horse()
