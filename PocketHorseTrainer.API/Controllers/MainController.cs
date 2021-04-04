@@ -6,11 +6,14 @@ using System.Threading.Tasks;
 
 namespace PocketHorseTrainer.API.Controllers
 {
-    public class MainController : Controller
+    [ApiController]
+    [Route("api/[controller]")]
+    public class MainController : ControllerBase
     {
-        public IActionResult Home()
+        [HttpGet] //user profile feed
+        public async Task<IActionResult> Home()
         {
-            return View();
+            return Ok();
         }
     }
 }

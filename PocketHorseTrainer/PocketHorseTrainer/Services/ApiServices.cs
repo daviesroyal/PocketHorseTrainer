@@ -69,5 +69,7 @@ namespace PocketHorseTrainer.Services
             //configure for token
             return response.Content.ToString();
         }
+
+        //TODO: write login service
     }
 }

@@ -15,7 +15,6 @@ namespace PocketHorseTrainer.API.Models
 
         public Horse Horse { get; set; }
 
-        //TODO: refine datatypes for following properties - enums or lists, etc
         public enum Discipline
         {
             Western,
@@ -26,13 +25,17 @@ namespace PocketHorseTrainer.API.Models
             Driving,
             Groundwork
         }
+
+        //TODO: create automatic weather function - api?
         public Weather Weather { get; set; }
         
         //TODO: add map api for location
         public string Location { get; set; }
 
-        public string Issues { get; set; }
-        public string Strengths { get; set; }
+        public List<TargetAreas> Issues { get; set; }
+        public List<TargetAreas> Strengths { get; set; }
+
+        //TODO: refine datatype for Comments
         public string Comments { get; set; }
 
         //TODO: figure out how to upload and store videos for app
@@ -45,6 +48,5 @@ namespace PocketHorseTrainer.API.Models
 
         }
 
-        //TODO: figure out how to get time only from DateTime class and calculate TimeHandling and TimeRiding
     }
 }

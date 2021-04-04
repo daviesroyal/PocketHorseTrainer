@@ -8,10 +8,9 @@ namespace PocketHorseTrainer.API.Models
         public string Name { get; set; }
         public int Age { get; set; }
 
-        //TODO: refine datatypes for following properties - enums or lists, etc
-        public string Breed { get; set; }
-        public string Color { get; set; }
-        public string Markings { get; set; }
+        public List<Breeds> Breed { get; set; }
+        public CoatColors Color { get; set; }
+        public Markings Markings { get; set; }
         
         public List<Goal> Goals { get; set; }
 

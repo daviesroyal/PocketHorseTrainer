@@ -15,8 +15,7 @@ namespace PocketHorseTrainer.API.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
-        //TODO: refine datatype for AOI - enum or list, etc
-        public string AreaOfImprovement { get; set; }
+        public List<TargetAreas> AreaOfImprovement { get; set; }
         public bool Completed { get; set; }
 
         public Goal()

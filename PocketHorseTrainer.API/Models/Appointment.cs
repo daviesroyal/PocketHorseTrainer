@@ -9,32 +9,7 @@ namespace PocketHorseTrainer.API.Models
     {
         public int Id { get; set; }
 
-        private DateTime date;
-        public DateTime Date
-        {
-            get
-            {
-                return date;
-            }
-            set
-            {
-                date = new DateTime().Date;
-            }
-        }
-
-        private DateTime time;
-        public DateTime Time
-        {
-            get
-            {
-                return time;
-            }
-            set
-            {
-                //figure out how to just get the time from this class, or conjoin it into one property
-                time = new DateTime();
-            }
-        }
+        public DateTime AppointmentDateTime { get; set; }
 
         public enum Type
         {
@@ -71,10 +46,10 @@ namespace PocketHorseTrainer.API.Models
 
             if (Recurring == true)
             {
-                DateTime newAppDate = Date.AddDays(NumOfWeeks * 7);
+                DateTime newAppDate = AppointmentDateTime.AddDays(NumOfWeeks * 7);
                 return newAppDate;
             }
-            return Date;
+            return AppointmentDateTime;
         }
 
         //include here or in separate controller?:

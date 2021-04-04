@@ -19,7 +19,7 @@ namespace PocketHorseTrainer.API.Controllers
             context = dbContext;
         }
 
-        //Get all horses - admin/barn manager only
+        //Get all horses in a barn - admin/barn manager only
 
         //Get all horses belonging to signed in user
 
