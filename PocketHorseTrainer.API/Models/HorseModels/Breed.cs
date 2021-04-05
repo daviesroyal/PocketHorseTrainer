@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace PocketHorseTrainer.API.Models
 {
     //future: make dynamic, allow admins to edit list
-    public enum Breeds
+    public enum Breed
     {
         AkhalTeke,
         AmericanIndianHorse,

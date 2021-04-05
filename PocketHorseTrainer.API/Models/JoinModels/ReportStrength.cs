@@ -1,0 +1,24 @@
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace PocketHorseTrainer.API.Models
+{
+    public class ReportStrength
+    {
+        public DbSet<ReportStrength> ReportStrengths { get; set; }
+
+        public int ReportId { get; set; }
+        public Report Report { get; set; }
+
+        public int StrengthId { get; set; }
+        public TargetAreas Strength { get; set; }
+
+        public ReportStrength()
+        {
+
+        }
+    }
+}

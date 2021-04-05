@@ -7,6 +7,7 @@ namespace PocketHorseTrainer.API.Models
 {
     public class Weather
     {
+        public int Id { get; set; }
         public float TempF { get; set; }
         public enum Precipitation
         {

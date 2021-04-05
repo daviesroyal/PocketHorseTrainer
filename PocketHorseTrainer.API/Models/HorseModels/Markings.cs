@@ -7,6 +7,7 @@ namespace PocketHorseTrainer.API.Models
 {
     public class Markings
     {
+        public int Id { get; set; }
         public enum Face
         {
             None,

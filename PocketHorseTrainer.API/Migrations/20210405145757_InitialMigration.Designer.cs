@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PocketHorseTrainer.API.Data;
 
 namespace PocketHorseTrainer.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210405145757_InitialMigration")]
+    partial class InitialMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -392,29 +394,6 @@ namespace PocketHorseTrainer.API.Migrations
                     b.ToTable("HorseGoals");
                 });
 
-            modelBuilder.Entity("PocketHorseTrainer.API.Models.HorseJournal", b =>
-                {
-                    b.Property<int>("HorseId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("EntryId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("HorseJournalEntryId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("HorseJournalHorseId")
-                        .HasColumnType("int");
-
-                    b.HasKey("HorseId", "EntryId");
-
-                    b.HasIndex("EntryId");
-
-                    b.HasIndex("HorseJournalHorseId", "HorseJournalEntryId");
-
-                    b.ToTable("HorseJournals");
-                });
-
             modelBuilder.Entity("PocketHorseTrainer.API.Models.HorseOwner", b =>
                 {
                     b.Property<int>("HorseId")
@@ -548,9 +527,6 @@ namespace PocketHorseTrainer.API.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("HorseId")
-                        .HasColumnType("int");
-
                     b.Property<float>("TimeHandling")
                         .HasColumnType("real");
 
@@ -561,8 +537,6 @@ namespace PocketHorseTrainer.API.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("HorseId");
 
                     b.ToTable("TrainingReports");
                 });
@@ -779,29 +753,6 @@ namespace PocketHorseTrainer.API.Migrations
                     b.Navigation("Horse");
                 });
 
-            modelBuilder.Entity("PocketHorseTrainer.API.Models.HorseJournal", b =>
-                {
-                    b.HasOne("PocketHorseTrainer.API.Models.JournalEntry", "Entry")
-                        .WithMany()
-                        .HasForeignKey("EntryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PocketHorseTrainer.API.Models.Horse", "Horse")
-                        .WithMany("Journals")
-                        .HasForeignKey("HorseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PocketHorseTrainer.API.Models.HorseJournal", null)
-                        .WithMany("HorseJournals")
-                        .HasForeignKey("HorseJournalHorseId", "HorseJournalEntryId");
-
-                    b.Navigation("Entry");
-
-                    b.Navigation("Horse");
-                });
-
             modelBuilder.Entity("PocketHorseTrainer.API.Models.HorseOwner", b =>
                 {
                     b.HasOne("PocketHorseTrainer.API.Models.Horse", "Horse")
@@ -892,15 +843,6 @@ namespace PocketHorseTrainer.API.Migrations
                     b.Navigation("Strength");
                 });
 
-            modelBuilder.Entity("PocketHorseTrainer.API.Models.Report", b =>
-                {
-                    b.HasOne("PocketHorseTrainer.API.Models.Horse", "Horse")
-                        .WithMany()
-                        .HasForeignKey("HorseId");
-
-                    b.Navigation("Horse");
-                });
-
             modelBuilder.Entity("PocketHorseTrainer.API.Models.ReportIssue", b =>
                 {
                     b.HasOne("PocketHorseTrainer.API.Models.TargetAreas", "Issue")
@@ -960,8 +902,6 @@ namespace PocketHorseTrainer.API.Migrations
             modelBuilder.Entity("PocketHorseTrainer.API.Models.Horse", b =>
                 {
                     b.Navigation("Goals");
-
-                    b.Navigation("Journals");
                 });
 
             modelBuilder.Entity("PocketHorseTrainer.API.Models.HorseBarn", b =>
@@ -972,11 +912,6 @@ namespace PocketHorseTrainer.API.Migrations
             modelBuilder.Entity("PocketHorseTrainer.API.Models.HorseGoal", b =>
                 {
                     b.Navigation("HorseGoals");
-                });
-
-            modelBuilder.Entity("PocketHorseTrainer.API.Models.HorseJournal", b =>
-                {
-                    b.Navigation("HorseJournals");
                 });
 
             modelBuilder.Entity("PocketHorseTrainer.API.Models.HorseOwner", b =>

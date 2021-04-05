@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PocketHorseTrainer.API.Data;
 
 namespace PocketHorseTrainer.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210405152101_HorseJournalMigration")]
+    partial class HorseJournalMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -548,9 +550,6 @@ namespace PocketHorseTrainer.API.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("HorseId")
-                        .HasColumnType("int");
-
                     b.Property<float>("TimeHandling")
                         .HasColumnType("real");
 
@@ -561,8 +560,6 @@ namespace PocketHorseTrainer.API.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("HorseId");
 
                     b.ToTable("TrainingReports");
                 });
@@ -890,15 +887,6 @@ namespace PocketHorseTrainer.API.Migrations
                     b.Navigation("Entry");
 
                     b.Navigation("Strength");
-                });
-
-            modelBuilder.Entity("PocketHorseTrainer.API.Models.Report", b =>
-                {
-                    b.HasOne("PocketHorseTrainer.API.Models.Horse", "Horse")
-                        .WithMany()
-                        .HasForeignKey("HorseId");
-
-                    b.Navigation("Horse");
                 });
 
             modelBuilder.Entity("PocketHorseTrainer.API.Models.ReportIssue", b =>

@@ -70,6 +70,6 @@ namespace PocketHorseTrainer.Services
             return response.Content.ToString();
         }
 
-        //TODO: write login service
+        //TODO: write logout service
     }
 }

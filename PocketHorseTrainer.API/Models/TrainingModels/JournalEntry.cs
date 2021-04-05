@@ -32,8 +32,8 @@ namespace PocketHorseTrainer.API.Models
         //TODO: add map api for location
         public string Location { get; set; }
 
-        public List<TargetAreas> Issues { get; set; }
-        public List<TargetAreas> Strengths { get; set; }
+        public List<JournalIssue> Issues { get; set; }
+        public List<JournalStrength> Strengths { get; set; }
 
         //TODO: refine datatype for Comments
         public string Comments { get; set; }

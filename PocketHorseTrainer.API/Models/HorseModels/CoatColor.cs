@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace PocketHorseTrainer.API.Models
 {
-    public enum CoatColors
+    public enum CoatColor
     {
         Black,
         Bay,
