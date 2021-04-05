@@ -7,6 +7,7 @@ namespace PocketHorseTrainer.API.Models
     public class Horse
     {
         public int Id { get; set; }
+        public ApplicationUser Owner { get; set; }
         public string Name { get; set; }
         public int Age { get; set; }
         public Barn Barn { get; set; }
