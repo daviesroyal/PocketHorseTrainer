@@ -5,17 +5,19 @@ using System.Threading.Tasks;
 
 namespace PocketHorseTrainer.API.Models
 {
+    public enum Type
+    {
+        Farrier,
+        Vet
+    }
+
     public class Appointment
     {
         public int Id { get; set; }
 
         public DateTime AppointmentDateTime { get; set; }
 
-        public enum Type
-        {
-            Farrier,
-            Vet
-        }
+        public Type Type { get; set; }
 
         public bool Recurring { get; set; }
 

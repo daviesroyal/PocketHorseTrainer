@@ -35,9 +35,7 @@
                     </DataTrigger>
                 </Label.Triggers>
             </Label>
-            
-            <Label Text="{Binding Message}"
-               HorizontalOptions="Center"/>
+
             <Button VerticalOptions="Center" Text="Login" Command="{Binding LoginCommand}"/>
 
             <Button Text="Register"

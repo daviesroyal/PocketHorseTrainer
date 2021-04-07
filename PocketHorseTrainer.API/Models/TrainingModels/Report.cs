@@ -9,22 +9,38 @@ namespace PocketHorseTrainer.API.Models
     {
         public int Id { get; set; }
         public Horse Horse { get; set; }
+        //TODO: add date calculation for timespan
         public TimeLength TimeSpan { get; set; }
         public float TimeHandling { get; set; }
         public float TimeRiding { get; set; }
         public List<ReportIssue> Issues { get; set; }
         public List<ReportStrength> Strengths { get; set; }
+        public List<Comments> Comments { get; set; }
 
         public Report()
         {
         }
 
-        public void CalculateTimes(List<JournalEntry> entries)
+        public Report(List<JournalEntry> entries)
         {
             foreach (JournalEntry entry in entries)
             {
                 TimeHandling += entry.TimeHandling;
                 TimeRiding += entry.TimeRiding;
+
+                Comments.Add(entry.Comments);
+
+                foreach (JournalIssue issue in entry.Issues)
+                {
+                    ReportIssue reportIssue = new(issue.Issue);
+                    Issues.Add(reportIssue);
+                }
+
+                foreach (JournalStrength strength in entry.Strengths)
+                {
+                    ReportStrength reportStrength = new(strength.Strength);
+                    Strengths.Add(reportStrength);
+                }
             }
         }
     }

@@ -20,5 +20,10 @@ namespace PocketHorseTrainer.API.Models
         {
 
         }
+
+        public ReportStrength(TargetAreas strength)
+        {
+            Strength = strength;
+        }
     }
 }

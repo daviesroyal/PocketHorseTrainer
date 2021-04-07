@@ -7,25 +7,33 @@ using PocketHorseTrainer.API.Models;
 using System;
 using System.Text;
 using System.Threading.Tasks;
+using System.IdentityModel.Tokens;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Configuration;
 
 namespace PocketHorseTrainer.API.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("api/account")]
     public class AccountController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IConfiguration _configuration;
         private readonly IEmailSender _emailSender;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
+            IConfiguration configuration,
             IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _configuration = configuration;
             _emailSender = emailSender;
         }
 
@@ -68,10 +76,10 @@ namespace PocketHorseTrainer.API.Controllers
                 }
             }
             //if we got this far, something failed, redisplay
-            return BadRequest();
+            return BadRequest(ModelState);
         }
         
-        public async Task<IActionResult> VerifyEmail(string id, string token)
+        private async Task<IActionResult> VerifyEmail(string id, string token)
         {
             var user = await _userManager.FindByIdAsync(id);
             if (user == null)
@@ -84,7 +92,7 @@ namespace PocketHorseTrainer.API.Controllers
             {
                 return new LocalRedirectResult("api/account/register");
             }
-            return new LocalRedirectResult("api/main/home");
+            return new LocalRedirectResult("api/account/login");
         }
 
         [AllowAnonymous]
@@ -107,10 +115,37 @@ namespace PocketHorseTrainer.API.Controllers
                 {
                     return BadRequest("Invalid Login");
                 }
-                return Ok("Success");
+                return Ok(GetToken(user));
             }
             //if we got this far, something went wrong
-            return BadRequest();
+            return BadRequest(ModelState);
+        }
+
+        private String GetToken(ApplicationUser user)
+        {
+            var utcNow = DateTime.UtcNow;
+
+            var claims = new Claim[]
+            {
+                        new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                        new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
+                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                        new Claim(JwtRegisteredClaimNames.Iat, utcNow.ToString())
+            };
+
+            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetValue<String>("Tokens:Key")));
+            var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
+            var jwt = new JwtSecurityToken(
+                signingCredentials: signingCredentials,
+                claims: claims,
+                notBefore: utcNow,
+                expires: utcNow.AddSeconds(_configuration.GetValue<int>("Tokens:Lifetime")),
+                audience: _configuration.GetValue<String>("Tokens:Audience"),
+                issuer: _configuration.GetValue<String>("Tokens:Issuer")
+                );
+
+            return new JwtSecurityTokenHandler().WriteToken(jwt);
+
         }
 
         [HttpPost("logout")]

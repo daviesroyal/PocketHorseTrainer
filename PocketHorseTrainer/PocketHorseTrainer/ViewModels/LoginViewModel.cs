@@ -15,7 +15,6 @@ namespace PocketHorseTrainer.ViewModels
         public string UserName { get; set; }
         public string Password { get; set; }
         public bool RememberMe { get; set; }
-        public string Message { get; set; }
 
         public ICommand LoginCommand
         {
@@ -23,16 +22,9 @@ namespace PocketHorseTrainer.ViewModels
             {
                 return new Command(async () =>
                 {
-                    var message = await _apiConnector.LoginAsync(UserName, Password, RememberMe);
+                    var accesstoken = await _apiConnector.LoginAsync(UserName, Password, RememberMe);
 
-                    if(message != "Success")
-                    {
-                        Message = message;
-                    }
-                    else
-                    {
-                        //navigate to home page
-                    }
+                    AccessTokenSettings.AccessToken = accesstoken;
                 });
             }
         }

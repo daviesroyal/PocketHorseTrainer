@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PocketHorseTrainer.API.Data;
 
 namespace PocketHorseTrainer.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210407154520_UpdateEnumValuesMigration")]
+    partial class UpdateEnumValuesMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -283,29 +285,6 @@ namespace PocketHorseTrainer.API.Migrations
                     b.ToTable("Barns");
                 });
 
-            modelBuilder.Entity("PocketHorseTrainer.API.Models.Comments", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ReportId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ReportId");
-
-                    b.ToTable("Comments");
-                });
-
             modelBuilder.Entity("PocketHorseTrainer.API.Models.Goal", b =>
                 {
                     b.Property<int>("Id")
@@ -481,8 +460,8 @@ namespace PocketHorseTrainer.API.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CommentsId")
-                        .HasColumnType("int");
+                    b.Property<string>("Comments")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -512,8 +491,6 @@ namespace PocketHorseTrainer.API.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CommentsId");
 
                     b.HasIndex("HorseId");
 
@@ -780,13 +757,6 @@ namespace PocketHorseTrainer.API.Migrations
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("PocketHorseTrainer.API.Models.Comments", b =>
-                {
-                    b.HasOne("PocketHorseTrainer.API.Models.Report", null)
-                        .WithMany("Comments")
-                        .HasForeignKey("ReportId");
-                });
-
             modelBuilder.Entity("PocketHorseTrainer.API.Models.Goal", b =>
                 {
                     b.HasOne("PocketHorseTrainer.API.Models.TargetAreas", "AreaOfImprovement")
@@ -917,10 +887,6 @@ namespace PocketHorseTrainer.API.Migrations
 
             modelBuilder.Entity("PocketHorseTrainer.API.Models.JournalEntry", b =>
                 {
-                    b.HasOne("PocketHorseTrainer.API.Models.Comments", "Comments")
-                        .WithMany()
-                        .HasForeignKey("CommentsId");
-
                     b.HasOne("PocketHorseTrainer.API.Models.Horse", "Horse")
                         .WithMany()
                         .HasForeignKey("HorseId");
@@ -932,8 +898,6 @@ namespace PocketHorseTrainer.API.Migrations
                     b.HasOne("PocketHorseTrainer.API.Models.Weather", "Weather")
                         .WithMany()
                         .HasForeignKey("WeatherId");
-
-                    b.Navigation("Comments");
 
                     b.Navigation("Horse");
 
@@ -1099,8 +1063,6 @@ namespace PocketHorseTrainer.API.Migrations
 
             modelBuilder.Entity("PocketHorseTrainer.API.Models.Report", b =>
                 {
-                    b.Navigation("Comments");
-
                     b.Navigation("Issues");
 
                     b.Navigation("Strengths");

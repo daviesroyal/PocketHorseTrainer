@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -6,12 +8,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PocketHorseTrainer.API.Data;
 using PocketHorseTrainer.API.Middleware;
 using PocketHorseTrainer.API.Models;
 using PocketHorseTrainer.API.Services;
 using System;
+using System.Text;
 
 namespace PocketHorseTrainer.API
 {
@@ -53,7 +57,7 @@ namespace PocketHorseTrainer.API
                 o.LoginPath = "/api/account/login";
             });
 
-            /*services.AddAuthentication(o =>
+            services.AddAuthentication(o =>
             {
                 o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 o.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -65,9 +69,13 @@ namespace PocketHorseTrainer.API
                     o.SaveToken = true;
                     o.TokenValidationParameters = new TokenValidationParameters
                     {
+                        ValidateIssuer = true,
                         ValidIssuer = Configuration["JwtIssuer"],
+                        ValidateAudience = true,
                         ValidAudience = Configuration["JwtIssuer"],
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtKey"])),
+                        ValidateIssuerSigningKey = true,
+                        ValidateLifetime = true,
                         ClockSkew = TimeSpan.Zero
                     };
                 });
@@ -77,7 +85,7 @@ namespace PocketHorseTrainer.API
                 o.FallbackPolicy = new AuthorizationPolicyBuilder()
                 .RequireAuthenticatedUser()
                 .Build();
-            });*/
+            });
 
             services.AddTransient<IEmailSender, EmailSender>();
 

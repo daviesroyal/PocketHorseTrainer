@@ -5,6 +5,17 @@ using System.Threading.Tasks;
 
 namespace PocketHorseTrainer.API.Models
 {
+    public enum Discipline
+    {
+        Western,
+        English,
+        Endurance,
+        Natural,
+        Stock,
+        Driving,
+        Groundwork
+    }
+
     public class JournalEntry
     {
         public int Id { get; set; }
@@ -15,16 +26,7 @@ namespace PocketHorseTrainer.API.Models
 
         public Horse Horse { get; set; }
 
-        public enum Discipline
-        {
-            Western,
-            English,
-            Endurance,
-            Natural,
-            Stock,
-            Driving,
-            Groundwork
-        }
+        public Discipline Discipline { get; set; }
 
         //TODO: create automatic weather function - api?
         public Weather Weather { get; set; }
@@ -35,8 +37,7 @@ namespace PocketHorseTrainer.API.Models
         public List<JournalIssue> Issues { get; set; }
         public List<JournalStrength> Strengths { get; set; }
 
-        //TODO: refine datatype for Comments
-        public string Comments { get; set; }
+        public Comments Comments { get; set; }
 
         //TODO: figure out how to upload and store videos for app
         public string Video { get; set; }

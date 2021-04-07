@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using PocketHorseTrainer.Models;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -10,11 +12,30 @@ namespace PocketHorseTrainer.Services
 {
     internal class ApiServices
     {
-        public async Task<bool> RegisterUserAsync(string firstName, string lastName, string userName, string email, string phone, DateTime dob, string password, string confirmPassword)
+        #region httpClientSetup
+        public HttpClient GetBaseClient()
         {
             Uri baseAddress = new Uri(Constants.BaseAddress);
 
             var client = new HttpClient { BaseAddress = baseAddress };
+
+            return client;
+        }
+
+        public HttpClient GetAuthorizedClient(string accessToken)
+        {
+            var client = GetBaseClient();
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            return client;
+        }
+        #endregion
+
+        #region userCredentials
+        public async Task<bool> RegisterUserAsync(string firstName, string lastName, string userName, string email, string phone, DateTime dob, string password, string confirmPassword)
+        {
+            var client = GetBaseClient();
 
             var model = new RegisterBindingModel
             {
@@ -47,29 +68,40 @@ namespace PocketHorseTrainer.Services
 
         public async Task<string> LoginAsync(string userName, string password, bool rememberMe)
         {
-            Uri baseAddress = new Uri(Constants.BaseAddress);
+            var client = GetBaseClient();
 
-            var client = new HttpClient { BaseAddress = baseAddress };
-
-            var model = new LoginBindingModel
+            var model = new List<KeyValuePair<string, string>>
             {
-                UserName = userName,
-                Password = password,
-                RememberMe = rememberMe //keeps defaulting to false
+                new KeyValuePair<string, string>("username", userName),
+                new KeyValuePair<string, string>("password", password),
+                new KeyValuePair<string, string>("rememberMe", rememberMe.ToString()),
+                new KeyValuePair<string, string>("grant_type", "password")
             };
 
-            var json = JsonConvert.SerializeObject(model);
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "/api/account/login")
+            {
+                Content = new FormUrlEncodedContent(model)
+            };
 
-            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            HttpResponseMessage response = await client.PostAsync("/api/account/login", content);
+            HttpResponseMessage response = await client.SendAsync(request);
 
             response.EnsureSuccessStatusCode();
             
-            //configure for token
-            return response.Content.ToString();
-        }
+            var content = response.Content.ToString();
 
-        //TODO: write logout service
+            JObject jwtDynamic = JsonConvert.DeserializeObject<dynamic>(content);
+
+            var accessTokenExpiration = jwtDynamic.Value<DateTime>(".expires");
+            var accessToken = jwtDynamic.Value<string>("access_token");
+
+            AccessTokenSettings.AccessTokenExpirationDate = accessTokenExpiration;
+
+            return accessToken;
+        }
+        #endregion
+
+        #region horseProfile
+
+        #endregion
     }
 }

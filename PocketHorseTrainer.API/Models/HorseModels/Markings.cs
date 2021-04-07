@@ -5,64 +5,41 @@ using System.Threading.Tasks;
 
 namespace PocketHorseTrainer.API.Models
 {
+    public enum Face
+    {
+        None,
+        Snip,
+        IrregularStar,
+        StarStrip,
+        Star,
+        FaintStar,
+        BaldFace,
+        InterruptedStripe,
+        IrregularBlaze,
+        StripeSnip,
+        Stripe,
+        Blaze
+    }
+
+    public enum Leg
+    {
+        HighWhite,
+        Stocking,
+        Boot,
+        Sock,
+        Pastern,
+        Coronet
+    }
+
     public class Markings
     {
         public int Id { get; set; }
-        public enum Face
-        {
-            None,
-            Snip,
-            IrregularStar,
-            StarStrip,
-            Star,
-            FaintStar,
-            BaldFace,
-            InterruptedStripe,
-            IrregularBlaze,
-            StripeSnip,
-            Stripe,
-            Blaze
-        }
 
-        public enum FrontLeft
-        {
-            HighWhite,
-            Stocking,
-            Boot,
-            Sock,
-            Pastern,
-            Coronet
-        }
-
-        public enum FrontRight
-        {
-            HighWhite,
-            Stocking,
-            Boot,
-            Sock,
-            Pastern,
-            Coronet
-        }
-
-        public enum BackLeft
-        {
-            HighWhite,
-            Stocking,
-            Boot,
-            Sock,
-            Pastern,
-            Coronet
-        }
-
-        public enum BackRight
-        {
-            HighWhite,
-            Stocking,
-            Boot,
-            Sock,
-            Pastern,
-            Coronet
-        }
+        public Face FaceMarking { get; set; }
+        public Leg FrontLeft { get; set; }
+        public Leg FrontRight { get; set; }
+        public Leg BackLeft { get; set; }
+        public Leg BackRight { get; set; }
 
         public Markings()
         {
