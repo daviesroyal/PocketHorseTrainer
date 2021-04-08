@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 
+
 namespace PocketHorseTrainer.API.Controllers
 {
     [Route("api/[controller]")]
@@ -16,7 +17,6 @@ namespace PocketHorseTrainer.API.Controllers
     {
         private ApplicationDbContext context;
         private readonly UserManager<ApplicationUser> _userManager;
-
 
         public HorseController(ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager)
         {
@@ -70,6 +70,7 @@ namespace PocketHorseTrainer.API.Controllers
                     return Conflict("Horse already exists!");
                 }
 
+                horse.Owner = (ApplicationUser)User.Identity;
                 context.Horses.Add(horse);
             }
             catch (Exception)
@@ -139,7 +140,7 @@ namespace PocketHorseTrainer.API.Controllers
         }
 
         //Get specific journal entry by id
-        [HttpGet("journal/{journalId}")]
+        [HttpGet("journal/{entryId}")]
         public IActionResult GetJournalEntryById([FromRoute] int id)
         {
             var entry = context.JournalEntries.Find(id);
@@ -364,7 +365,7 @@ namespace PocketHorseTrainer.API.Controllers
         }
 
         //Create new training goal
-        [HttpPost("{horseId}/goals")]
+        [HttpPost("{horseId}/goal")]
         public IActionResult CreateHorseGoal([FromBody] Goal goal, [FromRoute] int id)
         {
             try

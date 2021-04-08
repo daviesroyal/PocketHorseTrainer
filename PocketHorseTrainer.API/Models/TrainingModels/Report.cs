@@ -9,8 +9,8 @@ namespace PocketHorseTrainer.API.Models
     {
         public int Id { get; set; }
         public Horse Horse { get; set; }
-        //TODO: add date calculation for timespan
-        public TimeLength TimeSpan { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
         public float TimeHandling { get; set; }
         public float TimeRiding { get; set; }
         public List<ReportIssue> Issues { get; set; }
@@ -41,6 +41,10 @@ namespace PocketHorseTrainer.API.Models
                     ReportStrength reportStrength = new(strength.Strength);
                     Strengths.Add(reportStrength);
                 }
+
+                entries.Sort((a, b) => DateTime.Compare(a.Date, b.Date));
+                StartDate = entries.First().Date;
+                EndDate = entries.Last().Date;
             }
         }
     }

@@ -86,7 +86,7 @@ namespace PocketHorseTrainer.Services
             HttpResponseMessage response = await client.SendAsync(request);
 
             response.EnsureSuccessStatusCode();
-            
+
             var content = response.Content.ToString();
 
             JObject jwtDynamic = JsonConvert.DeserializeObject<dynamic>(content);
@@ -98,10 +98,210 @@ namespace PocketHorseTrainer.Services
 
             return accessToken;
         }
+
+        public async Task Logout(string accessToken)
+        {
+            var client = GetAuthorizedClient(accessToken);
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "/api/account/logout");
+            HttpResponseMessage response = await client.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+            if (response.IsSuccessStatusCode)
+            {
+                AccessTokenSettings.AccessToken = string.Empty;
+                AccessTokenSettings.AccessTokenExpirationDate = DateTime.Now;
+            }
+        }
         #endregion
 
-        #region horseProfile
+        #region horse
+        public async Task<List<Horse>> GetAllHorses(string accessToken)
+        {
+            var client = GetAuthorizedClient(accessToken);
+            var json = await client.GetStringAsync("/api/horse");
+            var horses = JsonConvert.DeserializeObject<List<Horse>>(json);
 
+            return horses;
+        }
+
+        public async Task<Horse> GetHorse(string accessToken, int horseId)
+        {
+            var client = GetAuthorizedClient(accessToken);
+            var json = await client.GetStringAsync($"/api/horse/{horseId}");
+            var horse = JsonConvert.DeserializeObject<Horse>(json);
+
+            return horse;
+        }
+
+        public async Task AddHorse(Horse horse, string accessToken)
+        {
+            var client = GetAuthorizedClient(accessToken);
+
+            var json = JsonConvert.SerializeObject(horse);
+            HttpContent content = new StringContent(json);
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            _ = await client.PostAsync("/api/horse", content);
+        }
+
+        public async Task EditHorse(Horse horse, string accessToken)
+        {
+            var client = GetAuthorizedClient(accessToken);
+            var json = JsonConvert.SerializeObject(horse);
+            HttpContent content = new StringContent(json);
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            _ = await client.PutAsync("/api/horse", content);
+        }
+
+        public async Task DeleteHorse(int horseId, string accessToken)
+        {
+            var client = GetAuthorizedClient(accessToken);
+            _ = await client.DeleteAsync($"/api/horse/{horseId}");
+        }
+        #endregion
+
+        #region journal
+        public async Task<JournalEntry> GetAllJournalEntries(string accessToken, int horseId)
+        {
+            var client = GetAuthorizedClient(accessToken);
+            var json = await client.GetStringAsync($"/api/horse/{horseId}/journal");
+            var entries = JsonConvert.DeserializeObject<JournalEntry>(json);
+
+            return entries;
+        }
+
+        public async Task<JournalEntry> GetJournalEntry(string accessToken, int entryId)
+        {
+            var client = GetAuthorizedClient(accessToken);
+            var json = await client.GetStringAsync($"/api/horse/journal/{entryId}");
+            var entry = JsonConvert.DeserializeObject<JournalEntry>(json);
+
+            return entry;
+        }
+
+        public async Task AddJournalEntry(string accessToken, int horseId, JournalEntry newEntry)
+        {
+            var client = GetAuthorizedClient(accessToken);
+
+            var json = JsonConvert.SerializeObject(newEntry);
+            HttpContent content = new StringContent(json);
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+            _ = await client.PostAsync($"/api/horse/{horseId}/journal/", content);
+        }
+
+        public async Task EditJournalEntry(string accessToken, int entryId, JournalEntry newEntry)
+        {
+            var client = GetAuthorizedClient(accessToken);
+
+            var json = JsonConvert.SerializeObject(newEntry);
+            HttpContent content = new StringContent(json);
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+            _ = await client.PutAsync($"/api/horse/journal/{entryId}", content);
+        }
+
+        public async Task DeleteJournalEntry(int entryId, string accessToken)
+        {
+            var client = GetAuthorizedClient(accessToken);
+
+            _ = await client.DeleteAsync($"/api/horse/journal/{entryId}");
+        }
+        #endregion
+
+        #region goal
+        public async Task<Goal> GetAllGoals(string accessToken, int horseId)
+        {
+            var client = GetAuthorizedClient(accessToken);
+            var json = await client.GetStringAsync($"/api/horse/{horseId}/goals");
+            var goals = JsonConvert.DeserializeObject<Goal>(json);
+
+            return goals;
+        }
+
+        public async Task<Goal> GetGoal(string accessToken, int goalId)
+        {
+            var client = GetAuthorizedClient(accessToken);
+            var json = await client.GetStringAsync($"/api/horse/goals/{goalId}");
+            var goal = JsonConvert.DeserializeObject<Goal>(json);
+
+            return goal;
+        }
+
+        public async Task AddGoal(string accessToken, int horseId, Goal goal)
+        {
+            var client = GetAuthorizedClient(accessToken);
+
+            var json = JsonConvert.SerializeObject(goal);
+            HttpContent content = new StringContent(json);
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+            _ = await client.PostAsync($"/api/horse/{horseId}/goal/", content);
+        }
+
+        public async Task EditGoal(string accessToken, int goalId, Goal goal)
+        {
+            var client = GetAuthorizedClient(accessToken);
+
+            var json = JsonConvert.SerializeObject(goal);
+            HttpContent content = new StringContent(json);
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+            _ = await client.PutAsync($"/api/horse/goals/{goalId}", content);
+        }
+
+        public async Task DeleteGoal(int goalId, string accessToken)
+        {
+            var client = GetAuthorizedClient(accessToken);
+
+            _ = await client.DeleteAsync($"/api/horse/goals/{goalId}");
+        }
+        #endregion
+
+        #region report
+        public async Task<Report> GetAllReports(string accessToken, int horseId)
+        {
+            var client = GetAuthorizedClient(accessToken);
+            var json = await client.GetStringAsync($"/api/horse/{horseId}/reports");
+            var reports = JsonConvert.DeserializeObject<Report>(json);
+
+            return reports;
+        }
+
+        public async Task<Report> GetReport(string accessToken, int reportId)
+        {
+            var client = GetAuthorizedClient(accessToken);
+            var json = await client.GetStringAsync($"/api/horse/reports/{reportId}");
+            var report = JsonConvert.DeserializeObject<Report>(json);
+
+            return report;
+        }
+
+        public async Task AddReport(string accessToken, int horseId, List<JournalEntry> entries)
+        {
+            var client = GetAuthorizedClient(accessToken);
+
+            var json = JsonConvert.SerializeObject(entries);
+            HttpContent content = new StringContent(json);
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            _ = await client.PostAsync($"/api/horse/{horseId}/report/", content);
+        }
+
+        public async Task EditReport(string accessToken, int reportId, List<JournalEntry> entries)
+        {
+            var client = GetAuthorizedClient(accessToken);
+
+            var json = JsonConvert.SerializeObject(entries);
+            HttpContent content = new StringContent(json);
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+            _ = await client.PutAsync($"/api/horse/reports/{reportId}", content);
+        }
+
+        public async Task DeleteReport(int reportId, string accessToken)
+        {
+            var client = GetAuthorizedClient(accessToken);
+
+            _ = await client.DeleteAsync($"/api/horse/reports/{reportId}");
+        }
         #endregion
     }
 }

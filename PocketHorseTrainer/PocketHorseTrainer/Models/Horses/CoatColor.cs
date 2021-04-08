@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 
-namespace PocketHorseTrainer.API.Models
+namespace PocketHorseTrainer.Models.Horses
 {
-    //TODO: restrict permissions so admins-only can edit
     public class CoatColor
     {
         public int Id { get; set; }

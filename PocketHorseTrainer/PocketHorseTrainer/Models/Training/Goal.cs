@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using PocketHorseTrainer.Models.Training;
+using System;
 
-namespace PocketHorseTrainer.API.Models
+namespace PocketHorseTrainer.Models
 {
     public enum TimeLength
     {
@@ -30,6 +28,6 @@ namespace PocketHorseTrainer.API.Models
         {
 
         }
-        
+
     }
 }
