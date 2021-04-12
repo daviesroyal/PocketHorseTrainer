@@ -35,7 +35,8 @@ namespace PocketHorseTrainer.API
                 .UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentityCore<ApplicationUser>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddSignInManager<SignInManager<ApplicationUser>>();
 
             services.Configure<IdentityOptions>(o => 
             {

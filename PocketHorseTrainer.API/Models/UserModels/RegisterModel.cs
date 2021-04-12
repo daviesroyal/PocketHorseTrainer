@@ -22,9 +22,9 @@ namespace PocketHorseTrainer.API.Models
         public string Phone { get; set; }
 
         [Required(ErrorMessage = "Please enter your birthday.")]
-        [DataType(DataType.Date)]
+        //[DataType(DataType.Date)]
         [Display(Name = "Date of Birth")]
-        public DateTime DOB { get; set; }
+        public string DOB { get; set; }
 
         [Required(ErrorMessage = "Please enter a valid email.")]
         [EmailAddress]
