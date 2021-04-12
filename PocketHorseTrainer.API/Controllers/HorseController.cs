@@ -262,6 +262,14 @@ namespace PocketHorseTrainer.API.Controllers
                     return BadRequest();
                 }
 
+                foreach (JournalEntry entry in entries)
+                {
+                    if (entry.Horse.Id != id)
+                    {
+                        return BadRequest("Cannot include more than one horse in a training report.");
+                    }
+                }
+
                 var report = new Report(entries)
                 {
                     Horse = context.Horses.Find(id)

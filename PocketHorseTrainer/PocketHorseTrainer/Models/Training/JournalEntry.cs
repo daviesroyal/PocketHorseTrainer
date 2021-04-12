@@ -15,7 +15,7 @@ namespace PocketHorseTrainer.Models
         Groundwork
     }
 
-    class JournalEntry
+    public class JournalEntry
     {
         public int Id { get; set; }
 

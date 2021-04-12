@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PocketHorseTrainer.Views.JournalEntriesPage">
+    
+    <ContentPage.Content>
+
+        <Button Text="Add New Journal Entry" Clicked="OnAddEntryClicked"/>
+
+    </ContentPage.Content>
+
+    <ListView x:Name="listView" 
+              Margin="20" 
+              ItemSelected="OnEntrySelected">
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <ViewCell>
+                    <StackLayout Padding="20,0,0,0" 
+                                 HorizontalOptions="StartAndExpand"
+                                 Orientation="Horizontal">
+                        <Label Text="{Binding Date}" 
+                               VerticalTextAlignment="Center" />
+                        <Label Text="{Binding Horse}"/>
+                        <Label Text="{Binding Discipline}"/>
+                        <Label Text="{Binding Location}"/>
+                    </StackLayout>
+                </ViewCell>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+    
+</ContentPage>

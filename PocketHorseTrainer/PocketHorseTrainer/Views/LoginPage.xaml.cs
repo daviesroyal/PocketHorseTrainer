@@ -26,5 +26,11 @@ namespace PocketHorseTrainer.Views
         {
             return true;
         }
+
+        private void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
+        {
+            var login = (LoginViewModel)BindingContext;
+            login.RememberMe = e.Value;
+        }
     }
 }

@@ -8,10 +8,11 @@ using Xamarin.Forms;
 
 namespace PocketHorseTrainer.ViewModels
 {
-    public class EditHorseViewModel
+    public class EditGoalViewModel
     {
         readonly ApiServices apiServices = new ApiServices();
-        public Horse Horse { get; set; }
+
+        public Goal Goal { get; set; }
 
         readonly string accessToken = AccessTokenSettings.AccessToken;
 
@@ -19,9 +20,9 @@ namespace PocketHorseTrainer.ViewModels
         {
             get
             {
-                return new Command(async() =>
+                return new Command(async () =>
                 {
-                    await apiServices.EditHorse(Horse, accessToken);
+                    await apiServices.EditGoal(accessToken, Goal);
                 });
             }
         }

@@ -14,10 +14,15 @@
 
             <Entry Text="{Binding Name}"/>
             <Entry Text="{Binding Age}"/>
-            <Entry Text="{Binding Barn}"/>
-            <Entry Text="{Binding Breed}"/>
-            <Entry Text="{Binding Color}"/>
-            <Entry Text="{Binding Markings}"/>
+            <Picker ItemsSource="{Binding Barn}"/>
+            <Picker ItemsSource="{Binding Breed}"/>
+            <Picker ItemsSource="{Binding Color}"/>
+            <Label Text="Markings"/>
+            <Picker ItemsSource="{Binding Markings.FaceMarking}"/>
+            <Picker ItemsSource="{Binding Markings.FrontLeft}"/>
+            <Picker ItemsSource="{Binding Markings.FrontRight}"/>
+            <Picker ItemsSource="{Binding Markings.BackLeft}"/>
+            <Picker ItemsSource="{Binding Markings.BackRight}"/>
 
             <Button Command="{Binding AddCommand}"
                 Text="Add Horse"/>

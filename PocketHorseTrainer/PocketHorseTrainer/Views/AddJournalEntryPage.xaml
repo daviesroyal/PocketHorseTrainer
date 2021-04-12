@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:viewModels="clr-namespace:PocketHorseTrainer.ViewModels"
+             x:Class="PocketHorseTrainer.Views.AddJournalEntryPage">
+    
+    <ContentPage.BindingContext>
+        <viewModels:AddJournalEntryViewModel/>
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Content>
+        
+        <StackLayout>
+
+            <DatePicker Date="{Binding Date}"/>
+            <Entry Text="{Binding TimeHandling}"/>
+            <Entry Text="{Binding TimeRiding}"/>
+            <Picker ItemsSource="{Binding Discipline}"/>
+            <Entry Text="{Binding Location}"/>
+
+            <Label Text="Weather"/>
+            <Entry Text="{Binding Weather.TempF}"/>
+            <Picker ItemsSource="{Binding Weather.Precipitation}"/>
+            <Picker ItemsSource="{Binding Weather.Wind}"/>
+            <Picker ItemsSource="{Binding Weather.CloudCover}"/>
+            <Picker ItemsSource="{Binding Weather.GroundCondition}"/>
+            <Picker ItemsSource="{Binding Weather.Visibility}"/>
+
+            <ScrollView HeightRequest="150">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Label Text="Previous selected item:" />
+                    <Label x:Name="previousSelectedItemLabel"
+                           Grid.Column="1" />
+                    <Label Grid.Row="1"
+                           Text="Current selected item:" />
+                    <Label x:Name="currentSelectedItemLabel"
+                           Grid.Row="1"
+                           Grid.Column="1" />
+                </Grid>
+            </ScrollView>
+
+            <CollectionView ItemsSource="{Binding TargetAreas}"
+                            SelectionMode="Multiple"
+                            SelectionChanged="OnCollectionViewSelectionChanged">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Label Text="{Binding Name}"/>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <CollectionView ItemsSource="{Binding TargetAreas}"
+                            SelectionMode="Multiple"
+                            SelectionChanged="OnCollectionViewSelectionChanged">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Label Text="{Binding Name}"/>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button Command="{Binding AddCommand}"
+                    Text="Add Goal"/>
+            
+        </StackLayout>
+        
+    </ContentPage.Content>
+    
+</ContentPage>

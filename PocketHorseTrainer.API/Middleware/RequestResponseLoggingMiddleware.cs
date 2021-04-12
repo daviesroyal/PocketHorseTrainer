@@ -34,8 +34,6 @@ namespace PocketHorseTrainer.API.Middleware
             //Format the response from the server
             var response = await FormatResponse(context.Response);
 
-            //TODO: Save log to chosen datastore
-
             //Copy the contents of the new memory stream (which contains the response) to the original stream, which is then returned to the client.
             await responseBody.CopyToAsync(originalBodyStream);
         }

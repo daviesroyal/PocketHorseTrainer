@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:viewModels="clr-namespace:PocketHorseTrainer.ViewModels"
+             x:Class="PocketHorseTrainer.Views.EditGoalPage">
+
+    <ContentPage.BindingContext>
+        <viewModels:EditGoalViewModel/>
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Content>
+        
+        <StackLayout>
+            
+            <Entry Text="{Binding Goal.Name}"/>
+            <Picker ItemsSource="{Binding Goal.TimeSpan}"/>
+            <DatePicker Date="{Binding Goal.StartDate}"/>
+            <DatePicker Date="{Binding Goal.EndDate}"/>
+            <Picker ItemsSource="{Binding Goal.AreaOfImprovement}"/>
+            <CheckBox IsChecked="{Binding Goal.Completed}" CheckedChanged="CheckBox_CheckedChanged"/>
+
+            <Button Command="{Binding EditCommand}"
+                    Text="Edit Goal"/>
+            
+        </StackLayout>
+        
+    </ContentPage.Content>
+    
+</ContentPage>

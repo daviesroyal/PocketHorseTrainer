@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:viewModels="clr-namespace:PocketHorseTrainer.ViewModels"
+             x:Class="PocketHorseTrainer.Views.EditJournalEntryPage">
+
+    <ContentPage.BindingContext>
+        <viewModels:EditJournalEntryViewModel/>
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Content>
+        
+        <StackLayout>
+
+            <DatePicker Date="{Binding Entry.Date}"/>
+            <Entry Text="{Binding Entry.TimeHandling}"/>
+            <Entry Text="{Binding Entry.TimeRiding}"/>
+            <Picker ItemsSource="{Binding Entry.Discipline}"/>
+            <Entry Text="{Binding Entry.Location}"/>
+            
+            <Label Text="Weather"/>
+            <Entry Text="{Binding Entry.Weather.TempF}"/>
+            <Picker ItemsSource="{Binding Entry.Weather.Precipitation}"/>
+            <Picker ItemsSource="{Binding Entry.Weather.Wind}"/>
+            <Picker ItemsSource="{Binding Entry.Weather.CloudCover}"/>
+            <Picker ItemsSource="{Binding Entry.Weather.GroundCondition}"/>
+            <Picker ItemsSource="{Binding Entry.Weather.Visibility}"/>
+            
+            <ScrollView HeightRequest="150">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Label Text="Previous selected item:" />
+                    <Label x:Name="previousSelectedItemLabel"
+                           Grid.Column="1" />
+                    <Label Grid.Row="1"
+                           Text="Current selected item:" />
+                    <Label x:Name="currentSelectedItemLabel"
+                           Grid.Row="1"
+                           Grid.Column="1" />
+                </Grid>
+            </ScrollView>
+            
+            <CollectionView ItemsSource="{Binding TargetAreas}"
+                            SelectionMode="Multiple"
+                            SelectionChanged="OnCollectionViewSelectionChanged">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Label Text="{Binding Name}"/>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <CollectionView ItemsSource="{Binding TargetAreas}"
+                            SelectionMode="Multiple"
+                            SelectionChanged="OnCollectionViewSelectionChanged">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Label Text="{Binding Name}"/>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button Command="{Binding EditCommand}"
+                    Text="Edit Journal Entry"/>
+        </StackLayout>
+        
+    </ContentPage.Content>
+    
+</ContentPage>

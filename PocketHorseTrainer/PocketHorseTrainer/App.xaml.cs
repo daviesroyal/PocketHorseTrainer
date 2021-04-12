@@ -24,7 +24,7 @@ namespace PocketHorseTrainer
         {
             // Services
             Locator.CurrentMutable.RegisterLazySingleton<IRoutingService>(() => new RoutingService());
-            Locator.CurrentMutable.RegisterLazySingleton<IIdentityService>(() => new IdentityServiceStub());
+            Locator.CurrentMutable.RegisterLazySingleton<IIdentityService>(() => new IdentityService());
 
             // ViewModels
             Locator.CurrentMutable.Register(() => new LoadingViewModel());

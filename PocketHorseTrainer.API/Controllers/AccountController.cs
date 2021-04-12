@@ -110,7 +110,7 @@ namespace PocketHorseTrainer.API.Controllers
                 {
                     return BadRequest("Email has not been confirmed for this account.");
                 }
-                var signInResult = await _signInManager.PasswordSignInAsync(user, input.Password, isPersistent: input.RememberMe, lockoutOnFailure: false);
+                var signInResult = await _signInManager.PasswordSignInAsync(user, input.Password, isPersistent: bool.Parse($"{input.RememberMe}"), lockoutOnFailure: false);
                 if (!signInResult.Succeeded)
                 {
                     return BadRequest("Invalid Login");
@@ -133,15 +133,15 @@ namespace PocketHorseTrainer.API.Controllers
                         new Claim(JwtRegisteredClaimNames.Iat, utcNow.ToString())
             };
 
-            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetValue<String>("Tokens:Key")));
+            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetValue<String>("Jwt:Key")));
             var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
             var jwt = new JwtSecurityToken(
                 signingCredentials: signingCredentials,
                 claims: claims,
                 notBefore: utcNow,
-                expires: utcNow.AddSeconds(_configuration.GetValue<int>("Tokens:Lifetime")),
-                audience: _configuration.GetValue<String>("Tokens:Audience"),
-                issuer: _configuration.GetValue<String>("Tokens:Issuer")
+                expires: utcNow.AddMinutes(_configuration.GetValue<int>("Jwt:Lifetime")),
+                audience: _configuration.GetValue<String>("Jwt:Audience"),
+                issuer: _configuration.GetValue<String>("Jwt:Issuer")
                 );
 
             return new JwtSecurityTokenHandler().WriteToken(jwt);

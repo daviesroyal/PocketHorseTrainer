@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:viewModels="clr-namespace:PocketHorseTrainer.ViewModels"
+             x:Class="PocketHorseTrainer.Views.SingleGoalPage">
+
+    <ContentPage.BindingContext>
+        <viewModels:GoalViewModel/>
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="{Binding Name}" />
+            <Label Text="{Binding TimeSpan}"/>
+            <Label Text="{Binding StartDate}"/>
+            <Label Text="{Binding EndDate}"/>
+            <Label Text="{Binding AreaOfImprovement}"/>
+            <Label Text="{Binding Completed}"/>
+
+            <Button Text="Edit Goal"
+                    Clicked="OnEditButtonClicked"/>
+            <Button Text="Delete Goal"
+                    Command="{Binding DeleteCommand}"/>
+            
+        </StackLayout>
+    </ContentPage.Content>
+
+</ContentPage>

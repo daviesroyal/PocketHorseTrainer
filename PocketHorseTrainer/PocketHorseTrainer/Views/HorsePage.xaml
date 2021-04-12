@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:viewModels="clr-namespace:PocketHorseTrainer.ViewModels"
+             x:Class="PocketHorseTrainer.Views.HorsePage">
+
+    <ContentPage.BindingContext>
+        <viewModels:HorseProfileViewModel/>
+    </ContentPage.BindingContext>
+    
+    <StackLayout Margin="20">
+        
+        <Label Text="{Binding Name}"/>
+        <Label Text="{Binding Age}"/>
+        <Label Text="{Binding Barn}"/>
+        <Label Text="{Binding Breed}"/>
+        <Label Text="{Binding Color}"/>
+        <Label Text="{Binding Markings}"/>
+
+        <Button Text="Training Goals"
+                Clicked="OnGoalButtonClicked"/>
+        <Button Text="Training Journal"
+                Clicked="OnJournalButtonClicked"/>
+
+        <Button Text="Edit Horse" 
+                Clicked="OnEditButtonClicked"/>
+        <Button Text="Remove Horse"
+                Command="{Binding DeleteCommand}"/>
+
+    </StackLayout>
+
+</ContentPage>

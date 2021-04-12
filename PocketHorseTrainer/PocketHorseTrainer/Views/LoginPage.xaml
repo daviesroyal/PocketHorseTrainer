@@ -25,16 +25,9 @@
             <Entry Text="{Binding Password}"
                    IsPassword="True"
                    Placeholder="Password"/>
-            
-            <CheckBox x:Name="RememberMe"/>
-            <Label Text="Remember Me?">
-                <Label.Triggers>
-                    <DataTrigger TargetType="Label"
-                                 Binding="{Binding Source={x:Reference RememberMe}, Path=IsChecked}"
-                                 Value="True">
-                    </DataTrigger>
-                </Label.Triggers>
-            </Label>
+
+            <Label Text="Remember Me?"></Label>
+            <CheckBox IsChecked="{Binding RememberMe}" CheckedChanged="CheckBox_CheckedChanged"/>
 
             <Button VerticalOptions="Center" Text="Login" Command="{Binding LoginCommand}"/>
 
