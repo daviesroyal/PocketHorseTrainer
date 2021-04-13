@@ -11,7 +11,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PocketHorseTrainer.API.Data;
-using PocketHorseTrainer.API.Middleware;
 using PocketHorseTrainer.API.Models;
 using PocketHorseTrainer.API.Services;
 using System;
@@ -36,7 +35,8 @@ namespace PocketHorseTrainer.API
 
             services.AddIdentityCore<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddSignInManager<SignInManager<ApplicationUser>>();
+                .AddSignInManager<SignInManager<ApplicationUser>>()
+                .AddUserManager<UserManager<ApplicationUser>>();
 
             services.Configure<IdentityOptions>(o => 
             {
@@ -130,8 +130,6 @@ namespace PocketHorseTrainer.API
             app.UseCors("DefaultCorsPolicy");
 
             app.UseRouting();
-
-            app.UseMiddleware<RequestResponseLoggingMiddleware>();
 
             app.UseAuthentication();
 

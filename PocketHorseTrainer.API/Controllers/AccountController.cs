@@ -49,7 +49,7 @@ namespace PocketHorseTrainer.API.Controllers
                     LastName = input.LastName,
                     DisplayName = $"{input.FirstName} {input.LastName}",
                     UserName = input.UserName, 
-                    DOB = Convert.ToDateTime(input.DOB), 
+                    DOB = input.DOB, 
                     PhoneNumber = input.Phone, 
                     Email = input.Email 
                 };

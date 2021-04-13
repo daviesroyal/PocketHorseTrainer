@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PocketHorseTrainer.Models
 {
-    class RegisterBindingModel
+    public class RegisterBindingModel
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
