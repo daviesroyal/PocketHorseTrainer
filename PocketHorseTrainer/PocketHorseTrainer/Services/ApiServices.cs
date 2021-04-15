@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using PocketHorseTrainer.Models;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -56,8 +56,6 @@ namespace PocketHorseTrainer.Services
             HttpResponseMessage response = await client.PostAsync(
                 "/api/account/register", content);
 
-            response.EnsureSuccessStatusCode();
-
             if (response.IsSuccessStatusCode)
             {
                 return true;
@@ -98,7 +96,9 @@ namespace PocketHorseTrainer.Services
             {
                 var token = await response.Content.ReadAsStringAsync();
 
-                var jwtDynamic = JsonConvert.DeserializeObject<dynamic>(token);
+                var handler = new JwtSecurityTokenHandler();
+
+                dynamic jwtDynamic = handler.ReadJwtToken(token);
 
                 var accessTokenExpiration = jwtDynamic.Value<DateTime>(".expires");
                 var accessToken = jwtDynamic.Value<string>("access_token");
