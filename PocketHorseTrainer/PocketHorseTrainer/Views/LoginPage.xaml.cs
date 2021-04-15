@@ -32,5 +32,6 @@ namespace PocketHorseTrainer.Views
             var login = (LoginViewModel)BindingContext;
             login.RememberMe = e.Value;
         }
+
     }
 }

@@ -10,7 +10,7 @@ namespace PocketHorseTrainer.API.Controllers
     [Route("api/[controller]")]
     public class MainController : ControllerBase
     {
-        [HttpGet] //user profile feed
+        [HttpGet("home")] //user profile feed
         public async Task<IActionResult> Home()
         {
             return Ok();

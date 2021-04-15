@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -49,22 +50,15 @@ namespace PocketHorseTrainer.API
                 o.User.RequireUniqueEmail = true;
             });
 
-            services.ConfigureApplicationCookie(o =>
-            {
-                o.Cookie.Name = "PHTCookie";
-                o.Cookie.HttpOnly = true;
-                o.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-                o.SlidingExpiration = true;
-                o.LoginPath = "/api/account/login";
-            });
-
             services.AddAuthentication(o =>
             {
+                o.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                o.DefaultSignOutScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 o.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-                .AddJwtBearer(o => 
+                .AddJwtBearer(o =>
                 {
                     o.RequireHttpsMetadata = false;
                     o.SaveToken = true;
@@ -79,6 +73,15 @@ namespace PocketHorseTrainer.API
                         ValidateLifetime = true,
                         ClockSkew = TimeSpan.Zero
                     };
+                })
+                .AddCookie("Identity.Application", o =>
+                {
+                    o.Cookie.Name = "PHTCookie";
+                    o.Cookie.HttpOnly = true;
+                    o.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+                    o.SlidingExpiration = true;
+                    o.LoginPath = "/api/account/login";
+                    o.LogoutPath = "/api/account/logout";
                 });
 
             services.AddAuthorization(o => 

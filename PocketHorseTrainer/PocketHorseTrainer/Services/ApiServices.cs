@@ -66,37 +66,66 @@ namespace PocketHorseTrainer.Services
             return false;
         }
 
-        public async Task<string> LoginAsync(string userName, string password, bool rememberMe)
+        public class Result
+        {
+            public bool Success { get; set; }
+            public string Message { get; set; }
+        }
+
+        public async Task<Result> LoginAsync(string userName, string password, bool rememberMe)
         {
             var client = GetBaseClient();
 
-            var model = new List<KeyValuePair<string, string>>
+            var model = new LoginBindingModel
             {
-                new KeyValuePair<string, string>("username", userName),
-                new KeyValuePair<string, string>("password", password),
-                new KeyValuePair<string, string>("rememberMe", rememberMe.ToString()),
-                new KeyValuePair<string, string>("grant_type", "password")
+                UserName = userName,
+                Password = password,
+                RememberMe = rememberMe
             };
+
+            var json = JsonConvert.SerializeObject(model);
+
+            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "/api/account/login")
             {
-                Content = new FormUrlEncodedContent(model)
+                Content = content
             };
-
+            
             HttpResponseMessage response = await client.SendAsync(request);
 
-            response.EnsureSuccessStatusCode();
+            if (response.IsSuccessStatusCode)
+            {
+                var token = await response.Content.ReadAsStringAsync();
 
-            var content = response.Content.ToString();
+                var jwtDynamic = JsonConvert.DeserializeObject<dynamic>(token);
 
-            JObject jwtDynamic = JsonConvert.DeserializeObject<dynamic>(content);
+                var accessTokenExpiration = jwtDynamic.Value<DateTime>(".expires");
+                var accessToken = jwtDynamic.Value<string>("access_token");
 
-            var accessTokenExpiration = jwtDynamic.Value<DateTime>(".expires");
-            var accessToken = jwtDynamic.Value<string>("access_token");
+                AccessTokenSettings.AccessTokenExpirationDate = accessTokenExpiration;
 
-            AccessTokenSettings.AccessTokenExpirationDate = accessTokenExpiration;
+                var result = new Result
+                {
+                    Success = true,
+                    Message = accessToken
+                };
 
-            return accessToken;
+                return result;
+            }
+            else
+            {
+                var message = response.Content.ReadAsStringAsync().Result;
+
+                var result = new Result
+                {
+                    Success = false,
+                    Message = message
+                };
+
+                return result;
+            }
+
         }
 
         public async Task Logout(string accessToken)

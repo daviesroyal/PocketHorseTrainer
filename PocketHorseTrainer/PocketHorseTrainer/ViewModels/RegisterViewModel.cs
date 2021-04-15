@@ -27,7 +27,6 @@ namespace PocketHorseTrainer.ViewModels
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-
         [Required(ErrorMessage = "Please enter your phone number.")]
         [Phone]
         [Display(Name = "Phone Number")]
