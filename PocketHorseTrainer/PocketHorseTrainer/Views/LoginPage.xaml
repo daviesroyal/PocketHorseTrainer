@@ -33,6 +33,9 @@
 
             <Button Text="Register"
                 Clicked="Button_OnClicked"/>
+
+            <Button VerticalOptions="Center" Text="Forgot Password?" Command="{Binding TapCommand}"/>
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

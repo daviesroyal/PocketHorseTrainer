@@ -28,7 +28,6 @@ namespace PocketHorseTrainer.API.Models
 
         public Discipline Discipline { get; set; }
 
-        //TODO: create automatic weather function - api?
         public Weather Weather { get; set; }
         
         //TODO: add map api for location

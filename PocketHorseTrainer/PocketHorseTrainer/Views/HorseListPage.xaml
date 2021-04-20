@@ -1,13 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PocketHorseTrainer.Views.HorseListPage">
+             x:Class="PocketHorseTrainer.Views.HorseListPage"
+             Title="Horses"
+             Shell.TabBarIsVisible="False">
     
-    <ContentPage.Content>
+    <ContentPage.ToolbarItems>
 
-        <Button Text="Add New Horse" Clicked="OnAddHorseClicked"/>
+        <ToolbarItem Text="Add New Horse" Clicked="OnAddHorseClicked"/>
     
-    </ContentPage.Content>
+    </ContentPage.ToolbarItems>
 
     <ListView x:Name="listView" 
               Margin="20" 

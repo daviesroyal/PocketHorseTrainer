@@ -7,10 +7,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System;
 using System.Collections.Generic;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace PocketHorseTrainer.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class HorseController : ControllerBase

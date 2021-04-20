@@ -12,17 +12,30 @@
 
         <StackLayout VerticalOptions="Center">
 
+            <Label Text="Name"/>
             <Entry Text="{Binding Name}"/>
+
+            <Label Text="Age"/>
             <Entry Text="{Binding Age}"/>
-            <Picker ItemsSource="{Binding Barn}"/>
-            <Picker ItemsSource="{Binding Breed}"/>
-            <Picker ItemsSource="{Binding Color}"/>
+
+            <Label Text="Barn"/>
+            <Picker ItemsSource="{Binding Barns}" SelectedItem="{Binding Barn}"/>
+            <Label Text="Breed"/>
+            <Picker ItemsSource="{Binding Breeds}" SelectedItem="{Binding Breed}"/>
+            <Label Text="Coat Color"/>
+            <Picker ItemsSource="{Binding Colors}" SelectedItem="{Binding Color}"/>
+            
             <Label Text="Markings"/>
-            <Picker ItemsSource="{Binding Markings.FaceMarking}"/>
-            <Picker ItemsSource="{Binding Markings.FrontLeft}"/>
-            <Picker ItemsSource="{Binding Markings.FrontRight}"/>
-            <Picker ItemsSource="{Binding Markings.BackLeft}"/>
-            <Picker ItemsSource="{Binding Markings.BackRight}"/>
+            <Label Text="Face"/>
+            <Picker ItemsSource="{Binding FaceMarkings}" SelectedItem="{Binding Markings.FaceMarking}"/>
+            <Label Text="Front Left Leg"/>
+            <Picker ItemsSource="{Binding LegMarkings}" SelectedItem="{Binding Markings.FrontLeft}"/>
+            <Label Text="Front Right Leg"/>
+            <Picker ItemsSource="{Binding LegMarkings}" SelectedItem="{Binding Markings.FrontRight}"/>
+            <Label Text="Back Left Leg"/>
+            <Picker ItemsSource="{Binding LegMarkings}" SelectedItem="{Binding Markings.BackLeft}"/>
+            <Label Text="Back Right Leg"/>
+            <Picker ItemsSource="{Binding LegMarkings}" SelectedItem="{Binding Markings.BackRight}"/>
 
             <Button Command="{Binding AddCommand}"
                 Text="Add Horse"/>

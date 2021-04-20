@@ -1,11 +1,5 @@
-﻿using PocketHorseTrainer.Services.Identity;
-using PocketHorseTrainer.Services.Routing;
-using PocketHorseTrainer.ViewModels;
-using PocketHorseTrainer.Views;
-using Splat;
-using System;
+﻿using PocketHorseTrainer.Views;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace PocketHorseTrainer
 {
@@ -14,26 +8,14 @@ namespace PocketHorseTrainer
 
         public App()
         {
-            InitializeDi();
             InitializeComponent();
 
             MainPage = new AppShell();
         }
 
-        private void InitializeDi()
-        {
-            // Services
-            Locator.CurrentMutable.RegisterLazySingleton<IRoutingService>(() => new RoutingService());
-            Locator.CurrentMutable.RegisterLazySingleton<IIdentityService>(() => new IdentityService());
-
-            // ViewModels
-            Locator.CurrentMutable.Register(() => new LoadingViewModel());
-            Locator.CurrentMutable.Register(() => new LoginViewModel());
-            Locator.CurrentMutable.Register(() => new RegisterViewModel());
-        }
-
         protected override void OnStart()
         {
+
         }
 
         protected override void OnSleep()

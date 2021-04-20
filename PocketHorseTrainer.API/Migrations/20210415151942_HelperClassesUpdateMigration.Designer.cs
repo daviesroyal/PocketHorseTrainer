@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PocketHorseTrainer.API.Data;
 
 namespace PocketHorseTrainer.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210415151942_HelperClassesUpdateMigration")]
+    partial class HelperClassesUpdateMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -295,7 +297,7 @@ namespace PocketHorseTrainer.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Breeds");
+                    b.ToTable("Breed");
                 });
 
             modelBuilder.Entity("PocketHorseTrainer.API.Models.CoatColor", b =>
@@ -310,7 +312,7 @@ namespace PocketHorseTrainer.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Colors");
+                    b.ToTable("CoatColor");
                 });
 
             modelBuilder.Entity("PocketHorseTrainer.API.Models.Comments", b =>
@@ -348,7 +350,7 @@ namespace PocketHorseTrainer.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FaceMarkings");
+                    b.ToTable("FaceMarking");
                 });
 
             modelBuilder.Entity("PocketHorseTrainer.API.Models.Goal", b =>
@@ -631,7 +633,7 @@ namespace PocketHorseTrainer.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LegMarkings");
+                    b.ToTable("LegMarking");
                 });
 
             modelBuilder.Entity("PocketHorseTrainer.API.Models.Markings", b =>
@@ -669,44 +671,6 @@ namespace PocketHorseTrainer.API.Migrations
                     b.HasIndex("FrontRightId");
 
                     b.ToTable("Markings");
-                });
-
-            modelBuilder.Entity("PocketHorseTrainer.API.Models.RefreshToken", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("ApplicationUserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CreatedByIp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ExpiryOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("RevokedByIp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("RevokedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Token")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.ToTable("RefreshToken");
                 });
 
             modelBuilder.Entity("PocketHorseTrainer.API.Models.Report", b =>
@@ -1148,13 +1112,6 @@ namespace PocketHorseTrainer.API.Migrations
                     b.Navigation("FrontRight");
                 });
 
-            modelBuilder.Entity("PocketHorseTrainer.API.Models.RefreshToken", b =>
-                {
-                    b.HasOne("PocketHorseTrainer.API.Models.ApplicationUser", null)
-                        .WithMany("RefreshTokens")
-                        .HasForeignKey("ApplicationUserId");
-                });
-
             modelBuilder.Entity("PocketHorseTrainer.API.Models.Report", b =>
                 {
                     b.HasOne("PocketHorseTrainer.API.Models.Horse", "Horse")
@@ -1213,8 +1170,6 @@ namespace PocketHorseTrainer.API.Migrations
             modelBuilder.Entity("PocketHorseTrainer.API.Models.ApplicationUser", b =>
                 {
                     b.Navigation("Horses");
-
-                    b.Navigation("RefreshTokens");
                 });
 
             modelBuilder.Entity("PocketHorseTrainer.API.Models.Barn", b =>

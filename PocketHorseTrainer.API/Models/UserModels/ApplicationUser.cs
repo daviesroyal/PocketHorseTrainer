@@ -13,6 +13,7 @@ namespace PocketHorseTrainer.API.Models
         public string DisplayName { get; set; }
         public DateTime DOB { get; set; }
         public List<HorseOwner> Horses { get; set; }
+        public List<RefreshToken> RefreshTokens { get; set; }
 
         public ApplicationUser()
         {

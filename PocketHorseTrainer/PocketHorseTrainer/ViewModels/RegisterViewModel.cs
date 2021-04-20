@@ -62,12 +62,14 @@ namespace PocketHorseTrainer.ViewModels
 
                     if (isRegistered)
                     {
-                        //navigate instead of message
                         Message = $"Registration completed, please verify your email - {Email}";
+                        await Shell.Current.DisplayAlert("Success!", Message, "OK");
+                        await Shell.Current.GoToAsync("//login");
                     }
                     else
                     {
                         Message = "Something went wrong. Please try again.";
+                        await Shell.Current.DisplayAlert("Uh oh!", Message, "OK");
                     }
                 });
             }

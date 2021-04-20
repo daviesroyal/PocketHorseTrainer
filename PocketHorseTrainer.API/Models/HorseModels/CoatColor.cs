@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 
 namespace PocketHorseTrainer.API.Models
 {
-    //TODO: restrict permissions so admins-only can edit
     public class CoatColor
     {
         public int Id { get; set; }

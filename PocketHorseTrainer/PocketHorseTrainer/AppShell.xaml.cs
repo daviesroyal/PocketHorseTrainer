@@ -1,4 +1,5 @@
-﻿using PocketHorseTrainer.ViewModels;
+﻿using PocketHorseTrainer.Services;
+using PocketHorseTrainer.ViewModels;
 using PocketHorseTrainer.Views;
 using System;
 using System.Collections.Generic;
@@ -9,16 +10,25 @@ namespace PocketHorseTrainer
 {
     public partial class AppShell : Shell
     {
+        readonly ApiServices apiServices = new ApiServices();
+
         public AppShell()
         {
             InitializeComponent();
 
-            Routing.RegisterRoute("registration", typeof(RegisterPage));
-            Routing.RegisterRoute("main/login", typeof(LoginPage));
-
             BindingContext = this;
         }
 
-        public ICommand ExecuteLogout => new Command(async () => await GoToAsync("main/login"));
+        public ICommand ExecuteLogout
+        {
+            get
+            {
+                return new Command(async () => 
+                {
+                    await apiServices.Logout(AccessTokenSettings.AccessToken);
+                    await Current.GoToAsync("//login");
+                });
+            }
+        }
     }
 }

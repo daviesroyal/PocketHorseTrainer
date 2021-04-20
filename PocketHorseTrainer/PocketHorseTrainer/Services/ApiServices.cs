@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 using PocketHorseTrainer.Models;
+using PocketHorseTrainer.Models.Horses;
 using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -94,16 +94,7 @@ namespace PocketHorseTrainer.Services
 
             if (response.IsSuccessStatusCode)
             {
-                var token = await response.Content.ReadAsStringAsync();
-
-                var handler = new JwtSecurityTokenHandler();
-
-                dynamic jwtDynamic = handler.ReadJwtToken(token);
-
-                var accessTokenExpiration = jwtDynamic.Value<DateTime>(".expires");
-                var accessToken = jwtDynamic.Value<string>("access_token");
-
-                AccessTokenSettings.AccessTokenExpirationDate = accessTokenExpiration;
+                var accessToken = await response.Content.ReadAsStringAsync();
 
                 var result = new Result
                 {
@@ -128,17 +119,42 @@ namespace PocketHorseTrainer.Services
 
         }
 
-        public async Task Logout(string accessToken)
+        public async Task<bool> ForgotPasswordAsync(string email)
         {
-            var client = GetAuthorizedClient(accessToken);
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "/api/account/logout");
+            var client = GetBaseClient();
+
+            StringContent content = new StringContent(email, Encoding.UTF8, "application/json");
+
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "/api/account/forgotpassword")
+            {
+                Content = content
+            };
+
             HttpResponseMessage response = await client.SendAsync(request);
-            response.EnsureSuccessStatusCode();
+            
             if (response.IsSuccessStatusCode)
             {
-                AccessTokenSettings.AccessToken = string.Empty;
-                AccessTokenSettings.AccessTokenExpirationDate = DateTime.Now;
+                return true;
             }
+            else
+            {
+                return false;
+            }
+
+        }
+
+        public async Task<bool> Logout(string accessToken)
+        {
+            var client = GetAuthorizedClient(accessToken);
+
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "/api/account/logout");
+            HttpResponseMessage response = await client.SendAsync(request);
+
+            response.EnsureSuccessStatusCode();
+
+            AccessTokenSettings.AccessToken = string.Empty;
+
+            return true;
         }
         #endregion
 
@@ -330,6 +346,69 @@ namespace PocketHorseTrainer.Services
 
             _ = await client.DeleteAsync($"/api/horse/reports/{reportId}");
         }
+        #endregion
+
+        #region barn
+        public async Task<List<Barn>> GetBarns(string accessToken)
+        {
+            var client = GetAuthorizedClient(accessToken);
+            var json = await client.GetStringAsync("/api/admin/barns");
+            var barns = JsonConvert.DeserializeObject<List<Barn>>(json);
+
+            return barns;
+        }
+        #endregion
+
+        #region supportClasses
+
+        #region breed
+        public async Task<List<Breed>> GetBreeds(string accessToken)
+        {
+            var client = GetAuthorizedClient(accessToken);
+            var json = await client.GetStringAsync("/api/admin/breeds");
+            var breeds = JsonConvert.DeserializeObject<List<Breed>>(json);
+
+            return breeds;
+        }
+        #endregion
+
+        #region coatColor
+        public async Task<List<CoatColor>> GetColors(string accessToken)
+        {
+            var client = GetAuthorizedClient(accessToken);
+            var json = await client.GetStringAsync("/api/admin/colors");
+            var colors = JsonConvert.DeserializeObject<List<CoatColor>>(json);
+
+            return colors;
+        }
+        #endregion
+
+        #region markings
+
+        #region faceMarking
+        public async Task<List<FaceMarking>> GetFaceMarkings(string accessToken)
+        {
+            var client = GetAuthorizedClient(accessToken);
+            var json = await client.GetStringAsync("/api/admin/markings/face");
+            var markings = JsonConvert.DeserializeObject<List<FaceMarking>>(json);
+
+            return markings;
+        }
+        #endregion
+
+        #region legMarking
+        public async Task<List<LegMarking>> GetLegMarkings(string accessToken)
+        {
+            var client = GetAuthorizedClient(accessToken);
+            var json = await client.GetStringAsync("/api/admin/markings/face");
+            var markings = JsonConvert.DeserializeObject<List<LegMarking>>(json);
+
+            return markings;
+        }
+        #endregion
+
+        #endregion
+
         #endregion
     }
 }

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -9,9 +10,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PocketHorseTrainer.API.Data;
+using PocketHorseTrainer.API.Data.CustomTokenProviders;
 using PocketHorseTrainer.API.Models;
 using PocketHorseTrainer.API.Services;
 using System;
@@ -34,10 +38,13 @@ namespace PocketHorseTrainer.API
             services.AddDbContext<ApplicationDbContext>(options => options
                 .UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            //TODO: add role functionality
             services.AddIdentityCore<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddSignInManager<SignInManager<ApplicationUser>>()
-                .AddUserManager<UserManager<ApplicationUser>>();
+                .AddUserManager<UserManager<ApplicationUser>>()
+                .AddDefaultTokenProviders()
+                .AddTokenProvider<EmailConfirmationTokenProvider<ApplicationUser>>("emailConfirmation");
 
             services.Configure<IdentityOptions>(o => 
             {
@@ -48,6 +55,7 @@ namespace PocketHorseTrainer.API
                 o.Password.RequireUppercase = true;
                 o.Password.RequireDigit = true;
                 o.User.RequireUniqueEmail = true;
+                o.Tokens.EmailConfirmationTokenProvider = "emailConfirmation";
             });
 
             services.AddAuthentication(o =>
@@ -76,13 +84,21 @@ namespace PocketHorseTrainer.API
                 })
                 .AddCookie("Identity.Application", o =>
                 {
-                    o.Cookie.Name = "PHTCookie";
+                    o.Cookie.Name = "PHTSignInCookie";
                     o.Cookie.HttpOnly = true;
-                    o.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+                    o.ExpireTimeSpan = TimeSpan.FromDays(5);
                     o.SlidingExpiration = true;
                     o.LoginPath = "/api/account/login";
                     o.LogoutPath = "/api/account/logout";
-                });
+                })
+                .AddCookie("Identity.External")
+                .AddCookie("Identity.TwoFactorUserId");
+
+            services.Configure<DataProtectionTokenProviderOptions>(o =>
+                o.TokenLifespan = TimeSpan.FromHours(2));
+
+            services.Configure<EmailConfirmationTokenProviderOptions>(o =>
+                o.TokenLifespan = TimeSpan.FromDays(3));
 
             services.AddAuthorization(o => 
             {
@@ -108,12 +124,7 @@ namespace PocketHorseTrainer.API
                     .AllowAnyHeader());
             });
 
-            services.AddControllers();
-
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "PocketHorseTrainer.API", Version = "v1" });
-            });
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -122,8 +133,6 @@ namespace PocketHorseTrainer.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                //app.UseSwagger();
-                //app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PocketHorseTrainer.API v1"));
             }
             else
             {
@@ -141,6 +150,7 @@ namespace PocketHorseTrainer.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapRazorPages();
             });
 
         }

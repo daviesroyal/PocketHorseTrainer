@@ -52,14 +52,8 @@
                    IsSpellCheckEnabled="false" />
 
             <Button Command="{Binding RegisterCommand}" 
-                    Text="Register"
-                    TextColor="White"
-                    FontSize="30"
-                    BackgroundColor="RoyalBlue" />
+                    Text="Register" />
 
-            <Label Text="{Binding Message}"
-                   HorizontalOptions="Center"/>
-            
             <Button Text="Login"
                     Clicked="Button_OnClicked"/>
 

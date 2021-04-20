@@ -19,6 +19,10 @@ namespace PocketHorseTrainer.API.Data
         public DbSet<Report> TrainingReports { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<Barn> Barns { get; set; }
+        public DbSet<Breed> Breeds { get; set; }
+        public DbSet<CoatColor> Colors { get; set; }
+        public DbSet<FaceMarking> FaceMarkings { get; set; }
+        public DbSet<LegMarking> LegMarkings { get; set; }
 
         public DbSet<HorseOwner> HorseOwners { get; set; }
         public DbSet<HorseGoal> HorseGoals { get; set; }

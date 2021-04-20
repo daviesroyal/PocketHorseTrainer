@@ -1,10 +1,4 @@
 ﻿using PocketHorseTrainer.Services;
-using PocketHorseTrainer.Services.Routing;
-using PocketHorseTrainer.Views;
-using Splat;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -12,13 +6,8 @@ namespace PocketHorseTrainer.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
-        private readonly ApiServices _apiConnector = new ApiServices();
-        private readonly IRoutingService _navigationService;
+        private readonly ApiServices apiServices = new ApiServices();
 
-        public LoginViewModel(IRoutingService navigationService = null)
-        {
-            _navigationService = navigationService ?? Locator.Current.GetService<IRoutingService>();
-        }
         public LoginViewModel()
         {
 
@@ -34,21 +23,43 @@ namespace PocketHorseTrainer.ViewModels
             {
                 return new Command(async () =>
                 {
-                    var result = await _apiConnector.LoginAsync(UserName, Password, RememberMe);
+                    var result = await apiServices.LoginAsync(UserName, Password, RememberMe);
 
                     if (result.Success == false)
                     {
-                        await App.Current.MainPage.DisplayAlert("Uh oh!", result.Message, "Ok");
+                        await Application.Current.MainPage.DisplayAlert("Uh oh!", result.Message, "OK");
                     }
                     else
                     {
                         AccessTokenSettings.AccessToken = result.Message;
-                        await _navigationService.NavigateTo("///main/home");
+                        await Shell.Current.GoToAsync("//main/home");
                     }
 
                 });
             }
         }
 
+        public ICommand TapCommand
+        {
+            get
+            {
+                return new Command(async () =>
+                {
+                    string email = await Application.Current.MainPage.DisplayPromptAsync("Forgot Password", "Enter your email:");
+                    if (email != null)
+                    {
+                        var result = await apiServices.ForgotPasswordAsync(email);
+                        if (result)
+                        {
+                            await Application.Current.MainPage.DisplayAlert("Success", "A link to reset your password has been sent to your email.", "OK");
+                        }
+                        else
+                        {
+                            await Shell.Current.GoToAsync("//login");
+                        }
+                    }
+                });
+            }
+        }
     }
 }

@@ -19,12 +19,17 @@ namespace PocketHorseTrainer.Views
             InitializeComponent();
         }
 
-        internal LoadingViewModel ViewModel { get; set; } = Locator.Current.GetService<LoadingViewModel>();
-
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
-            ViewModel.Init();
+            if (string.IsNullOrEmpty(AccessTokenSettings.AccessToken))
+            {
+                await Shell.Current.GoToAsync("//login");
+            }
+            else
+            {
+                await Shell.Current.GoToAsync("//main");
+            }
         }
     }
 }
