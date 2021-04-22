@@ -22,6 +22,7 @@ namespace PocketHorseTrainer.Views
         protected override async void OnAppearing()
         {
             base.OnAppearing();
+            AccessTokenSettings.AccessToken = (string)Application.Current.Properties["accessToken"];
             if (string.IsNullOrEmpty(AccessTokenSettings.AccessToken))
             {
                 await Shell.Current.GoToAsync("//login");

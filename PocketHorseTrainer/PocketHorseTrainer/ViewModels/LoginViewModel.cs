@@ -32,9 +32,10 @@ namespace PocketHorseTrainer.ViewModels
                     else
                     {
                         AccessTokenSettings.AccessToken = result.Message;
+                        Application.Current.Properties["accessToken"] = AccessTokenSettings.AccessToken;
+                        await Application.Current.SavePropertiesAsync();
                         await Shell.Current.GoToAsync("//main/home");
                     }
-
                 });
             }
         }
