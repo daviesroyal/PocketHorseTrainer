@@ -2,8 +2,6 @@
 using PocketHorseTrainer.Models.Training;
 using PocketHorseTrainer.Services;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -11,7 +9,7 @@ namespace PocketHorseTrainer.ViewModels
 {
     public class AddGoalViewModel
     {
-        readonly ApiServices apiServices = new ApiServices();
+        private readonly ApiServices apiServices = new ApiServices();
 
         public string Name { get; set; }
         public TimeLength TimeSpan { get; set; }
@@ -24,6 +22,7 @@ namespace PocketHorseTrainer.ViewModels
         {
             get
             {
+#pragma warning disable AsyncFixer03 // Fire-and-forget async-void methods or delegates
                 return new Command(async () =>
                 {
                     var goal = new Goal
@@ -36,8 +35,9 @@ namespace PocketHorseTrainer.ViewModels
                         Completed = false
                     };
 
-                    await apiServices.AddGoal(AccessTokenSettings.AccessToken, goal.Horse.Id, goal);
+                    await apiServices.AddGoal(AccessTokenSettings.AccessToken, goal.Horse.Id, goal).ConfigureAwait(false);
                 });
+#pragma warning restore AsyncFixer03 // Fire-and-forget async-void methods or delegates
             }
         }
     }

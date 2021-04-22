@@ -1,34 +1,36 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-             xmlns:viewModels="clr-namespace:PocketHorseTrainer.ViewModels"
-             x:Class="PocketHorseTrainer.Views.GoalListPage">
+<ContentPage
+    x:Class="PocketHorseTrainer.Views.GoalListPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:PocketHorseTrainer.ViewModels">
 
     <ContentPage.Content>
 
-        <Button Text="Add New Goal" Clicked="OnAddGoalClicked"/>
+        <Button Clicked="OnAddGoalClicked" Text="Add New Goal" />
 
     </ContentPage.Content>
 
-    <ListView x:Name="listView" 
-              Margin="20" 
-              ItemSelected="OnGoalSelected">
+    <ListView
+        x:Name="listView"
+        Margin="20"
+        ItemSelected="OnGoalSelected">
         <ListView.ItemTemplate>
             <DataTemplate>
                 <ViewCell>
-                    <StackLayout Padding="20,0,0,0" 
-                                 HorizontalOptions="StartAndExpand"
-                                 Orientation="Horizontal">
-                        <Label Text="{Binding Name}" 
-                               VerticalTextAlignment="Center" />
-                        <Label Text="{Binding TimeSpan}"/>
-                        <Label Text="{Binding AreaOfImprovement}"/>
-                        <!--if completed, do not show or show greyed out-->
-                        <Label Text="{Binding Completed}"/>
+                    <StackLayout
+                        Padding="20,0,0,0"
+                        HorizontalOptions="StartAndExpand"
+                        Orientation="Horizontal">
+                        <Label Text="{Binding Name}" VerticalTextAlignment="Center" />
+                        <Label Text="{Binding TimeSpan}" />
+                        <Label Text="{Binding AreaOfImprovement}" />
+                        <!--  if completed, do not show or show greyed out  -->
+                        <Label Text="{Binding Completed}" />
                     </StackLayout>
                 </ViewCell>
             </DataTemplate>
         </ListView.ItemTemplate>
     </ListView>
-    
+
 </ContentPage>

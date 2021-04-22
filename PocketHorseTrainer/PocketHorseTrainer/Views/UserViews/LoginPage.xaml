@@ -1,40 +1,46 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:ViewModels="clr-namespace:PocketHorseTrainer.ViewModels"
-             mc:Ignorable="d"
-             Shell.FlyoutBehavior="Disabled"
-             Shell.TabBarIsVisible="False"
-             Shell.PresentationMode="ModalAnimated"
-             Title="Login"
-             x:Class="PocketHorseTrainer.Views.LoginPage"
-             Shell.NavBarIsVisible="False">
-    
+<ContentPage
+    x:Class="PocketHorseTrainer.Views.LoginPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ViewModels="clr-namespace:PocketHorseTrainer.ViewModels"
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Login"
+    Shell.FlyoutBehavior="Disabled"
+    Shell.NavBarIsVisible="False"
+    Shell.PresentationMode="ModalAnimated"
+    Shell.TabBarIsVisible="False"
+    mc:Ignorable="d">
+
     <ContentPage.BindingContext>
-        <ViewModels:LoginViewModel/>
+        <ViewModels:LoginViewModel />
     </ContentPage.BindingContext>
-    
+
     <ContentPage.Content>
         <StackLayout Padding="10,0,10,0" VerticalOptions="Center">
-            
-            <Entry Text="{Binding UserName}"
-                   Placeholder="Username"/>
-            
-            <Entry Text="{Binding Password}"
-                   IsPassword="True"
-                   Placeholder="Password"/>
 
-            <Label Text="Remember Me?"></Label>
-            <CheckBox IsChecked="{Binding RememberMe}" CheckedChanged="CheckBox_CheckedChanged"/>
+            <Entry Placeholder="Username" Text="{Binding UserName}" />
 
-            <Button VerticalOptions="Center" Text="Login" Command="{Binding LoginCommand}"/>
+            <Entry
+                IsPassword="True"
+                Placeholder="Password"
+                Text="{Binding Password}" />
 
-            <Button Text="Register"
-                Clicked="Button_OnClicked"/>
+            <Label Text="Remember Me?" />
+            <CheckBox CheckedChanged="CheckBox_CheckedChanged" IsChecked="{Binding RememberMe}" />
 
-            <Button VerticalOptions="Center" Text="Forgot Password?" Command="{Binding TapCommand}"/>
+            <Button
+                Command="{Binding LoginCommand}"
+                Text="Login"
+                VerticalOptions="Center" />
+
+            <Button Clicked="Button_OnClicked" Text="Register" />
+
+            <Button
+                Command="{Binding TapCommand}"
+                Text="Forgot Password?"
+                VerticalOptions="Center" />
 
         </StackLayout>
     </ContentPage.Content>

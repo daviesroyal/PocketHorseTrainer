@@ -11,10 +11,5 @@ namespace PocketHorseTrainer.API.Models
 
         public int GoalId { get; set; }
         public Goal Goal { get; set; }
-
-        public HorseGoal()
-        {
-
-        }
     }
 }

@@ -1,7 +1,5 @@
-﻿using PocketHorseTrainer.Models;
-using PocketHorseTrainer.Services;
+﻿using PocketHorseTrainer.Services;
 using System;
-using System.Collections.Generic;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -28,28 +26,28 @@ namespace PocketHorseTrainer.ViewModels
                 {
                     if (NewEmail != null)
                     {
-                        var result = await apiServices.ChangeEmailAsync(AccessTokenSettings.AccessToken, NewEmail);
+                        bool result = await apiServices.ChangeEmailAsync(AccessTokenSettings.AccessToken, NewEmail).ConfigureAwait(false);
                         if (result)
                         {
-                            await Application.Current.MainPage.DisplayAlert("Success!", "Please check your email for a verification link.", "OK");
-                            await Shell.Current.GoToAsync("//profile");
+                            await Application.Current.MainPage.DisplayAlert("Success!", "Please check your email for a verification link.", "OK").ConfigureAwait(false);
+                            await Shell.Current.GoToAsync("//profile").ConfigureAwait(false);
                         }
                         else
                         {
-                            await Application.Current.MainPage.DisplayAlert("Uh oh!", "Something went wrong.", "OK");
+                            await Application.Current.MainPage.DisplayAlert("Uh oh!", "Something went wrong.", "OK").ConfigureAwait(false);
                         }
                     }
                     else if (NewPhone != null)
                     {
-                        var result = await apiServices.ChangePhoneAsync(AccessTokenSettings.AccessToken, NewPhone);
+                        var result = await apiServices.ChangePhoneAsync(AccessTokenSettings.AccessToken, NewPhone).ConfigureAwait(false);
                         if (result)
                         {
-                            await Application.Current.MainPage.DisplayAlert("Success!", "Your phone number has been updated!", "OK");
-                            await Shell.Current.GoToAsync("//profile");
+                            await Application.Current.MainPage.DisplayAlert("Success!", "Your phone number has been updated!", "OK").ConfigureAwait(false);
+                            await Shell.Current.GoToAsync("//profile").ConfigureAwait(false);
                         }
                         else
                         {
-                            await Application.Current.MainPage.DisplayAlert("Uh oh!", "Something went wrong.", "OK");
+                            await Application.Current.MainPage.DisplayAlert("Uh oh!", "Something went wrong.", "OK").ConfigureAwait(false);
                         }
                     }
                 });

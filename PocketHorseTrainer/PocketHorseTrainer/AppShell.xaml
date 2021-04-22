@@ -1,11 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Shell xmlns="http://xamarin.com/schemas/2014/forms" 
-       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-       xmlns:local="clr-namespace:PocketHorseTrainer.Views" 
-       xmlns:pockethorsetrainer="clr-namespace:PocketHorseTrainer" 
-       x:DataType="pockethorsetrainer:AppShell"
-       Title="PocketHorseTrainer"
-       x:Class="PocketHorseTrainer.AppShell">
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="PocketHorseTrainer.AppShell"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:PocketHorseTrainer.Views"
+    xmlns:pockethorsetrainer="clr-namespace:PocketHorseTrainer"
+    Title="PocketHorseTrainer"
+    x:DataType="pockethorsetrainer:AppShell">
 
     <Shell.Resources>
         <ResourceDictionary>
@@ -16,21 +17,24 @@
                 <Setter Property="Shell.DisabledColor" Value="#B4FFFFFF" />
                 <Setter Property="Shell.UnselectedColor" Value="#95FFFFFF" />
                 <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource Primary}" />
-                <Setter Property="Shell.TabBarForegroundColor" Value="White"/>
-                <Setter Property="Shell.TabBarUnselectedColor" Value="#95FFFFFF"/>
-                <Setter Property="Shell.TabBarTitleColor" Value="White"/>
+                <Setter Property="Shell.TabBarForegroundColor" Value="White" />
+                <Setter Property="Shell.TabBarUnselectedColor" Value="#95FFFFFF" />
+                <Setter Property="Shell.TabBarTitleColor" Value="White" />
             </Style>
-            <Style TargetType="TabBar" BasedOn="{StaticResource BaseStyle}" />
-            <Style TargetType="FlyoutItem" BasedOn="{StaticResource BaseStyle}" />
+            <Style BasedOn="{StaticResource BaseStyle}" TargetType="TabBar" />
+            <Style BasedOn="{StaticResource BaseStyle}" TargetType="FlyoutItem" />
 
             <!--
-            Default Styles for all Flyout Items
-            https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/shell/flyout#flyoutitem-and-menuitem-style-classes
+                Default Styles for all Flyout Items
+                https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/shell/flyout#flyoutitem-and-menuitem-style-classes
             -->
             <Style Class="FlyoutItemLabelStyle" TargetType="Label">
-                <Setter Property="TextColor" Value="White"></Setter>
+                <Setter Property="TextColor" Value="White" />
             </Style>
-            <Style Class="FlyoutItemLayoutStyle" TargetType="Layout" ApplyToDerivedTypes="True">
+            <Style
+                ApplyToDerivedTypes="True"
+                Class="FlyoutItemLayoutStyle"
+                TargetType="Layout">
                 <Setter Property="VisualStateManager.VisualStateGroups">
                     <VisualStateGroupList>
                         <VisualStateGroup x:Name="CommonStates">
@@ -51,9 +55,12 @@
             </Style>
 
             <!--
-            Custom Style you can apply to any Flyout Item
+                Custom Style you can apply to any Flyout Item
             -->
-            <Style Class="MenuItemLayoutStyle" TargetType="Layout" ApplyToDerivedTypes="True">
+            <Style
+                ApplyToDerivedTypes="True"
+                Class="MenuItemLayoutStyle"
+                TargetType="Layout">
                 <Setter Property="VisualStateManager.VisualStateGroups">
                     <VisualStateGroupList>
                         <VisualStateGroup x:Name="CommonStates">
@@ -71,48 +78,50 @@
 
     <!--
         The overall app visual hierarchy is defined here, along with navigation.
-    
+        
         https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/shell/
     -->
 
-    <!-- Loading/Start Page -->
+    <!--  Loading/Start Page  -->
     <ShellItem Route="loading">
         <ShellContent ContentTemplate="{DataTemplate local:LoadingPage}" />
     </ShellItem>
 
-    <!-- Login and Registration Page -->
-    <ShellContent Route="login"
-              ContentTemplate="{DataTemplate local:LoginPage}">
-    </ShellContent>
+    <!--  Login and Registration Page  -->
+    <ShellContent ContentTemplate="{DataTemplate local:LoginPage}" Route="login" />
 
-    <!-- 
+    <!--
         When the Flyout is visible this defines the content to display in the flyout.
-        FlyoutDisplayOptions="AsMultipleItems" will create a separate flyout item for each child element    
+        FlyoutDisplayOptions="AsMultipleItems" will create a separate flyout item for each child element
         https://docs.microsoft.com/dotnet/api/xamarin.forms.shellgroupitem.flyoutdisplayoptions?view=xamarin-forms
     -->
 
-    <FlyoutItem Route="main"
-                FlyoutDisplayOptions="AsMultipleItems" IsTabStop="False">
-        <ShellContent Route="home"
-                      IsTabStop="False"
-                      ContentTemplate="{DataTemplate local:MainPage}"
-                      Title="Home" />
-        <ShellContent Route="horses"
-                      IsTabStop="False"
-                      ContentTemplate="{DataTemplate local:HorseListPage}"
-                      Title="Horses" />
-        <ShellContent Route="profile"
-                      IsTabStop="False"
-                      ContentTemplate="{DataTemplate local:UserProfilePage}"
-                      Title="Profile"/>
+    <FlyoutItem
+        FlyoutDisplayOptions="AsMultipleItems"
+        IsTabStop="False"
+        Route="main">
+        <ShellContent
+            Title="Home"
+            ContentTemplate="{DataTemplate local:MainPage}"
+            IsTabStop="False"
+            Route="home" />
+        <ShellContent
+            Title="Horses"
+            ContentTemplate="{DataTemplate local:HorseListPage}"
+            IsTabStop="False"
+            Route="horses" />
+        <ShellContent
+            Title="Profile"
+            ContentTemplate="{DataTemplate local:UserProfilePage}"
+            IsTabStop="False"
+            Route="profile" />
     </FlyoutItem>
 
-    <!-- When the Flyout is visible this will be a menu item you can tie a click behavior to  -->
-   
-    <MenuItem Text="Logout"
-              Command="{Binding ExecuteLogout}" />
+    <!--  When the Flyout is visible this will be a menu item you can tie a click behavior to  -->
 
-    <!-- Optional Templates 
+    <MenuItem Command="{Binding ExecuteLogout}" Text="Logout" />
+
+    <!-- Optional Templates
     // These may be provided inline as below or as separate classes.
 
     // This header appears at the top of the Flyout.

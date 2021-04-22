@@ -3,7 +3,6 @@ using PocketHorseTrainer.Models.Training;
 using PocketHorseTrainer.Services;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -11,7 +10,7 @@ namespace PocketHorseTrainer.ViewModels
 {
     public class JournalEntryViewModel
     {
-        readonly ApiServices apiServices = new ApiServices();
+        private readonly ApiServices apiServices = new ApiServices();
         public int Id { get; set; }
 
         public DateTime Date { get; set; }
@@ -35,10 +34,7 @@ namespace PocketHorseTrainer.ViewModels
         {
             get
             {
-                return new Command(async () =>
-                {
-                    await apiServices.DeleteJournalEntry(Id, AccessTokenSettings.AccessToken);
-                });
+                return new Command(async () => await apiServices.DeleteJournalEntry(Id, AccessTokenSettings.AccessToken).ConfigureAwait(false));
             }
         }
     }

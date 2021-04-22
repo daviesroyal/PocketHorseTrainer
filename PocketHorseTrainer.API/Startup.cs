@@ -46,7 +46,7 @@ namespace PocketHorseTrainer.API
                 .AddDefaultTokenProviders()
                 .AddTokenProvider<EmailConfirmationTokenProvider<ApplicationUser>>("emailConfirmation");
 
-            services.Configure<IdentityOptions>(o => 
+            services.Configure<IdentityOptions>(o =>
             {
                 o.SignIn.RequireConfirmedEmail = true;
                 o.Password.RequiredLength = 8;
@@ -100,7 +100,7 @@ namespace PocketHorseTrainer.API
             services.Configure<EmailConfirmationTokenProviderOptions>(o =>
                 o.TokenLifespan = TimeSpan.FromDays(3));
 
-            services.AddAuthorization(o => 
+            services.AddAuthorization(o =>
             {
                 o.FallbackPolicy = new AuthorizationPolicyBuilder()
                 .RequireAuthenticatedUser()
@@ -152,7 +152,6 @@ namespace PocketHorseTrainer.API
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
             });
-
         }
     }
 }

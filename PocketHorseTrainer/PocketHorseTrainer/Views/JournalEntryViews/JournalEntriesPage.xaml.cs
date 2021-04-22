@@ -1,11 +1,6 @@
 ﻿using PocketHorseTrainer.Models;
 using PocketHorseTrainer.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -14,33 +9,25 @@ namespace PocketHorseTrainer.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class JournalEntriesPage : ContentPage
     {
-        readonly ApiServices apiServices = new ApiServices();
+        private readonly ApiServices apiServices = new ApiServices();
 
-        public JournalEntriesPage(Horse horse)
-        {
-            InitializeComponent();
-        }
+        public JournalEntriesPage() => InitializeComponent();
 
         protected async override void OnAppearing()
         {
             base.OnAppearing();
 
-            var entry = (JournalEntry)BindingContext;
-            var horse = entry.Horse;
-            await apiServices.GetAllJournalEntries(AccessTokenSettings.AccessToken, horse.Id);
+            _ = await apiServices.GetAllJournalEntries(AccessTokenSettings.AccessToken, ((JournalEntry)BindingContext).Horse.Id).ConfigureAwait(false);
         }
 
-        async void OnAddEntryClicked(object sender, EventArgs e)
+        private async void OnAddEntryClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new AddJournalEntryPage());
+            await Navigation.PushAsync(new AddJournalEntryPage()).ConfigureAwait(false);
         }
 
-        async void OnEntrySelected(object sender, SelectedItemChangedEventArgs e)
+        private async void OnEntrySelected(object sender, SelectedItemChangedEventArgs e)
         {
-            await Navigation.PushAsync(new JournalEntryPage
-            {
-                BindingContext = e.SelectedItem as JournalEntry
-            });
+            await Navigation.PushAsync(new JournalEntryPage { BindingContext = e.SelectedItem as JournalEntry }).ConfigureAwait(false);
         }
     }
 }

@@ -11,10 +11,5 @@ namespace PocketHorseTrainer.API.Models
 
         public int BarnId { get; set; }
         public Barn Barn { get; set; }
-
-        public HorseBarn()
-        {
-
-        }
     }
 }

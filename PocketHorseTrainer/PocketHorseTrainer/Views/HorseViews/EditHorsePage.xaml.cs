@@ -1,6 +1,5 @@
 ﻿using PocketHorseTrainer.Models;
 using PocketHorseTrainer.ViewModels;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -13,12 +12,10 @@ namespace PocketHorseTrainer.Views
         {
             InitializeComponent();
 
-            var editHorseViewModel = new EditHorseViewModel
+            BindingContext = new EditHorseViewModel
             {
                 Horse = horse
             };
-
-            BindingContext = editHorseViewModel;
         }
     }
 }

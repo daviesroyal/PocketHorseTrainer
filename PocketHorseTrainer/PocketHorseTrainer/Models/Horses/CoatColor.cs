@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PocketHorseTrainer.Models.Horses
+﻿namespace PocketHorseTrainer.Models.Horses
 {
     public class CoatColor
     {

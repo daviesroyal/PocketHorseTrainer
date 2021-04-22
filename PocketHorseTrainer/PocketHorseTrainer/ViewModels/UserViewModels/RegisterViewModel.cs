@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace PocketHorseTrainer.ViewModels
 {
-    class RegisterViewModel
+    internal class RegisterViewModel
     {
         private readonly ApiServices _apiConnector = new ApiServices();
 
@@ -57,19 +57,18 @@ namespace PocketHorseTrainer.ViewModels
             {
                 return new Command(async () =>
                 {
-                    var isRegistered = await _apiConnector.RegisterUserAsync
-                        (FirstName, LastName, UserName, Email, Phone, DOB, Password, ConfirmPassword);
+                    bool isRegistered = await _apiConnector.RegisterUserAsync(FirstName, LastName, UserName, Email, Phone, DOB, Password, ConfirmPassword).ConfigureAwait(false);
 
                     if (isRegistered)
                     {
                         Message = $"Registration completed, please verify your email - {Email}";
-                        await Shell.Current.DisplayAlert("Success!", Message, "OK");
-                        await Shell.Current.GoToAsync("//login");
+                        await Shell.Current.DisplayAlert("Success!", Message, "OK").ConfigureAwait(false);
+                        await Shell.Current.GoToAsync("//login").ConfigureAwait(false);
                     }
                     else
                     {
                         Message = "Something went wrong. Please try again.";
-                        await Shell.Current.DisplayAlert("Uh oh!", Message, "OK");
+                        await Shell.Current.DisplayAlert("Uh oh!", Message, "OK").ConfigureAwait(false);
                     }
                 });
             }

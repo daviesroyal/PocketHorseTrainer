@@ -1,8 +1,5 @@
 ﻿using PocketHorseTrainer.Services;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -37,16 +34,16 @@ namespace PocketHorseTrainer.ViewModels
             {
                 return new Command(async () =>
                 {
-                    var result = await apiServices.ChangePasswordAsync(AccessTokenSettings.AccessToken, OldPassword, NewPassword);
+                    var result = await apiServices.ChangePasswordAsync(AccessTokenSettings.AccessToken, OldPassword, NewPassword).ConfigureAwait(false);
 
                     if (result)
                     {
-                        await Application.Current.MainPage.DisplayAlert("Success!", "Your password has been changed!", "OK");
-                        await Shell.Current.GoToAsync("//profile");
+                        await Application.Current.MainPage.DisplayAlert("Success!", "Your password has been changed!", "OK").ConfigureAwait(false);
+                        await Shell.Current.GoToAsync("//profile").ConfigureAwait(false);
                     }
                     else
                     {
-                        await Application.Current.MainPage.DisplayAlert("Uh oh!", "Something went wrong.", "OK");
+                        await Application.Current.MainPage.DisplayAlert("Uh oh!", "Something went wrong.", "OK").ConfigureAwait(false);
                     }
                 });
             }

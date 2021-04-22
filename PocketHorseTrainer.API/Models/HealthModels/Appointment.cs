@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PocketHorseTrainer.API.Models
 {
@@ -46,12 +43,7 @@ namespace PocketHorseTrainer.API.Models
             Recurring = recurring;
             NumOfWeeks = numOfWeeks;
 
-            if (Recurring == true)
-            {
-                DateTime newAppDate = AppointmentDateTime.AddDays(NumOfWeeks * 7);
-                return newAppDate;
-            }
-            return AppointmentDateTime;
+            return Recurring ? AppointmentDateTime.AddDays(NumOfWeeks * 7) : AppointmentDateTime;
         }
 
         //include here or in separate controller?:

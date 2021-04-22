@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -14,7 +13,7 @@ namespace PocketHorseTrainer.ViewModels
 {
     public class AddJournalEntryViewModel : INotifyPropertyChanged
     {
-        readonly ApiServices apiServices = new ApiServices();
+        private readonly ApiServices apiServices = new ApiServices();
 
         public DateTime Date { get; set; }
         public float TimeHandling { get; set; }
@@ -31,7 +30,7 @@ namespace PocketHorseTrainer.ViewModels
             {
                 return new Command(async () =>
                 {
-                    var entry = new JournalEntry
+                    JournalEntry entry = new JournalEntry
                     {
                         Date = Date,
                         TimeHandling = TimeHandling,
@@ -43,13 +42,13 @@ namespace PocketHorseTrainer.ViewModels
                         Strengths = Strengths
                     };
 
-                    await apiServices.AddJournalEntry(AccessTokenSettings.AccessToken, entry.Horse.Id, entry);
+                    await apiServices.AddJournalEntry(AccessTokenSettings.AccessToken, entry.Horse.Id, entry).ConfigureAwait(false);
                 });
             }
         }
 
-        TargetAreas selectedArea;
-        int selectedCount = 0;
+        private TargetAreas selectedArea;
+        private int selectedCount = 0;
 
         public TargetAreas SelectedArea
         {
@@ -66,7 +65,7 @@ namespace PocketHorseTrainer.ViewModels
             }
         }
 
-        public ObservableCollection<TargetAreas> TargetAreas { get; private set; }
+        public ObservableCollection<TargetAreas> TargetAreas { get; }
 
         private ObservableCollection<TargetAreas> selectedIssues;
         public ObservableCollection<TargetAreas> SelectedIssues
@@ -105,14 +104,14 @@ namespace PocketHorseTrainer.ViewModels
         public ICommand IssueSelectionChangedCommand => new Command(IssueSelectionChanged);
         public ICommand StrengthSelectionChangedCommand => new Command(StrengthSelectionChanged);
 
-        void IssueSelectionChanged()
+        private void IssueSelectionChanged()
         {
             SelectedIssueMessage = $"Selection {selectedCount}: {SelectedArea.Name}";
             OnPropertyChanged("SelectedIssueMessage");
             selectedCount++;
         }
 
-        void StrengthSelectionChanged()
+        private void StrengthSelectionChanged()
         {
             SelectedStrengthMessage = $"Selection {selectedCount}: {SelectedArea.Name}";
             OnPropertyChanged("SelectedStrengthMessage");
@@ -123,7 +122,7 @@ namespace PocketHorseTrainer.ViewModels
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

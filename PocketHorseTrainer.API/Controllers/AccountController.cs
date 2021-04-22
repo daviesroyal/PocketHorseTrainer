@@ -11,7 +11,6 @@ using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
-using PocketHorseTrainer.API.Services;
 using System.Text.Encodings.Web;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Http;
@@ -53,29 +52,28 @@ namespace PocketHorseTrainer.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser
-                { 
-                    FirstName = input.FirstName, 
+                ApplicationUser user = new()
+                {
+                    FirstName = input.FirstName,
                     LastName = input.LastName,
                     DisplayName = $"{input.FirstName} {input.LastName}",
-                    UserName = input.UserName, 
-                    DOB = input.DOB, 
-                    PhoneNumber = input.Phone, 
-                    Email = input.Email 
+                    UserName = input.UserName,
+                    DOB = input.DOB,
+                    PhoneNumber = input.Phone,
+                    Email = input.Email
                 };
-                var result = await _userManager.CreateAsync(user, input.Password);
+                IdentityResult result = await _userManager.CreateAsync(user, input.Password).ConfigureAwait(false);
                 if (result.Succeeded)
                 {
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var emailConfirmationToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var tokenVerificationUrl = Url.Page(
+                    string emailConfirmationToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(await _userManager.GenerateEmailConfirmationTokenAsync(user).ConfigureAwait(false)));
+                    string tokenVerificationUrl = Url.Page(
                         "/ConfirmEmail",
                         pageHandler: null,
                         new { userId = user.Id, code = emailConfirmationToken },
                         Request.Scheme,
                         host: "localhost:5000");
 
-                    await _emailSender.SendEmailAsync(input.Email, "Verify your email", $"Click <a href=\"{HtmlEncoder.Default.Encode(tokenVerificationUrl)}\">here</a> to verify your email");
+                    await _emailSender.SendEmailAsync(input.Email, "Verify your email", $"Click <a href=\"{HtmlEncoder.Default.Encode(tokenVerificationUrl)}\">here</a> to verify your email").ConfigureAwait(false);
                     return Ok();
                 }
                 else
@@ -97,7 +95,7 @@ namespace PocketHorseTrainer.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByNameAsync(input.UserName);
+                ApplicationUser user = await _userManager.FindByNameAsync(input.UserName).ConfigureAwait(false);
                 if (user == null)
                 {
                     return BadRequest("Invalid Login");
@@ -106,13 +104,12 @@ namespace PocketHorseTrainer.API.Controllers
                 {
                     return BadRequest("Email has not been confirmed for this account.");
                 }
-                var signInResult = await _signInManager.PasswordSignInAsync(user, input.Password, isPersistent: bool.Parse($"{input.RememberMe}"), lockoutOnFailure: false);
+                Microsoft.AspNetCore.Identity.SignInResult signInResult = await _signInManager.PasswordSignInAsync(user, input.Password, isPersistent: bool.Parse($"{input.RememberMe}"), lockoutOnFailure: false).ConfigureAwait(false);
                 if (!signInResult.Succeeded)
                 {
                     return BadRequest("Invalid Login");
                 }
-                var token = GenerateTokens(user);
-                return Ok(token);
+                return base.Ok(GenerateTokens(user));
             }
             //if we got this far, something went wrong
             return BadRequest(ModelState);
@@ -122,38 +119,34 @@ namespace PocketHorseTrainer.API.Controllers
         [HttpPost("ForgotPassword")]
         public async Task<IActionResult> ForgotPassword(string email)
         {
-            var user = await _userManager.FindByEmailAsync(email);
-            if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+            ApplicationUser user = await _userManager.FindByEmailAsync(email).ConfigureAwait(false);
+            if (user == null || !(await _userManager.IsEmailConfirmedAsync(user).ConfigureAwait(false)))
             {
                 //Don't reveal that the user does not exist or is not confirmed
                 return BadRequest();
             }
 
-            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-            var passwordResetToken = Url.Page(
+            string code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(await _userManager.GeneratePasswordResetTokenAsync(user).ConfigureAwait(false)));
+            string passwordResetToken = Url.Page(
                 "/ResetPassword",
                 pageHandler: null,
-                new { code },
-                Request.Scheme,
+                values: new { code },
+                protocol: Request.Scheme,
                 host: "localhost:5000");
-            await _emailSender.SendEmailAsync(
-                email,
-                "Reset Password",
-                $"Please reset your password <a href='{HtmlEncoder.Default.Encode(passwordResetToken)}'>here</a>.");
+            await _emailSender.SendEmailAsync(email, "Reset Password", $"Please reset your password <a href='{HtmlEncoder.Default.Encode(passwordResetToken)}'>here</a>.").ConfigureAwait(false);
             return Ok();
         }
 
         [HttpPost("ChangePassword")]
         public async Task<IActionResult> ChangePassword(string oldPassword, string newPassword)
         {
-            var user = await _userManager.GetUserAsync(User);
+            ApplicationUser user = await _userManager.GetUserAsync(User).ConfigureAwait(false);
             if (user == null)
             {
                 return NotFound();
             }
 
-            var changePasswordResult = await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
+            IdentityResult changePasswordResult = await _userManager.ChangePasswordAsync(user, oldPassword, newPassword).ConfigureAwait(false);
             if (!changePasswordResult.Succeeded)
             {
                 foreach (var error in changePasswordResult.Errors)
@@ -163,28 +156,25 @@ namespace PocketHorseTrainer.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            await _signInManager.RefreshSignInAsync(user);
+            await _signInManager.RefreshSignInAsync(user).ConfigureAwait(false);
             return Ok();
         }
 
         [HttpPost("ChangeEmail")]
         public async Task<IActionResult> ChangeEmail(string email)
         {
-            var user = await _userManager.GetUserAsync(User);
-            var currentEmail = await _userManager.GetEmailAsync(user);
+            ApplicationUser user = await _userManager.GetUserAsync(User).ConfigureAwait(false);
+            string currentEmail = await _userManager.GetEmailAsync(user).ConfigureAwait(false);
             if (email != currentEmail)
             {
-                var userId = await _userManager.GetUserIdAsync(user);
-                var code = await _userManager.GenerateChangeEmailTokenAsync(user, email);
-                var changeEmailToken = Url.Page(
+                string userId = await _userManager.GetUserIdAsync(user).ConfigureAwait(false);
+                string code = await _userManager.GenerateChangeEmailTokenAsync(user, email).ConfigureAwait(false);
+                string changeEmailToken = Url.Page(
                     "/ConfirmEmailChange",
                     pageHandler: null,
                     values: new { userId, email, code},
                     protocol: Request.Scheme);
-                await _emailSender.SendEmailAsync(
-                    email,
-                    "Confirm your email",
-                    $"Please verify your email address by clicking <a href='{HtmlEncoder.Default.Encode(changeEmailToken)}'>here</a>");
+                await _emailSender.SendEmailAsync(email, "Confirm your email", $"Please verify your email address by clicking <a href='{HtmlEncoder.Default.Encode(changeEmailToken)}'>here</a>").ConfigureAwait(false);
             }
             return Ok();
         }
@@ -192,17 +182,11 @@ namespace PocketHorseTrainer.API.Controllers
         [HttpPost("ChangePhone")]
         public async Task<IActionResult> ChangePhone(string phone)
         {
-            var user = await _userManager.GetUserAsync(User);
-            var currentPhone = await _userManager.GetPhoneNumberAsync(user);
-            if (phone != currentPhone)
-            {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, phone);
-                if (!setPhoneResult.Succeeded)
-                {
-                    return BadRequest();
-                }
-            }
-            return Ok();
+            ApplicationUser user = await _userManager.GetUserAsync(User).ConfigureAwait(false);
+            string currentPhone = await _userManager.GetPhoneNumberAsync(user).ConfigureAwait(false);
+            return phone != currentPhone && !(await _userManager.SetPhoneNumberAsync(user, phone).ConfigureAwait(false)).Succeeded
+                ? BadRequest()
+                : Ok();
         }
 
         [AllowAnonymous]
@@ -210,23 +194,20 @@ namespace PocketHorseTrainer.API.Controllers
         [Route("RefreshToken")]
         public IActionResult RefreshToken()
         {
-            var token = HttpContext.Request.Cookies["refreshToken"];
-            var user = _context.Users.Include(x => x.RefreshTokens)
+            string token = HttpContext.Request.Cookies["refreshToken"];
+            ApplicationUser user = _context.Users.Include(x => x.RefreshTokens)
                 .FirstOrDefault(x => x.RefreshTokens.Any(y => y.Token == token && y.UserId == x.Id.ToString()));
 
             // Get existing refresh token if it is valid and revoke it
-            var existingRefreshToken = GetValidRefreshToken(token, user);
-            if (existingRefreshToken == null)
+            if (GetValidRefreshToken(token, user) == null)
             {
                 return BadRequest();
             }
-
-            existingRefreshToken.RevokedByIp = HttpContext.Connection.RemoteIpAddress.ToString();
-            existingRefreshToken.RevokedOn = DateTime.UtcNow;
+            GetValidRefreshToken(token, user).RevokedByIp = HttpContext.Connection.RemoteIpAddress.ToString();
+            GetValidRefreshToken(token, user).RevokedOn = DateTime.UtcNow;
 
             // Generate new tokens
-            var newToken = GenerateTokens(user);
-            return Ok(newToken);
+            return base.Ok(GenerateTokens(user));
         }
 
         [HttpPost]
@@ -238,7 +219,6 @@ namespace PocketHorseTrainer.API.Controllers
             {
                 return Ok();
             }
-
             // Otherwise, return error
             return BadRequest();
         }
@@ -246,7 +226,7 @@ namespace PocketHorseTrainer.API.Controllers
         [HttpPost("Logout")]
         public async Task<IActionResult> Logout()
         {
-            await _signInManager.SignOutAsync();
+            await _signInManager.SignOutAsync().ConfigureAwait(false);
             RevokeRefreshToken();
             return Ok();
         }
@@ -254,19 +234,15 @@ namespace PocketHorseTrainer.API.Controllers
         #region TokenMethods
         private static RefreshToken GetValidRefreshToken(string token, ApplicationUser user)
         {
-            if (user == null)
-            {
-                return null;
-            }
-
-            var existingToken = user.RefreshTokens.FirstOrDefault(x => x.Token == token);
-            return IsRefreshTokenValid(existingToken) ? existingToken : null;
+            return user == null
+                ? null
+                : IsRefreshTokenValid(user.RefreshTokens.Find(x => x.Token == token)) ? user.RefreshTokens.Find(x => x.Token == token) : null;
         }
 
         private bool RevokeRefreshToken(string token = null)
         {
             token ??= HttpContext.Request.Cookies["refreshToken"];
-            var identityUser = _context.Users.Include(x => x.RefreshTokens)
+            ApplicationUser identityUser = _context.Users.Include(x => x.RefreshTokens)
                 .FirstOrDefault(x => x.RefreshTokens.Any(y => y.Token == token && y.UserId == x.Id.ToString()));
             if (identityUser == null)
             {
@@ -274,9 +250,8 @@ namespace PocketHorseTrainer.API.Controllers
             }
 
             // Revoke Refresh token
-            var existingToken = identityUser.RefreshTokens.FirstOrDefault(x => x.Token == token);
-            existingToken.RevokedByIp = HttpContext.Connection.RemoteIpAddress.ToString();
-            existingToken.RevokedOn = DateTime.UtcNow;
+            identityUser.RefreshTokens.Find(x => x.Token == token).RevokedByIp = HttpContext.Connection.RemoteIpAddress.ToString();
+            identityUser.RefreshTokens.Find(x => x.Token == token).RevokedOn = DateTime.UtcNow;
             _context.Update(identityUser);
             _context.SaveChanges();
             return true;
@@ -288,11 +263,10 @@ namespace PocketHorseTrainer.API.Controllers
             string accessToken = GenerateAccessToken(user);
 
             // Generate refresh token and set it to cookie
-            var ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();
-            var refreshToken = GenerateRefreshToken(ipAddress, user.Id.ToString());
+            RefreshToken refreshToken = GenerateRefreshToken(HttpContext.Connection.RemoteIpAddress.ToString(), user.Id.ToString());
 
             // Set Refresh Token Cookie
-            var cookieOptions = new CookieOptions
+            CookieOptions cookieOptions = new()
             {
                 HttpOnly = true,
                 Expires = DateTime.UtcNow.AddDays(5)
@@ -300,12 +274,7 @@ namespace PocketHorseTrainer.API.Controllers
             HttpContext.Response.Cookies.Append("refreshToken", refreshToken.Token, cookieOptions);
 
             // Save refresh token to database
-            if (user.RefreshTokens == null)
-            {
-                user.RefreshTokens = new List<RefreshToken>();
-            }
-
-            user.RefreshTokens.Add(refreshToken);
+            (user.RefreshTokens ??= new List<RefreshToken>()).Add(refreshToken);
             _context.Update(user);
             _context.SaveChanges();
             return accessToken;
@@ -313,39 +282,30 @@ namespace PocketHorseTrainer.API.Controllers
 
         private string GenerateAccessToken(ApplicationUser user)
         {
-            var utcNow = DateTime.UtcNow;
-            DateTimeOffset iatTime = utcNow;
-
-            var claims = new Claim[]
-            {
-                        new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                        new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
-                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                        new Claim(JwtRegisteredClaimNames.Iat, iatTime.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64)
-            };
-
-            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetValue<String>("Jwt:Key")));
-            var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
-            var jwt = new JwtSecurityToken(
-                signingCredentials: signingCredentials,
-                claims: claims,
-                notBefore: utcNow,
-                expires: utcNow.AddMinutes(_configuration.GetValue<int>("Jwt:Lifetime")),
-                audience: _configuration.GetValue<String>("Jwt:Audience"),
-                issuer: _configuration.GetValue<String>("Jwt:Issuer")
-                );
+            JwtSecurityToken jwt = new(
+                issuer: _configuration.GetValue<string>("Jwt:Issuer"),
+                audience: _configuration.GetValue<string>("Jwt:Audience"),
+                claims: new Claim[]
+                {
+                    new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                    new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim(JwtRegisteredClaimNames.Iat, ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64)
+                },
+                notBefore: DateTime.UtcNow,
+                expires: DateTime.UtcNow.AddMinutes(_configuration.GetValue<int>("Jwt:Lifetime")),
+                signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetValue<string>("Jwt:Key"))), SecurityAlgorithms.HmacSha256));
 
             return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
 
         private RefreshToken GenerateRefreshToken(string ipAddress, string userId)
         {
-            using var rngCryptoServiceProvider = new RNGCryptoServiceProvider();
-            var randomBytes = new byte[64];
-            rngCryptoServiceProvider.GetBytes(randomBytes);
+            using RNGCryptoServiceProvider rngCryptoServiceProvider = new();
+            rngCryptoServiceProvider.GetBytes(new byte[64]);
             return new RefreshToken
             {
-                Token = Convert.ToBase64String(randomBytes),
+                Token = Convert.ToBase64String(new byte[64]),
                 ExpiryOn = DateTime.UtcNow.AddDays(_configuration.GetValue<int>("Jwt:Lifetime")),
                 CreatedOn = DateTime.UtcNow,
                 CreatedByIp = ipAddress,
@@ -356,18 +316,7 @@ namespace PocketHorseTrainer.API.Controllers
         private static bool IsRefreshTokenValid(RefreshToken existingToken)
         {
             // Is token already revoked, then return false
-            if (existingToken.RevokedByIp != null && existingToken.RevokedOn != DateTime.MinValue)
-            {
-                return false;
-            }
-
-            // Token already expired, then return false
-            if (existingToken.ExpiryOn <= DateTime.UtcNow)
-            {
-                return false;
-            }
-
-            return true;
+            return (existingToken.RevokedByIp == null || existingToken.RevokedOn == DateTime.MinValue) && existingToken.ExpiryOn > DateTime.UtcNow;
         }
         #endregion
     }

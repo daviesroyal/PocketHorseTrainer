@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PocketHorseTrainer.API.Models
 {
@@ -29,7 +27,7 @@ namespace PocketHorseTrainer.API.Models
         public Discipline Discipline { get; set; }
 
         public Weather Weather { get; set; }
-        
+
         //TODO: add map api for location
         public string Location { get; set; }
 
@@ -42,11 +40,5 @@ namespace PocketHorseTrainer.API.Models
         public string Video { get; set; }
 
         public ApplicationUser Trainer { get; set; }
-
-        public JournalEntry()
-        {
-
-        }
-
     }
 }

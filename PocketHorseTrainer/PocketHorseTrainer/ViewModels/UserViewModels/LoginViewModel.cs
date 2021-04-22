@@ -8,11 +8,6 @@ namespace PocketHorseTrainer.ViewModels
     {
         private readonly ApiServices apiServices = new ApiServices();
 
-        public LoginViewModel()
-        {
-
-        }
-
         public string UserName { get; set; }
         public string Password { get; set; }
         public bool RememberMe { get; set; }
@@ -23,18 +18,18 @@ namespace PocketHorseTrainer.ViewModels
             {
                 return new Command(async () =>
                 {
-                    var result = await apiServices.LoginAsync(UserName, Password, RememberMe);
+                    var result = await apiServices.LoginAsync(UserName, Password, RememberMe).ConfigureAwait(false);
 
-                    if (result.Success == false)
+                    if (!result.Success)
                     {
-                        await Application.Current.MainPage.DisplayAlert("Uh oh!", result.Message, "OK");
+                        await Application.Current.MainPage.DisplayAlert("Uh oh!", result.Message, "OK").ConfigureAwait(false);
                     }
                     else
                     {
                         AccessTokenSettings.AccessToken = result.Message;
                         Application.Current.Properties["accessToken"] = AccessTokenSettings.AccessToken;
-                        await Application.Current.SavePropertiesAsync();
-                        await Shell.Current.GoToAsync("//main/home");
+                        await Application.Current.SavePropertiesAsync().ConfigureAwait(false);
+                        await Shell.Current.GoToAsync("//main/home").ConfigureAwait(false);
                     }
                 });
             }
@@ -46,17 +41,17 @@ namespace PocketHorseTrainer.ViewModels
             {
                 return new Command(async () =>
                 {
-                    string email = await Application.Current.MainPage.DisplayPromptAsync("Forgot Password", "Enter your email:");
+                    string email = await Application.Current.MainPage.DisplayPromptAsync("Forgot Password", "Enter your email:").ConfigureAwait(false);
                     if (email != null)
                     {
-                        var result = await apiServices.ForgotPasswordAsync(email);
+                        var result = await apiServices.ForgotPasswordAsync(email).ConfigureAwait(false);
                         if (result)
                         {
-                            await Application.Current.MainPage.DisplayAlert("Success", "A link to reset your password has been sent to your email.", "OK");
+                            await Application.Current.MainPage.DisplayAlert("Success", "A link to reset your password has been sent to your email.", "OK").ConfigureAwait(false);
                         }
                         else
                         {
-                            await Shell.Current.GoToAsync("//login");
+                            await Shell.Current.GoToAsync("//login").ConfigureAwait(false);
                         }
                     }
                 });

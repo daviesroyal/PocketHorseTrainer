@@ -11,10 +11,5 @@ namespace PocketHorseTrainer.Models
         public Breed Breed { get; set; }
         public CoatColor Color { get; set; }
         public Markings Markings { get; set; }
-
-        public Horse()
-        {
-
-        }
     }
 }

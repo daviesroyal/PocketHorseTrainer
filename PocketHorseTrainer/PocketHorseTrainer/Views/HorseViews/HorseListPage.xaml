@@ -1,27 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PocketHorseTrainer.Views.HorseListPage"
-             Title="Horses"
-             Shell.TabBarIsVisible="False">
-    
+<ContentPage
+    x:Class="PocketHorseTrainer.Views.HorseListPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Horses"
+    Shell.TabBarIsVisible="False">
+
     <ContentPage.ToolbarItems>
 
-        <ToolbarItem Text="Add New Horse" Clicked="OnAddHorseClicked"/>
-    
+        <ToolbarItem Clicked="OnAddHorseClicked" Text="Add New Horse" />
+
     </ContentPage.ToolbarItems>
 
-    <ListView x:Name="listView" 
-              Margin="20" 
-              ItemSelected="OnHorseSelected">
+    <ListView
+        x:Name="listView"
+        Margin="20"
+        ItemSelected="OnHorseSelected">
         <ListView.ItemTemplate>
             <DataTemplate>
                 <ViewCell>
-                    <StackLayout Padding="20,0,0,0" 
-                                 HorizontalOptions="StartAndExpand"
-                                 Orientation="Horizontal">
-                        <Label Text="{Binding Name}" 
-                               VerticalTextAlignment="Center" />
+                    <StackLayout
+                        Padding="20,0,0,0"
+                        HorizontalOptions="StartAndExpand"
+                        Orientation="Horizontal">
+                        <Label Text="{Binding Name}" VerticalTextAlignment="Center" />
                     </StackLayout>
                 </ViewCell>
             </DataTemplate>

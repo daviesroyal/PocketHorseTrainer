@@ -1,12 +1,4 @@
-﻿using PocketHorseTrainer.ViewModels;
-using Splat;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace PocketHorseTrainer.Views
@@ -14,10 +6,7 @@ namespace PocketHorseTrainer.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoadingPage : ContentPage
     {
-        public LoadingPage()
-        {
-            InitializeComponent();
-        }
+        public LoadingPage() => InitializeComponent();
 
         protected override async void OnAppearing()
         {
@@ -25,11 +14,11 @@ namespace PocketHorseTrainer.Views
             AccessTokenSettings.AccessToken = (string)Application.Current.Properties["accessToken"];
             if (string.IsNullOrEmpty(AccessTokenSettings.AccessToken))
             {
-                await Shell.Current.GoToAsync("//login");
+                await Shell.Current.GoToAsync("//login").ConfigureAwait(false);
             }
             else
             {
-                await Shell.Current.GoToAsync("//main");
+                await Shell.Current.GoToAsync("//main").ConfigureAwait(false);
             }
         }
     }

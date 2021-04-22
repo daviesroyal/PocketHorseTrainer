@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace PocketHorseTrainer.API.Models
 {
@@ -43,7 +42,7 @@ namespace PocketHorseTrainer.API.Models
                 }
 
                 entries.Sort((a, b) => DateTime.Compare(a.Date, b.Date));
-                StartDate = entries.First().Date;
+                StartDate = entries[0].Date;
                 EndDate = entries.Last().Date;
             }
         }

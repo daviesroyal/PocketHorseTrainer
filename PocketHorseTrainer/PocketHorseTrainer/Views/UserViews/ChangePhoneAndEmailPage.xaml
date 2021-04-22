@@ -1,25 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-             xmlns:viewModels="clr-namespace:PocketHorseTrainer.ViewModels"
-             x:Class="PocketHorseTrainer.Views.ChangePhoneAndEmailPage">
+<ContentPage
+    x:Class="PocketHorseTrainer.Views.ChangePhoneAndEmailPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:PocketHorseTrainer.ViewModels">
 
     <ContentPage.BindingContext>
-        <viewModels:UserProfileViewModel/>
+        <viewModels:UserProfileViewModel />
     </ContentPage.BindingContext>
-    
+
     <ContentPage.Content>
-        
+
         <StackLayout>
 
-            <Entry Text="{Binding NewEmail}"/>
+            <Entry Text="{Binding NewEmail}" />
 
-            <Entry Text="{Binding NewPhone}"/>
+            <Entry Text="{Binding NewPhone}" />
 
-            <Button Text="Update" Command="{Binding UpdateCommand}"/>
+            <Button Command="{Binding UpdateCommand}" Text="Update" />
 
         </StackLayout>
-        
+
     </ContentPage.Content>
-    
+
 </ContentPage>

@@ -12,12 +12,9 @@ namespace PocketHorseTrainer.API.Pages
     [AllowAnonymous]
     public class ConfirmEmailModel : PageModel
     {
-        private readonly UserManager<ApplicationUser> userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ConfirmEmailModel(UserManager<ApplicationUser> userManager)
-        {
-            this.userManager = userManager;
-        }
+        public ConfirmEmailModel(UserManager<ApplicationUser> userManager) => _userManager = userManager;
 
         [TempData]
         public string StatusMessage { get; set; }
@@ -29,15 +26,14 @@ namespace PocketHorseTrainer.API.Pages
                 return BadRequest();
             }
 
-            var user = await userManager.FindByIdAsync(userId.ToString());
+            ApplicationUser user = await _userManager.FindByIdAsync(userId.ToString()).ConfigureAwait(false);
             if (user == null)
             {
                 return NotFound();
             }
 
             code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
-            var result = await userManager.ConfirmEmailAsync(user, code);
-            StatusMessage = result.Succeeded ? "Email has been verified." : "Could not verify that email.";
+            StatusMessage = (await _userManager.ConfirmEmailAsync(user, code).ConfigureAwait(false)).Succeeded ? "Email has been verified." : "Could not verify that email.";
             return Page();
         }
     }

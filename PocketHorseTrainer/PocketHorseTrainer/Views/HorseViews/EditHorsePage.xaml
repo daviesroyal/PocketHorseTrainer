@@ -1,34 +1,34 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-             xmlns:viewModels="clr-namespace:PocketHorseTrainer.ViewModels"
-             x:Class="PocketHorseTrainer.Views.EditHorsePage">
-    
+<ContentPage
+    x:Class="PocketHorseTrainer.Views.EditHorsePage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:PocketHorseTrainer.ViewModels">
+
     <ContentPage.BindingContext>
-        <viewModels:EditHorseViewModel/>
+        <viewModels:EditHorseViewModel />
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
 
         <StackLayout>
 
-            <Entry Text="{Binding Horse.Name}"/>
-            <Entry Text="{Binding Horse.Age}"/>
-            <Picker ItemsSource="{Binding Horse.Barn}"/>
-            <Picker ItemsSource="{Binding Horse.Breed}"/>
-            <Picker ItemsSource="{Binding Horse.Color}"/>
-            <Label Text="Markings"/>
-            <Picker ItemsSource="{Binding Horse.Markings.FaceMarking}"/>
-            <Picker ItemsSource="{Binding Horse.Markings.FrontLeft}"/>
-            <Picker ItemsSource="{Binding Horse.Markings.FrontRight}"/>
-            <Picker ItemsSource="{Binding Horse.Markings.BackLeft}"/>
-            <Picker ItemsSource="{Binding Horse.Markings.BackRight}"/>
+            <Entry Text="{Binding Horse.Name}" />
+            <Entry Text="{Binding Horse.Age}" />
+            <Picker ItemsSource="{Binding Horse.Barn}" />
+            <Picker ItemsSource="{Binding Horse.Breed}" />
+            <Picker ItemsSource="{Binding Horse.Color}" />
+            <Label Text="Markings" />
+            <Picker ItemsSource="{Binding Horse.Markings.FaceMarking}" />
+            <Picker ItemsSource="{Binding Horse.Markings.FrontLeft}" />
+            <Picker ItemsSource="{Binding Horse.Markings.FrontRight}" />
+            <Picker ItemsSource="{Binding Horse.Markings.BackLeft}" />
+            <Picker ItemsSource="{Binding Horse.Markings.BackRight}" />
 
-            <Button Command="{Binding EditCommand}"
-                    Text="Edit Horse"/>
+            <Button Command="{Binding EditCommand}" Text="Edit Horse" />
 
         </StackLayout>
 
     </ContentPage.Content>
-    
+
 </ContentPage>

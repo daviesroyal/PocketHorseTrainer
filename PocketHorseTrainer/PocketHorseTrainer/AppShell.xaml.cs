@@ -1,8 +1,4 @@
 ﻿using PocketHorseTrainer.Services;
-using PocketHorseTrainer.ViewModels;
-using PocketHorseTrainer.Views;
-using System;
-using System.Collections.Generic;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -10,7 +6,7 @@ namespace PocketHorseTrainer
 {
     public partial class AppShell : Shell
     {
-        readonly ApiServices apiServices = new ApiServices();
+        private readonly ApiServices apiServices = new ApiServices();
 
         public AppShell()
         {
@@ -23,10 +19,10 @@ namespace PocketHorseTrainer
         {
             get
             {
-                return new Command(async () => 
+                return new Command(async () =>
                 {
-                    await apiServices.Logout(AccessTokenSettings.AccessToken);
-                    await Current.GoToAsync("//login");
+                    _ = await apiServices.Logout(AccessTokenSettings.AccessToken).ConfigureAwait(false);
+                    await Current.GoToAsync("//login").ConfigureAwait(false);
                 });
             }
         }

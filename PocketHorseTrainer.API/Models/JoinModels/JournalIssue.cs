@@ -11,10 +11,5 @@ namespace PocketHorseTrainer.API.Models
 
         public int IssueId { get; set; }
         public TargetAreas Issue { get; set; }
-
-        public JournalIssue()
-        {
-
-        }
     }
 }

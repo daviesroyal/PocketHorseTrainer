@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PocketHorseTrainer.Models.Horses
+﻿namespace PocketHorseTrainer.Models.Horses
 {
     public class FaceMarking
     {
@@ -25,9 +21,5 @@ namespace PocketHorseTrainer.Models.Horses
         public LegMarking FrontRight { get; set; }
         public LegMarking BackLeft { get; set; }
         public LegMarking BackRight { get; set; }
-
-        public Markings()
-        {
-        }
     }
 }

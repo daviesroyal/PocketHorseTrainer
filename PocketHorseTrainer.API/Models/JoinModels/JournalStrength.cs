@@ -1,8 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PocketHorseTrainer.API.Models
 {
@@ -15,10 +11,5 @@ namespace PocketHorseTrainer.API.Models
 
         public int StrengthId { get; set; }
         public TargetAreas Strength { get; set; }
-
-        public JournalStrength()
-        {
-
-        }
     }
 }

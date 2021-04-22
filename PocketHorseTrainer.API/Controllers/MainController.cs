@@ -11,7 +11,7 @@ namespace PocketHorseTrainer.API.Controllers
     public class MainController : ControllerBase
     {
         [HttpGet("home")] //user profile feed
-        public async Task<IActionResult> Home()
+        public IActionResult Home()
         {
             return Ok();
         }

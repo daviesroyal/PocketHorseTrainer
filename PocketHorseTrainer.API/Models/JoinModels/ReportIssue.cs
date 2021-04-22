@@ -14,7 +14,6 @@ namespace PocketHorseTrainer.API.Models
 
         public ReportIssue()
         {
-
         }
 
         public ReportIssue(TargetAreas issue)

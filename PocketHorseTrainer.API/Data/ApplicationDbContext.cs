@@ -34,7 +34,6 @@ namespace PocketHorseTrainer.API.Data
         public DbSet<ReportIssue> ReportIssues { get; set; }
         public DbSet<ReportStrength> ReportStrengths { get; set; }
 
-
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }

@@ -1,27 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-             xmlns:viewModels="clr-namespace:PocketHorseTrainer.ViewModels"
-             x:Class="PocketHorseTrainer.Views.AddGoalPage">
+<ContentPage
+    x:Class="PocketHorseTrainer.Views.AddGoalPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:PocketHorseTrainer.ViewModels">
 
     <ContentPage.BindingContext>
-        <viewModels:AddGoalViewModel/>
+        <viewModels:AddGoalViewModel />
     </ContentPage.BindingContext>
-    
+
     <ContentPage.Content>
-        
+
         <StackLayout>
 
-            <Entry Text="{Binding Name}"/>
-            <Picker ItemsSource="{Binding TimeSpan}"/>
-            <DatePicker Date="{Binding StartDate}"/>
-            <DatePicker Date="{Binding EndDate}"/>
-            <Picker ItemsSource="{Binding AreaOfImprovement}"/>
+            <Entry Text="{Binding Name}" />
+            <Picker ItemsSource="{Binding TimeLength}" SelectedItem="{Binding TimeSpan}" />
+            <DatePicker Date="{Binding StartDate}" />
+            <DatePicker Date="{Binding EndDate}" />
+            <Picker ItemsSource="{Binding AreaOfImprovement}" />
 
-            <Button Command="{Binding AddCommand}"
-                    Text="Add Goal"/>
+            <Button Command="{Binding AddCommand}" Text="Add Goal" />
         </StackLayout>
-        
+
     </ContentPage.Content>
-    
+
 </ContentPage>

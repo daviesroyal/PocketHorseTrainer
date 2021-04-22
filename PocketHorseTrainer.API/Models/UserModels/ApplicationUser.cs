@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PocketHorseTrainer.API.Models
 {
@@ -14,11 +12,5 @@ namespace PocketHorseTrainer.API.Models
         public DateTime DOB { get; set; }
         public List<HorseOwner> Horses { get; set; }
         public List<RefreshToken> RefreshTokens { get; set; }
-
-        public ApplicationUser()
-        {
-
-        }
-
     }
 }

@@ -17,7 +17,7 @@ namespace PocketHorseTrainer.ViewModels
 
     public class GoalViewModel
     {
-        readonly ApiServices apiServices = new ApiServices();
+        private readonly ApiServices apiServices = new ApiServices();
 
         public int Id { get; set; }
         public string Name { get; set; }
@@ -33,10 +33,7 @@ namespace PocketHorseTrainer.ViewModels
         {
             get
             {
-                return new Command(async () =>
-                {
-                    await apiServices.DeleteGoal(Id, AccessTokenSettings.AccessToken);
-                });
+                return new Command(async () => await apiServices.DeleteGoal(Id, AccessTokenSettings.AccessToken).ConfigureAwait(false));
             }
         }
     }

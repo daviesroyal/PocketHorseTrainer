@@ -17,15 +17,10 @@ namespace PocketHorseTrainer.API.Data.CustomTokenProviders
             ILogger<DataProtectorTokenProvider<TUser>> logger)
                                               : base(dataProtectionProvider, options, logger)
         {
-
         }
     }
 
     public class EmailConfirmationTokenProviderOptions : DataProtectionTokenProviderOptions
     {
-        public EmailConfirmationTokenProviderOptions()
-        {
-
-        }
     }
 }

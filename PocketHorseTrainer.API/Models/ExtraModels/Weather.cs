@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace PocketHorseTrainer.API.Models
+﻿namespace PocketHorseTrainer.API.Models
 {
     public enum Precipitation
     {
@@ -50,9 +45,5 @@ namespace PocketHorseTrainer.API.Models
         public CloudCover CloudCover { get; set; }
         public Visibility Visibility { get; set; }
         public GroundCondition GroundCondition { get; set; }
-
-        public Weather()
-        {
-        }
     }
 }

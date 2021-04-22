@@ -11,10 +11,5 @@ namespace PocketHorseTrainer.API.Models
 
         public int EntryId { get; set; }
         public JournalEntry Entry { get; set; }
-
-        public HorseJournal()
-        {
-
-        }
     }
 }

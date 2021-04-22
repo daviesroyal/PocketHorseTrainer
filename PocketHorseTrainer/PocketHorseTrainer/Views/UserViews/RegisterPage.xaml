@@ -1,64 +1,72 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-             xmlns:ViewModels="clr-namespace:PocketHorseTrainer.ViewModels"
-             x:Class="PocketHorseTrainer.Views.RegisterPage"
-             Title="Register">
-    
+<ContentPage
+    x:Class="PocketHorseTrainer.Views.RegisterPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ViewModels="clr-namespace:PocketHorseTrainer.ViewModels"
+    Title="Register">
+
     <ContentPage.BindingContext>
         <ViewModels:RegisterViewModel />
     </ContentPage.BindingContext>
-    
+
     <ContentPage.Content>
 
-        <StackLayout Orientation="Vertical"
-                 VerticalOptions="Center"
-                 Spacing="20"
-                 Padding="20">
+        <StackLayout
+            Padding="20"
+            Orientation="Vertical"
+            Spacing="20"
+            VerticalOptions="Center">
 
-            <Entry Text="{Binding FirstName}"
-                   Placeholder="First name" 
-                   IsSpellCheckEnabled="false" />
-            
-            <Entry Text="{Binding LastName}"
-                   Placeholder="Last name" 
-                   IsSpellCheckEnabled="false" />
-            
-            <Entry Text="{Binding UserName}"
-                   Placeholder="Username" 
-                   IsSpellCheckEnabled="false" />
-            
-            <Entry Text="{Binding Email}"
-                   Placeholder="Email" 
-                   Keyboard="Email"
-                   IsSpellCheckEnabled="false" />
-            
-            <Entry Text="{Binding Phone}"
-                   Placeholder="Phone number" 
-                   Keyboard="Telephone"/>
-            
-            <DatePicker MinimumDate="{Binding MinDate}"
-                        MaximumDate="{Binding MaxDate}"
-                        Date="{Binding DOB}" />
-            
-            <Entry Text="{Binding Password}" 
-                   Placeholder="Password"
-                   IsPassword="True"
-                   IsSpellCheckEnabled="false" />
-            
-            <Entry Text="{Binding ConfirmPassword}"
-                   Placeholder="Confirm password"
-                   IsPassword="True" 
-                   IsSpellCheckEnabled="false" />
+            <Entry
+                IsSpellCheckEnabled="false"
+                Placeholder="First name"
+                Text="{Binding FirstName}" />
 
-            <Button Command="{Binding RegisterCommand}" 
-                    Text="Register" />
+            <Entry
+                IsSpellCheckEnabled="false"
+                Placeholder="Last name"
+                Text="{Binding LastName}" />
 
-            <Button Text="Login"
-                    Clicked="Button_OnClicked"/>
+            <Entry
+                IsSpellCheckEnabled="false"
+                Placeholder="Username"
+                Text="{Binding UserName}" />
+
+            <Entry
+                IsSpellCheckEnabled="false"
+                Keyboard="Email"
+                Placeholder="Email"
+                Text="{Binding Email}" />
+
+            <Entry
+                Keyboard="Telephone"
+                Placeholder="Phone number"
+                Text="{Binding Phone}" />
+
+            <DatePicker
+                Date="{Binding DOB}"
+                MaximumDate="{Binding MaxDate}"
+                MinimumDate="{Binding MinDate}" />
+
+            <Entry
+                IsPassword="True"
+                IsSpellCheckEnabled="false"
+                Placeholder="Password"
+                Text="{Binding Password}" />
+
+            <Entry
+                IsPassword="True"
+                IsSpellCheckEnabled="false"
+                Placeholder="Confirm password"
+                Text="{Binding ConfirmPassword}" />
+
+            <Button Command="{Binding RegisterCommand}" Text="Register" />
+
+            <Button Clicked="Button_OnClicked" Text="Login" />
 
         </StackLayout>
-        
+
     </ContentPage.Content>
-    
+
 </ContentPage>

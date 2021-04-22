@@ -16,12 +16,9 @@ namespace PocketHorseTrainer.API.Pages
     [AllowAnonymous]
     public class ResetPasswordModel : PageModel
     {
-        private readonly UserManager<ApplicationUser> userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ResetPasswordModel(UserManager<ApplicationUser> userManager)
-        {
-            this.userManager = userManager;
-        }
+        public ResetPasswordModel(UserManager<ApplicationUser> userManager) => _userManager = userManager;
 
         [BindProperty]
         public InputModel Input { get; set; }
@@ -34,7 +31,7 @@ namespace PocketHorseTrainer.API.Pages
 
             [Required]
             [DataType(DataType.Password)]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at most {1} characters long.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at most {1} characters long.", MinimumLength = 8)]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
@@ -68,13 +65,13 @@ namespace PocketHorseTrainer.API.Pages
                 return Page();
             }
 
-            var user = await userManager.FindByEmailAsync(Input.Email);
+            ApplicationUser user = await _userManager.FindByEmailAsync(Input.Email).ConfigureAwait(false);
             if (user == null)
             {
                 return BadRequest();
             }
 
-            var result = await userManager.ResetPasswordAsync(user, Input.Code, Input.Password);
+            IdentityResult result = await _userManager.ResetPasswordAsync(user, Input.Code, Input.Password).ConfigureAwait(false);
             if (result.Succeeded)
             {
                 return RedirectToPage("./ResetPasswordConfirmation");

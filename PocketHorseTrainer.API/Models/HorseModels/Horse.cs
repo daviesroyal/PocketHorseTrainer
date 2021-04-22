@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 
 namespace PocketHorseTrainer.API.Models
 {
@@ -14,13 +12,8 @@ namespace PocketHorseTrainer.API.Models
         public Breed Breed { get; set; }
         public CoatColor Color { get; set; }
         public Markings Markings { get; set; }
-        
+
         public List<HorseGoal> Goals { get; set; }
         public List<HorseJournal> Journals { get; set; }
-
-        public Horse()
-        {
-
-        }
     }
 }

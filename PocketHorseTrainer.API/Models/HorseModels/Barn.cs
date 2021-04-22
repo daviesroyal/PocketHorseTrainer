@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace PocketHorseTrainer.API.Models
 {
@@ -13,10 +10,5 @@ namespace PocketHorseTrainer.API.Models
         public ApplicationUser Owner { get; set; }
         public ApplicationUser Manager { get; set; }
         public List<HorseBarn> Horses { get; set; }
-
-        public Barn()
-        {
-
-        }
     }
 }

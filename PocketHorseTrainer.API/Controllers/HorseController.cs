@@ -16,7 +16,7 @@ namespace PocketHorseTrainer.API.Controllers
     [ApiController]
     public class HorseController : ControllerBase
     {
-        private ApplicationDbContext context;
+        private readonly ApplicationDbContext context;
         private readonly UserManager<ApplicationUser> _userManager;
 
         public HorseController(ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager)
@@ -29,9 +29,9 @@ namespace PocketHorseTrainer.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetUserHorses(int id)
         {
-            var user = await _userManager.FindByIdAsync(id.ToString());
-            var horses = context.HorseOwners.Where(ho => ho.OwnerId == id).Include(ho => ho.Horse).ToList();
-            
+            var user = await _userManager.FindByIdAsync(id.ToString()).ConfigureAwait(false);
+            var horses = await context.HorseOwners.Where(ho => ho.OwnerId == id).Include(ho => ho.Horse).ToListAsync().ConfigureAwait(false);
+
             if (horses == null)
             {
                 return BadRequest();
@@ -131,7 +131,7 @@ namespace PocketHorseTrainer.API.Controllers
         public IActionResult GetAllHorseJournals([FromRoute] int id)
         {
             var entries = context.HorseJournals.Where(hj => hj.HorseId == id).Include(hj => hj.Entry).ToList();
-            
+
             if (entries == null)
             {
                 return BadRequest();
@@ -229,7 +229,7 @@ namespace PocketHorseTrainer.API.Controllers
         public IActionResult GetAllTrainingReports([FromRoute] int id)
         {
             var reports = context.TrainingReports.Where(r => r.Horse.Id == id).ToList();
-            
+
             if (reports == null)
             {
                 return BadRequest();
@@ -297,7 +297,7 @@ namespace PocketHorseTrainer.API.Controllers
                 }
 
                 var report = context.TrainingReports.Find(id);
-                
+
                 if (report == null)
                 {
                     return NotFound();
@@ -350,7 +350,7 @@ namespace PocketHorseTrainer.API.Controllers
         public IActionResult GetAllHorseGoals([FromRoute] int id)
         {
             var goals = context.HorseGoals.Where(hg => hg.HorseId == id).Include(hg => hg.Goal).ToList();
-            
+
             if (goals == null)
             {
                 return BadRequest();

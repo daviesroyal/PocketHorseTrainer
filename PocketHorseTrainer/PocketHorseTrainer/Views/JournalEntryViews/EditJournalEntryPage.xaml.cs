@@ -15,35 +15,28 @@ namespace PocketHorseTrainer.Views
         {
             InitializeComponent();
 
-            var editJournalEntryViewModel = new EditJournalEntryViewModel
+            BindingContext = new EditJournalEntryViewModel
             {
                 Entry = entry
             };
-
-            BindingContext = editJournalEntryViewModel;
         }
 
-        void OnCollectionViewSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnCollectionViewSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             UpdateSelectionData(e.PreviousSelection, e.CurrentSelection);
         }
 
-        void UpdateSelectionData(IEnumerable<object> previousSelectedItems, IEnumerable<object> currentSelectedItems)
+        private void UpdateSelectionData(IEnumerable<object> previousSelectedItems, IEnumerable<object> currentSelectedItems)
         {
-            var previous = ToList(previousSelectedItems);
-            var current = ToList(currentSelectedItems);
-            previousSelectedItemLabel.Text = string.IsNullOrWhiteSpace(previous) ? "[none]" : previous;
-            currentSelectedItemLabel.Text = string.IsNullOrWhiteSpace(current) ? "[none]" : current;
+            previousSelectedItemLabel.Text = string.IsNullOrWhiteSpace(ToList(previousSelectedItems)) ? "[none]" : ToList(previousSelectedItems);
+            currentSelectedItemLabel.Text = string.IsNullOrWhiteSpace(ToList(currentSelectedItems)) ? "[none]" : ToList(currentSelectedItems);
         }
 
-        static string ToList(IEnumerable<object> items)
+        private static string ToList(IEnumerable<object> items)
         {
-            if (items == null)
-            {
-                return string.Empty;
-            }
-
-            return items.Aggregate(string.Empty, (sender, obj) => sender + (sender.Length == 0 ? "" : ", ") + ((TargetAreas)obj).Name);
+            return items == null
+                ? string.Empty
+                : items.Aggregate(string.Empty, (sender, obj) => sender + (sender.Length == 0 ? "" : ", ") + ((TargetAreas)obj).Name);
         }
     }
 }

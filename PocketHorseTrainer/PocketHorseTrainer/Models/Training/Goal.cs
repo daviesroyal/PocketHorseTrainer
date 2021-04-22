@@ -23,11 +23,5 @@ namespace PocketHorseTrainer.Models
 
         public TargetAreas AreaOfImprovement { get; set; }
         public bool Completed { get; set; }
-
-        public Goal()
-        {
-
-        }
-
     }
 }

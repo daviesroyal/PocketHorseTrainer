@@ -1,48 +1,48 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-             xmlns:viewModels="clr-namespace:PocketHorseTrainer.ViewModels"
-             x:Class="PocketHorseTrainer.Views.AddHorsePage"
-             Shell.TabBarIsVisible="False">
-    
+<ContentPage
+    x:Class="PocketHorseTrainer.Views.AddHorsePage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:PocketHorseTrainer.ViewModels"
+    Shell.TabBarIsVisible="False">
+
     <ContentPage.BindingContext>
-        <viewModels:AddHorseViewModel/>
+        <viewModels:AddHorseViewModel />
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
 
         <StackLayout VerticalOptions="Center">
 
-            <Label Text="Name"/>
-            <Entry Text="{Binding Name}"/>
+            <Label Text="Name" />
+            <Entry Text="{Binding Name}" />
 
-            <Label Text="Age"/>
-            <Entry Text="{Binding Age}"/>
+            <Label Text="Age" />
+            <Entry Text="{Binding Age}" />
 
-            <Label Text="Barn"/>
-            <Picker ItemsSource="{Binding Barns}" SelectedItem="{Binding Barn}"/>
-            <Label Text="Breed"/>
-            <Picker ItemsSource="{Binding Breeds}" SelectedItem="{Binding Breed}"/>
-            <Label Text="Coat Color"/>
-            <Picker ItemsSource="{Binding Colors}" SelectedItem="{Binding Color}"/>
-            
-            <Label Text="Markings"/>
-            <Label Text="Face"/>
-            <Picker ItemsSource="{Binding FaceMarkings}" SelectedItem="{Binding Markings.FaceMarking}"/>
-            <Label Text="Front Left Leg"/>
-            <Picker ItemsSource="{Binding LegMarkings}" SelectedItem="{Binding Markings.FrontLeft}"/>
-            <Label Text="Front Right Leg"/>
-            <Picker ItemsSource="{Binding LegMarkings}" SelectedItem="{Binding Markings.FrontRight}"/>
-            <Label Text="Back Left Leg"/>
-            <Picker ItemsSource="{Binding LegMarkings}" SelectedItem="{Binding Markings.BackLeft}"/>
-            <Label Text="Back Right Leg"/>
-            <Picker ItemsSource="{Binding LegMarkings}" SelectedItem="{Binding Markings.BackRight}"/>
+            <Label Text="Barn" />
+            <Picker ItemsSource="{Binding Barns}" SelectedItem="{Binding Barn}" />
+            <Label Text="Breed" />
+            <Picker ItemsSource="{Binding Breeds}" SelectedItem="{Binding Breed}" />
+            <Label Text="Coat Color" />
+            <Picker ItemsSource="{Binding Colors}" SelectedItem="{Binding Color}" />
 
-            <Button Command="{Binding AddCommand}"
-                Text="Add Horse"/>
+            <Label Text="Markings" />
+            <Label Text="Face" />
+            <Picker ItemsSource="{Binding FaceMarkings}" SelectedItem="{Binding Markings.FaceMarking}" />
+            <Label Text="Front Left Leg" />
+            <Picker ItemsSource="{Binding LegMarkings}" SelectedItem="{Binding Markings.FrontLeft}" />
+            <Label Text="Front Right Leg" />
+            <Picker ItemsSource="{Binding LegMarkings}" SelectedItem="{Binding Markings.FrontRight}" />
+            <Label Text="Back Left Leg" />
+            <Picker ItemsSource="{Binding LegMarkings}" SelectedItem="{Binding Markings.BackLeft}" />
+            <Label Text="Back Right Leg" />
+            <Picker ItemsSource="{Binding LegMarkings}" SelectedItem="{Binding Markings.BackRight}" />
+
+            <Button Command="{Binding AddCommand}" Text="Add Horse" />
 
         </StackLayout>
 
     </ContentPage.Content>
-    
+
 </ContentPage>
