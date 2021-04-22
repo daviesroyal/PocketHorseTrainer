@@ -32,7 +32,7 @@ namespace PocketHorseTrainer.Services
         }
         #endregion
 
-        #region userCredentials
+        #region userManagement
         public async Task<bool> RegisterUserAsync(string firstName, string lastName, string userName, string email, string phone, DateTime dob, string password, string confirmPassword)
         {
             var client = GetBaseClient();

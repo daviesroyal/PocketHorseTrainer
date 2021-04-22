@@ -234,7 +234,7 @@ namespace PocketHorseTrainer.API.Controllers
             var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
-                Expires = DateTime.UtcNow.AddDays(7)
+                Expires = DateTime.UtcNow.AddDays(5)
             };
             HttpContext.Response.Cookies.Append("refreshToken", refreshToken.Token, cookieOptions);
 
@@ -253,13 +253,14 @@ namespace PocketHorseTrainer.API.Controllers
         private string GenerateAccessToken(ApplicationUser user)
         {
             var utcNow = DateTime.UtcNow;
+            DateTimeOffset iatTime = utcNow;
 
             var claims = new Claim[]
             {
                         new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                         new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                        new Claim(JwtRegisteredClaimNames.Iat, utcNow.ToString())
+                        new Claim(JwtRegisteredClaimNames.Iat, iatTime.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64)
             };
 
             var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetValue<String>("Jwt:Key")));
