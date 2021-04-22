@@ -12,6 +12,12 @@ namespace PocketHorseTrainer.Services
 {
     internal class ApiServices
     {
+        public class Result
+        {
+            public bool Success { get; set; }
+            public string Message { get; set; }
+        }
+
         #region httpClientSetup
         public HttpClient GetBaseClient()
         {
@@ -37,7 +43,7 @@ namespace PocketHorseTrainer.Services
         {
             var client = GetBaseClient();
 
-            var model = new RegisterBindingModel
+            var model = new
             {
                 FirstName = firstName,
                 LastName = lastName,
@@ -64,17 +70,11 @@ namespace PocketHorseTrainer.Services
             return false;
         }
 
-        public class Result
-        {
-            public bool Success { get; set; }
-            public string Message { get; set; }
-        }
-
         public async Task<Result> LoginAsync(string userName, string password, bool rememberMe)
         {
             var client = GetBaseClient();
 
-            var model = new LoginBindingModel
+            var model = new
             {
                 UserName = userName,
                 Password = password,
@@ -141,6 +141,83 @@ namespace PocketHorseTrainer.Services
                 return false;
             }
 
+        }
+
+        public async Task<bool> ChangePasswordAsync(string accessToken, string oldPassword, string newPassword)
+        {
+            var client = GetAuthorizedClient(accessToken);
+
+            var passwords = new
+            {
+                OldPassword = oldPassword,
+                NewPassword = newPassword
+            };
+
+            var json = JsonConvert.SerializeObject(passwords);
+
+            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "/api/account/changepassword")
+            {
+                Content = content
+            };
+
+            HttpResponseMessage response = await client.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> ChangeEmailAsync(string accessToken, string email)
+        {
+            var client = GetAuthorizedClient(accessToken);
+
+            StringContent content = new StringContent(email, Encoding.UTF8, "application/json");
+
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "/api/account/changeemail")
+            {
+                Content = content
+            };
+
+            HttpResponseMessage response = await client.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> ChangePhoneAsync(string accessToken, string phone)
+        {
+            var client = GetAuthorizedClient(accessToken);
+
+            StringContent content = new StringContent(phone, Encoding.UTF8, "application/json");
+
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "/api/account/changephone")
+            {
+                Content = content
+            };
+
+            HttpResponseMessage response = await client.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public async Task<bool> Logout(string accessToken)

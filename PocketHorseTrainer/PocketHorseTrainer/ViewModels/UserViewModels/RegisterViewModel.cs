@@ -40,7 +40,7 @@ namespace PocketHorseTrainer.ViewModels
         public DateTime MinDate { get; set; } = DateTime.Today.AddYears(-100);
 
         [Required(ErrorMessage = "Please enter a password.")]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at most {1}  characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at most {1}  characters long.", MinimumLength = 8)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }

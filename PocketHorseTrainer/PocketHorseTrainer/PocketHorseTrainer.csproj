@@ -19,43 +19,67 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\GoalViews\EditGoalPage.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\GoalViews\GoalListPage.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\GoalViews\SingleGoalPage.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\LoadingPage.xaml.cs">
       <DependentUpon>LoadingPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Views\AddGoalPage.xaml">
+    <EmbeddedResource Update="Views\UserViews\ChangePhoneAndEmailPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\AddHorsePage.xaml">
+    <EmbeddedResource Update="Views\UserViews\ChangePasswordPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\AddJournalEntryPage.xaml">
+    <EmbeddedResource Update="Views\GoalViews\AddGoalPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\EditGoalPage.xaml">
+    <EmbeddedResource Update="Views\GoalViews\EditGoalPage.xaml">
+      <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\EditHorsePage.xaml">
+    <EmbeddedResource Update="Views\GoalViews\GoalListPage.xaml">
+      <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\EditJournalEntryPage.xaml">
+    <EmbeddedResource Update="Views\GoalViews\SingleGoalPage.xaml">
+      <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\GoalListPage.xaml">
+    <EmbeddedResource Update="Views\HorseViews\AddHorsePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\HorseListPage.xaml">
+    <EmbeddedResource Update="Views\JournalEntryViews\AddJournalEntryPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\HorsePage.xaml">
+    <EmbeddedResource Update="Views\HorseViews\EditHorsePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\JournalEntriesPage.xaml">
+    <EmbeddedResource Update="Views\JournalEntryViews\EditJournalEntryPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\JournalEntryPage.xaml">
+    <EmbeddedResource Update="Views\HorseViews\HorseListPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\HorseViews\HorsePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\JournalEntryViews\JournalEntriesPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\JournalEntryViews\JournalEntryPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\LoadingPage.xaml">
@@ -64,13 +88,10 @@
     <EmbeddedResource Update="Views\MainPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\RegisterPage.xaml">
+    <EmbeddedResource Update="Views\UserViews\RegisterPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\SingleGoalPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Views\UserProfilePage.xaml">
+    <EmbeddedResource Update="Views\UserViews\UserProfilePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

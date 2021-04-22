@@ -144,6 +144,67 @@ namespace PocketHorseTrainer.API.Controllers
             return Ok();
         }
 
+        [HttpPost("ChangePassword")]
+        public async Task<IActionResult> ChangePassword(string oldPassword, string newPassword)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var changePasswordResult = await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
+            if (!changePasswordResult.Succeeded)
+            {
+                foreach (var error in changePasswordResult.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+                return BadRequest(ModelState);
+            }
+
+            await _signInManager.RefreshSignInAsync(user);
+            return Ok();
+        }
+
+        [HttpPost("ChangeEmail")]
+        public async Task<IActionResult> ChangeEmail(string email)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var currentEmail = await _userManager.GetEmailAsync(user);
+            if (email != currentEmail)
+            {
+                var userId = await _userManager.GetUserIdAsync(user);
+                var code = await _userManager.GenerateChangeEmailTokenAsync(user, email);
+                var changeEmailToken = Url.Page(
+                    "/ConfirmEmailChange",
+                    pageHandler: null,
+                    values: new { userId, email, code},
+                    protocol: Request.Scheme);
+                await _emailSender.SendEmailAsync(
+                    email,
+                    "Confirm your email",
+                    $"Please verify your email address by clicking <a href='{HtmlEncoder.Default.Encode(changeEmailToken)}'>here</a>");
+            }
+            return Ok();
+        }
+
+        [HttpPost("ChangePhone")]
+        public async Task<IActionResult> ChangePhone(string phone)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var currentPhone = await _userManager.GetPhoneNumberAsync(user);
+            if (phone != currentPhone)
+            {
+                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, phone);
+                if (!setPhoneResult.Succeeded)
+                {
+                    return BadRequest();
+                }
+            }
+            return Ok();
+        }
+
         [AllowAnonymous]
         [HttpPost]
         [Route("RefreshToken")]
@@ -182,7 +243,7 @@ namespace PocketHorseTrainer.API.Controllers
             return BadRequest();
         }
 
-        [HttpPost("logout")]
+        [HttpPost("Logout")]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();

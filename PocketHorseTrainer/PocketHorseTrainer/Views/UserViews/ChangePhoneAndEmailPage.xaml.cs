@@ -10,9 +10,9 @@ using Xamarin.Forms.Xaml;
 namespace PocketHorseTrainer.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class UserProfilePage : ContentPage
+    public partial class ChangePhoneAndEmailPage : ContentPage
     {
-        public UserProfilePage()
+        public ChangePhoneAndEmailPage()
         {
             InitializeComponent();
         }
