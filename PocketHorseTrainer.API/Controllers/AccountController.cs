@@ -173,7 +173,8 @@ namespace PocketHorseTrainer.API.Controllers
                     "/ConfirmEmailChange",
                     pageHandler: null,
                     values: new { userId, email, code},
-                    protocol: Request.Scheme);
+                    protocol: Request.Scheme,
+                    host: "localhost:5000");
                 await _emailSender.SendEmailAsync(email, "Confirm your email", $"Please verify your email address by clicking <a href='{HtmlEncoder.Default.Encode(changeEmailToken)}'>here</a>").ConfigureAwait(false);
             }
             return Ok();
