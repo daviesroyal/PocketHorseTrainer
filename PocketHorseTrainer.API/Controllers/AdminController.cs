@@ -20,8 +20,8 @@ namespace PocketHorseTrainer.API.Controllers
         }
 
         #region Markings
-        [HttpGet("marking/face")]
-        public IActionResult GetFaceMarking(int id)
+        [HttpGet("markings/face/{markingId}")]
+        public IActionResult GetFaceMarking([FromRoute]int id)
         {
             return context.FaceMarkings.Find(id) == null ? NotFound() : base.Ok(context.FaceMarkings.Find(id));
         }
@@ -32,8 +32,8 @@ namespace PocketHorseTrainer.API.Controllers
             return base.Ok(context.FaceMarkings.ToList());
         }
 
-        [HttpGet("marking/leg")]
-        public IActionResult GetLegMarking(int id)
+        [HttpGet("markings/leg/{markingId}")]
+        public IActionResult GetLegMarking([FromRoute]int id)
         {
             return context.LegMarkings.Find(id) == null ? NotFound() : base.Ok(context.LegMarkings.Find(id));
         }
@@ -136,7 +136,7 @@ namespace PocketHorseTrainer.API.Controllers
             return Ok();
         }
 
-        [HttpDelete("{markingId}")]
+        [HttpDelete("markings/face/{markingId}")]
         public IActionResult DeleteFaceMarking([FromRoute] int id)
         {
             try
@@ -154,7 +154,7 @@ namespace PocketHorseTrainer.API.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{markingId}")]
+        [HttpDelete("markings/leg/{markingId}")]
         public IActionResult DeleteLegMarking([FromRoute] int id)
         {
             try
@@ -174,8 +174,8 @@ namespace PocketHorseTrainer.API.Controllers
         #endregion
 
         #region Breed
-        [HttpGet]
-        public IActionResult GetBreed(int id)
+        [HttpGet("{breedId}")]
+        public IActionResult GetBreed([FromRoute] int id)
         {
             return context.Breeds.Find(id) == null ? NotFound() : base.Ok(context.Breeds.Find(id));
         }
@@ -186,7 +186,7 @@ namespace PocketHorseTrainer.API.Controllers
             return base.Ok(context.Breeds.ToList());
         }
 
-        [HttpPost]
+        [HttpPost("breed")]
         public IActionResult AddBreed([FromBody] Breed breed)
         {
             try
@@ -209,7 +209,7 @@ namespace PocketHorseTrainer.API.Controllers
             return Ok();
         }
 
-        [HttpPut]
+        [HttpPut("breed")]
         public IActionResult EditBreed([FromBody] Breed breed)
         {
             try
@@ -252,8 +252,8 @@ namespace PocketHorseTrainer.API.Controllers
         #endregion
 
         #region Color
-        [HttpGet]
-        public IActionResult GetColor(int id)
+        [HttpGet("{colorId}")]
+        public IActionResult GetColor([FromRoute] int id)
         {
             if (context.Colors.Find(id) == null)
             {
@@ -268,7 +268,7 @@ namespace PocketHorseTrainer.API.Controllers
             return base.Ok(context.Colors.ToList());
         }
 
-        [HttpPost]
+        [HttpPost("color")]
         public IActionResult AddColor([FromBody] CoatColor color)
         {
             try
@@ -291,7 +291,7 @@ namespace PocketHorseTrainer.API.Controllers
             return Ok();
         }
 
-        [HttpPut]
+        [HttpPut("color")]
         public IActionResult EditColor([FromBody] CoatColor color)
         {
             try
@@ -334,8 +334,8 @@ namespace PocketHorseTrainer.API.Controllers
         #endregion
 
         #region Barn
-        [HttpGet]
-        public IActionResult GetBarn(int id)
+        [HttpGet("{barnId}")]
+        public IActionResult GetBarn([FromRoute] int id)
         {
             return context.Barns.Find(id) == null ? NotFound() : base.Ok(context.Barns.Find(id));
         }
@@ -346,7 +346,7 @@ namespace PocketHorseTrainer.API.Controllers
             return base.Ok(context.Barns.ToList());
         }
 
-        [HttpPost]
+        [HttpPost("barn")]
         public IActionResult AddBarn([FromBody] Barn barn)
         {
             try
@@ -369,7 +369,7 @@ namespace PocketHorseTrainer.API.Controllers
             return Ok();
         }
 
-        [HttpPut]
+        [HttpPut("barn")]
         public IActionResult EditBarn([FromBody] Barn barn)
         {
             try

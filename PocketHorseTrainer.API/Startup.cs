@@ -125,6 +125,8 @@ namespace PocketHorseTrainer.API
             });
 
             services.AddMvc();
+
+            services.AddSwaggerGen(o => o.SwaggerDoc("v1", new OpenApiInfo { Title = "Pocket Horse Trainer", Version = "v1" }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -133,6 +135,10 @@ namespace PocketHorseTrainer.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                app.UseSwagger();
+
+                app.UseSwaggerUI(o => o.SwaggerEndpoint("/swagger/v1/swagger.json", "PHT V1"));
             }
             else
             {
