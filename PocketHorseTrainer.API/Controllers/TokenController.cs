@@ -36,6 +36,7 @@ namespace PocketHorseTrainer.API.Controllers
                                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                                     new Claim(JwtRegisteredClaimNames.Iat, ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64)
                 };
+
             // Generate access token
             string accessToken = _tokenService.GenerateAccessToken(claims);
 
@@ -47,25 +48,14 @@ namespace PocketHorseTrainer.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Refresh(string token, string refreshToken)
+        public IActionResult Refresh(string token, string refreshToken)
         {
             var principal = _tokenService.GetPrincipalFromExpiredToken(token);
-            var username = principal.Identity.Name; //this is mapped to the Name claim by default
 
-            var user = _context.Users.SingleOrDefault(u => u.UserName == username);
+            var user = _context.Users.SingleOrDefault(u => u.UserName == principal.Identity.Name); //this is mapped to the Name claim by default
             if (user == null || user.RefreshToken != refreshToken) return BadRequest();
 
-            var newJwtToken = _tokenService.GenerateAccessToken(principal.Claims);
-            var newRefreshToken = _tokenService.GenerateRefreshToken();
-
-            user.RefreshToken = newRefreshToken;
-            await _context.SaveChangesAsync().ConfigureAwait(false);
-
-            return new ObjectResult(new
-            {
-                token = newJwtToken,
-                refreshToken = newRefreshToken
-            });
+            return Ok(GenerateTokens(user));
         }
 
         [HttpPost, Authorize]
