@@ -21,7 +21,9 @@ namespace PocketHorseTrainer
             {
                 return new Command(async () =>
                 {
-                    _ = await apiServices.Logout(AccessTokenSettings.AccessToken).ConfigureAwait(false);
+                    _ = await apiServices.Logout().ConfigureAwait(false);
+                    Application.Current.Properties["accessToken"] = string.Empty;
+                    await Application.Current.SavePropertiesAsync().ConfigureAwait(false);
                     await Current.GoToAsync("//login").ConfigureAwait(false);
                 });
             }

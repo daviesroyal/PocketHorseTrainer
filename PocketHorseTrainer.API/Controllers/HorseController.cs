@@ -27,10 +27,10 @@ namespace PocketHorseTrainer.API.Controllers
 
         //Get all horses belonging to signed in user
         [HttpGet]
-        public async Task<IActionResult> GetUserHorses(int id)
+        public async Task<IActionResult> GetUserHorses()
         {
-            var user = await _userManager.FindByIdAsync(id.ToString()).ConfigureAwait(false);
-            var horses = await context.HorseOwners.Where(ho => ho.OwnerId == id).Include(ho => ho.Horse).ToListAsync().ConfigureAwait(false);
+            var user = await _userManager.GetUserAsync(User).ConfigureAwait(false);
+            var horses = await context.HorseOwners.Where(ho => ho.OwnerId == user.Id).Include(ho => ho.Horse).ToListAsync().ConfigureAwait(false);
 
             if (horses == null)
             {
@@ -42,7 +42,7 @@ namespace PocketHorseTrainer.API.Controllers
 
         //Get horse by id
         [HttpGet("{horseId}")]
-        public IActionResult GetHorseById(int id)
+        public IActionResult GetHorseById([FromRoute] int id)
         {
             var horse = context.Horses.Find(id);
 

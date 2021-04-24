@@ -17,7 +17,7 @@ namespace PocketHorseTrainer.Views
         {
             base.OnAppearing();
 
-            listView.ItemsSource = await apiServices.GetAllGoals(AccessTokenSettings.AccessToken, ((Goal)BindingContext).Horse.Id).ConfigureAwait(false);
+            listView.ItemsSource = await apiServices.GetAllGoals(((Goal)BindingContext).Horse.Id).ConfigureAwait(false);
         }
 
         private async void OnAddGoalClicked(object sender, EventArgs e)

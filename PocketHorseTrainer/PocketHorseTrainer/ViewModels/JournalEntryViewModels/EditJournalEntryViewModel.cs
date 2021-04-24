@@ -15,13 +15,11 @@ namespace PocketHorseTrainer.ViewModels
 
         public JournalEntry Entry { get; set; }
 
-        private readonly string accessToken = AccessTokenSettings.AccessToken;
-
         public ICommand EditCommand
         {
             get
             {
-                return new Command(async () => await apiServices.EditJournalEntry(accessToken, Entry).ConfigureAwait(false));
+                return new Command(async () => await apiServices.EditJournalEntry(Entry).ConfigureAwait(false));
             }
         }
 

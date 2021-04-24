@@ -17,7 +17,7 @@ namespace PocketHorseTrainer.Views
         {
             base.OnAppearing();
 
-            _ = await apiServices.GetAllJournalEntries(AccessTokenSettings.AccessToken, ((JournalEntry)BindingContext).Horse.Id).ConfigureAwait(false);
+            _ = await apiServices.GetAllJournalEntries(((JournalEntry)BindingContext).Horse.Id).ConfigureAwait(false);
         }
 
         private async void OnAddEntryClicked(object sender, EventArgs e)

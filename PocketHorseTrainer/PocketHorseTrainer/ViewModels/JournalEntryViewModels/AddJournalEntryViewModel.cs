@@ -42,7 +42,7 @@ namespace PocketHorseTrainer.ViewModels
                         Strengths = Strengths
                     };
 
-                    await apiServices.AddJournalEntry(AccessTokenSettings.AccessToken, entry.Horse.Id, entry).ConfigureAwait(false);
+                    await apiServices.AddJournalEntry(entry.Horse.Id, entry).ConfigureAwait(false);
                 });
             }
         }

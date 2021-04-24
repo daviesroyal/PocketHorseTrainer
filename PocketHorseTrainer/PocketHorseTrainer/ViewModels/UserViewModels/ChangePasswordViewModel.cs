@@ -34,7 +34,7 @@ namespace PocketHorseTrainer.ViewModels
             {
                 return new Command(async () =>
                 {
-                    var result = await apiServices.ChangePasswordAsync(AccessTokenSettings.AccessToken, OldPassword, NewPassword).ConfigureAwait(false);
+                    var result = await apiServices.ChangePasswordAsync(OldPassword, NewPassword).ConfigureAwait(false);
 
                     if (result)
                     {

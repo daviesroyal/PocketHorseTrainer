@@ -26,8 +26,7 @@ namespace PocketHorseTrainer.ViewModels
                     }
                     else
                     {
-                        AccessTokenSettings.AccessToken = result.Message;
-                        Application.Current.Properties["accessToken"] = AccessTokenSettings.AccessToken;
+                        Application.Current.Properties["accessToken"] = result.Message;
                         await Application.Current.SavePropertiesAsync().ConfigureAwait(false);
                         await Shell.Current.GoToAsync("//main/home").ConfigureAwait(false);
                     }

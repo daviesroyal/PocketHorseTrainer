@@ -11,13 +11,11 @@ namespace PocketHorseTrainer.ViewModels
 
         public Goal Goal { get; set; }
 
-        private readonly string accessToken = AccessTokenSettings.AccessToken;
-
         public ICommand EditCommand
         {
             get
             {
-                return new Command(async () => await apiServices.EditGoal(accessToken, Goal).ConfigureAwait(false));
+                return new Command(async () => await apiServices.EditGoal(Goal).ConfigureAwait(false));
             }
         }
     }

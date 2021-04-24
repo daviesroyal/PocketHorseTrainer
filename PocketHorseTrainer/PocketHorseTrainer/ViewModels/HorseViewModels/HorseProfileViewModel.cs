@@ -8,7 +8,6 @@ namespace PocketHorseTrainer.ViewModels
     public class HorseProfileViewModel
     {
         private readonly ApiServices apiServices = new ApiServices();
-        private readonly string accessToken = AccessTokenSettings.AccessToken;
 
         public int Id { get; set; }
         public string Name { get; set; }
@@ -22,7 +21,7 @@ namespace PocketHorseTrainer.ViewModels
         {
             get
             {
-                return new Command(async () => await apiServices.DeleteHorse(Id, accessToken).ConfigureAwait(false));
+                return new Command(async () => await apiServices.DeleteHorse(Id).ConfigureAwait(false));
             }
         }
     }

@@ -26,7 +26,7 @@ namespace PocketHorseTrainer.ViewModels
                 {
                     if (NewEmail != null)
                     {
-                        bool result = await apiServices.ChangeEmailAsync(AccessTokenSettings.AccessToken, NewEmail).ConfigureAwait(false);
+                        bool result = await apiServices.ChangeEmailAsync(NewEmail).ConfigureAwait(false);
                         if (result)
                         {
                             await Application.Current.MainPage.DisplayAlert("Success!", "Please check your email for a verification link.", "OK").ConfigureAwait(false);
@@ -39,7 +39,7 @@ namespace PocketHorseTrainer.ViewModels
                     }
                     else if (NewPhone != null)
                     {
-                        var result = await apiServices.ChangePhoneAsync(AccessTokenSettings.AccessToken, NewPhone).ConfigureAwait(false);
+                        var result = await apiServices.ChangePhoneAsync(NewPhone).ConfigureAwait(false);
                         if (result)
                         {
                             await Application.Current.MainPage.DisplayAlert("Success!", "Your phone number has been updated!", "OK").ConfigureAwait(false);

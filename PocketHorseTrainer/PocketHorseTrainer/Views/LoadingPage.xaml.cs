@@ -1,4 +1,6 @@
-﻿using Xamarin.Forms;
+﻿using PocketHorseTrainer.Services;
+using System.Threading.Tasks;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace PocketHorseTrainer.Views
@@ -11,7 +13,7 @@ namespace PocketHorseTrainer.Views
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            AccessTokenSettings.AccessToken = (string)Application.Current.Properties["accessToken"];
+
             if (string.IsNullOrEmpty(AccessTokenSettings.AccessToken))
             {
                 await Shell.Current.GoToAsync("//login").ConfigureAwait(false);

@@ -10,13 +10,11 @@ namespace PocketHorseTrainer.ViewModels
         private readonly ApiServices apiServices = new ApiServices();
         public Horse Horse { get; set; }
 
-        private readonly string accessToken = AccessTokenSettings.AccessToken;
-
         public ICommand EditCommand
         {
             get
             {
-                return new Command(async() => await apiServices.EditHorse(Horse, accessToken).ConfigureAwait(false));
+                return new Command(async() => await apiServices.EditHorse(Horse).ConfigureAwait(false));
             }
         }
     }

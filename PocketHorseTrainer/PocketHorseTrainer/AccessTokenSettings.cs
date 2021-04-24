@@ -1,11 +1,18 @@
 ﻿using Plugin.Settings;
 using Plugin.Settings.Abstractions;
 using System;
+using Xamarin.Forms;
 
 namespace PocketHorseTrainer
 {
-    public class AccessTokenSettings
+    public static class AccessTokenSettings
     {
-        public static string AccessToken { get; set; }
+        public static string AccessToken
+        {
+            get
+            {
+                return (string)Application.Current.Properties["accessToken"];
+            }
+        }
     }
 }

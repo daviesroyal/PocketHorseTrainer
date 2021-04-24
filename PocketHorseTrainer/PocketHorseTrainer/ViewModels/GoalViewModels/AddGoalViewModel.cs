@@ -22,7 +22,6 @@ namespace PocketHorseTrainer.ViewModels
         {
             get
             {
-#pragma warning disable AsyncFixer03 // Fire-and-forget async-void methods or delegates
                 return new Command(async () =>
                 {
                     var goal = new Goal
@@ -35,9 +34,8 @@ namespace PocketHorseTrainer.ViewModels
                         Completed = false
                     };
 
-                    await apiServices.AddGoal(AccessTokenSettings.AccessToken, goal.Horse.Id, goal).ConfigureAwait(false);
+                    await apiServices.AddGoal(goal.Horse.Id, goal).ConfigureAwait(false);
                 });
-#pragma warning restore AsyncFixer03 // Fire-and-forget async-void methods or delegates
             }
         }
     }

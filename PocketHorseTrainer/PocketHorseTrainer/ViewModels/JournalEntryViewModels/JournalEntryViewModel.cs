@@ -34,7 +34,7 @@ namespace PocketHorseTrainer.ViewModels
         {
             get
             {
-                return new Command(async () => await apiServices.DeleteJournalEntry(Id, AccessTokenSettings.AccessToken).ConfigureAwait(false));
+                return new Command(async () => await apiServices.DeleteJournalEntry(Id).ConfigureAwait(false));
             }
         }
     }

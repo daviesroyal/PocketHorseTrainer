@@ -17,7 +17,7 @@ namespace PocketHorseTrainer.Views
         {
             base.OnAppearing();
 
-            listView.ItemsSource = await apiServices.GetAllHorses(AccessTokenSettings.AccessToken).ConfigureAwait(false);
+            listView.ItemsSource = await apiServices.GetAllHorses().ConfigureAwait(false);
         }
 
         private async void OnAddHorseClicked(object sender, EventArgs e)

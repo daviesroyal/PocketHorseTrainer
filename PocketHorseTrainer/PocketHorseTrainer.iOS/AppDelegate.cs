@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using Foundation;
+using Matcha.BackgroundService.iOS;
 using UIKit;
 
 namespace PocketHorseTrainer.iOS
@@ -25,6 +25,7 @@ namespace PocketHorseTrainer.iOS
             global::Xamarin.Forms.Forms.Init();
             Xamarin.FormsMaps.Init();
             LoadApplication(new App());
+            BackgroundAggregator.Init(this);
 
             return base.FinishedLaunching(app, options);
         }

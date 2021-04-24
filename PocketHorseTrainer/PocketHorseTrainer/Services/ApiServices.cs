@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace PocketHorseTrainer.Services
 {
@@ -23,16 +24,14 @@ namespace PocketHorseTrainer.Services
         {
             Uri baseAddress = new Uri(Constants.BaseAddress);
 
-            var client = new HttpClient { BaseAddress = baseAddress };
-
-            return client;
+            return new HttpClient { BaseAddress = baseAddress };
         }
 
-        public HttpClient GetAuthorizedClient(string accessToken)
+        public HttpClient GetAuthorizedClient()
         {
-            var client = GetBaseClient();
+            HttpClient client = GetBaseClient();
 
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", AccessTokenSettings.AccessToken);
 
             return client;
         }
@@ -90,26 +89,37 @@ namespace PocketHorseTrainer.Services
             {
                 var accessToken = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-                var result = new Result
-                {
-                    Success = true,
-                    Message = accessToken
-                };
-
-                return result;
+                return new Result { Success = true, Message = accessToken };
             }
             else
             {
                 var message = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-                var result = new Result
-                {
-                    Success = false,
-                    Message = message
-                };
-
-                return result;
+                return new Result { Success = false, Message = message };
             }
+        }
+
+        public async Task<bool> Logout()
+        {
+            var client = GetAuthorizedClient();
+
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "/api/account/logout");
+            HttpResponseMessage response = await client.SendAsync(request).ConfigureAwait(false);
+
+            response.EnsureSuccessStatusCode();
+
+            return true;
+        }
+
+        public async Task<string> RefreshTokenAsync()
+        {
+            var client = GetBaseClient();
+
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "/api/token/refresh");
+
+            HttpResponseMessage response = await client.SendAsync(request).ConfigureAwait(false);
+
+            return response.IsSuccessStatusCode ? await response.Content.ReadAsStringAsync().ConfigureAwait(false) : null;
         }
 
         public async Task<bool> ForgotPasswordAsync(string email)
@@ -128,9 +138,9 @@ namespace PocketHorseTrainer.Services
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<bool> ChangePasswordAsync(string accessToken, string oldPassword, string newPassword)
+        public async Task<bool> ChangePasswordAsync(string oldPassword, string newPassword)
         {
-            var client = GetAuthorizedClient(accessToken);
+            var client = GetAuthorizedClient();
 
             var passwords = new
             {
@@ -152,9 +162,9 @@ namespace PocketHorseTrainer.Services
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<bool> ChangeEmailAsync(string accessToken, string email)
+        public async Task<bool> ChangeEmailAsync(string email)
         {
-            var client = GetAuthorizedClient(accessToken);
+            var client = GetAuthorizedClient();
 
             StringContent content = new StringContent(email, Encoding.UTF8, "application/json");
 
@@ -168,9 +178,9 @@ namespace PocketHorseTrainer.Services
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<bool> ChangePhoneAsync(string accessToken, string phone)
+        public async Task<bool> ChangePhoneAsync(string phone)
         {
-            var client = GetAuthorizedClient(accessToken);
+            var client = GetAuthorizedClient();
 
             StringContent content = new StringContent(phone, Encoding.UTF8, "application/json");
 
@@ -184,87 +194,66 @@ namespace PocketHorseTrainer.Services
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<bool> Logout(string accessToken)
-        {
-            var client = GetAuthorizedClient(accessToken);
-
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "/api/account/logout");
-            HttpResponseMessage response = await client.SendAsync(request).ConfigureAwait(false);
-
-            response.EnsureSuccessStatusCode();
-
-            AccessTokenSettings.AccessToken = string.Empty;
-
-            return true;
-        }
         #endregion
 
         #region horse
-        public async Task<List<Horse>> GetAllHorses(string accessToken)
+        public async Task<List<Horse>> GetAllHorses()
         {
-            var client = GetAuthorizedClient(accessToken);
-            var json = await client.GetStringAsync("/api/horse").ConfigureAwait(false);
-            var horses = JsonConvert.DeserializeObject<List<Horse>>(json);
-
-            return horses;
+            var client = GetAuthorizedClient();
+            var json = await client.GetStringAsync("/api/horse/").ConfigureAwait(false);
+            return JsonConvert.DeserializeObject<List<Horse>>(json);
         }
 
-        public async Task<Horse> GetHorse(string accessToken, int horseId)
+        public async Task<Horse> GetHorse(int horseId)
         {
-            var client = GetAuthorizedClient(accessToken);
+            var client = GetAuthorizedClient();
             var json = await client.GetStringAsync($"/api/horse/{horseId}").ConfigureAwait(false);
-            var horse = JsonConvert.DeserializeObject<Horse>(json);
-
-            return horse;
+            return JsonConvert.DeserializeObject<Horse>(json);
         }
 
-        public async Task AddHorse(Horse horse, string accessToken)
+        public async Task AddHorse(Horse horse)
         {
-            var client = GetAuthorizedClient(accessToken);
+            var client = GetAuthorizedClient();
             var json = JsonConvert.SerializeObject(horse);
             HttpContent content = new StringContent(json);
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             _ = await client.PostAsync("/api/horse", content).ConfigureAwait(false);
         }
 
-        public async Task EditHorse(Horse horse, string accessToken)
+        public async Task EditHorse(Horse horse)
         {
-            var client = GetAuthorizedClient(accessToken);
+            var client = GetAuthorizedClient();
             var json = JsonConvert.SerializeObject(horse);
             HttpContent content = new StringContent(json);
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             _ = await client.PutAsync("/api/horse", content).ConfigureAwait(false);
         }
 
-        public async Task DeleteHorse(int horseId, string accessToken)
+        public async Task DeleteHorse(int horseId)
         {
-            var client = GetAuthorizedClient(accessToken);
+            var client = GetAuthorizedClient();
             _ = await client.DeleteAsync($"/api/horse/{horseId}").ConfigureAwait(false);
         }
         #endregion
 
         #region journal
-        public async Task<List<JournalEntry>> GetAllJournalEntries(string accessToken, int horseId)
+        public async Task<List<JournalEntry>> GetAllJournalEntries(int horseId)
         {
-            var client = GetAuthorizedClient(accessToken);
+            var client = GetAuthorizedClient();
             var json = await client.GetStringAsync($"/api/horse/{horseId}/journal").ConfigureAwait(false);
-            var entries = JsonConvert.DeserializeObject<List<JournalEntry>>(json);
-
-            return entries;
+            return JsonConvert.DeserializeObject<List<JournalEntry>>(json);
         }
 
-        public async Task<JournalEntry> GetJournalEntry(string accessToken, int entryId)
+        public async Task<JournalEntry> GetJournalEntry(int entryId)
         {
-            var client = GetAuthorizedClient(accessToken);
+            var client = GetAuthorizedClient();
             var json = await client.GetStringAsync($"/api/horse/journal/{entryId}").ConfigureAwait(false);
-            var entry = JsonConvert.DeserializeObject<JournalEntry>(json);
-
-            return entry;
+            return JsonConvert.DeserializeObject<JournalEntry>(json);
         }
 
-        public async Task AddJournalEntry(string accessToken, int horseId, JournalEntry newEntry)
+        public async Task AddJournalEntry(int horseId, JournalEntry newEntry)
         {
-            var client = GetAuthorizedClient(accessToken);
+            var client = GetAuthorizedClient();
 
             var json = JsonConvert.SerializeObject(newEntry);
             HttpContent content = new StringContent(json);
@@ -273,9 +262,9 @@ namespace PocketHorseTrainer.Services
             _ = await client.PostAsync($"/api/horse/{horseId}/journal/", content).ConfigureAwait(false);
         }
 
-        public async Task EditJournalEntry(string accessToken, JournalEntry entry)
+        public async Task EditJournalEntry(JournalEntry entry)
         {
-            var client = GetAuthorizedClient(accessToken);
+            var client = GetAuthorizedClient();
 
             var json = JsonConvert.SerializeObject(entry);
             HttpContent content = new StringContent(json);
@@ -284,36 +273,32 @@ namespace PocketHorseTrainer.Services
             _ = await client.PutAsync($"/api/horse/journal/{entry.Id}", content).ConfigureAwait(false);
         }
 
-        public async Task DeleteJournalEntry(int entryId, string accessToken)
+        public async Task DeleteJournalEntry(int entryId)
         {
-            var client = GetAuthorizedClient(accessToken);
+            var client = GetAuthorizedClient();
 
             _ = await client.DeleteAsync($"/api/horse/journal/{entryId}").ConfigureAwait(false);
         }
         #endregion
 
         #region goal
-        public async Task<List<Goal>> GetAllGoals(string accessToken, int horseId)
+        public async Task<List<Goal>> GetAllGoals(int horseId)
         {
-            var client = GetAuthorizedClient(accessToken);
+            var client = GetAuthorizedClient();
             var json = await client.GetStringAsync($"/api/horse/{horseId}/goals").ConfigureAwait(false);
-            var goals = JsonConvert.DeserializeObject<List<Goal>>(json);
-
-            return goals;
+            return JsonConvert.DeserializeObject<List<Goal>>(json);
         }
 
-        public async Task<Goal> GetGoal(string accessToken, int goalId)
+        public async Task<Goal> GetGoal(int goalId)
         {
-            var client = GetAuthorizedClient(accessToken);
+            var client = GetAuthorizedClient();
             var json = await client.GetStringAsync($"/api/horse/goals/{goalId}").ConfigureAwait(false);
-            var goal = JsonConvert.DeserializeObject<Goal>(json);
-
-            return goal;
+            return JsonConvert.DeserializeObject<Goal>(json);
         }
 
-        public async Task AddGoal(string accessToken, int horseId, Goal goal)
+        public async Task AddGoal(int horseId, Goal goal)
         {
-            var client = GetAuthorizedClient(accessToken);
+            var client = GetAuthorizedClient();
 
             var json = JsonConvert.SerializeObject(goal);
             HttpContent content = new StringContent(json);
@@ -322,9 +307,9 @@ namespace PocketHorseTrainer.Services
             _ = await client.PostAsync($"/api/horse/{horseId}/goal/", content).ConfigureAwait(false);
         }
 
-        public async Task EditGoal(string accessToken, Goal goal)
+        public async Task EditGoal(Goal goal)
         {
-            var client = GetAuthorizedClient(accessToken);
+            var client = GetAuthorizedClient();
 
             var json = JsonConvert.SerializeObject(goal);
             HttpContent content = new StringContent(json);
@@ -333,36 +318,32 @@ namespace PocketHorseTrainer.Services
             _ = await client.PutAsync($"/api/horse/goals/{goal.Id}", content).ConfigureAwait(false);
         }
 
-        public async Task DeleteGoal(int goalId, string accessToken)
+        public async Task DeleteGoal(int goalId)
         {
-            var client = GetAuthorizedClient(accessToken);
+            var client = GetAuthorizedClient();
 
             _ = await client.DeleteAsync($"/api/horse/goals/{goalId}").ConfigureAwait(false);
         }
         #endregion
 
         #region report
-        public async Task<List<Report>> GetAllReports(string accessToken, int horseId)
+        public async Task<List<Report>> GetAllReports(int horseId)
         {
-            var client = GetAuthorizedClient(accessToken);
+            var client = GetAuthorizedClient();
             var json = await client.GetStringAsync($"/api/horse/{horseId}/reports").ConfigureAwait(false);
-            var reports = JsonConvert.DeserializeObject<List<Report>>(json);
-
-            return reports;
+            return JsonConvert.DeserializeObject<List<Report>>(json);
         }
 
-        public async Task<Report> GetReport(string accessToken, int reportId)
+        public async Task<Report> GetReport(int reportId)
         {
-            var client = GetAuthorizedClient(accessToken);
+            var client = GetAuthorizedClient();
             var json = await client.GetStringAsync($"/api/horse/reports/{reportId}").ConfigureAwait(false);
-            var report = JsonConvert.DeserializeObject<Report>(json);
-
-            return report;
+            return JsonConvert.DeserializeObject<Report>(json);
         }
 
-        public async Task AddReport(string accessToken, int horseId, List<JournalEntry> entries)
+        public async Task AddReport(int horseId, List<JournalEntry> entries)
         {
-            var client = GetAuthorizedClient(accessToken);
+            var client = GetAuthorizedClient();
 
             var json = JsonConvert.SerializeObject(entries);
             HttpContent content = new StringContent(json);
@@ -370,9 +351,9 @@ namespace PocketHorseTrainer.Services
             _ = await client.PostAsync($"/api/horse/{horseId}/report/", content).ConfigureAwait(false);
         }
 
-        public async Task EditReport(string accessToken, int reportId, List<JournalEntry> entries)
+        public async Task EditReport(int reportId, List<JournalEntry> entries)
         {
-            var client = GetAuthorizedClient(accessToken);
+            var client = GetAuthorizedClient();
 
             var json = JsonConvert.SerializeObject(entries);
             HttpContent content = new StringContent(json);
@@ -381,70 +362,60 @@ namespace PocketHorseTrainer.Services
             _ = await client.PutAsync($"/api/horse/reports/{reportId}", content).ConfigureAwait(false);
         }
 
-        public async Task DeleteReport(int reportId, string accessToken)
+        public async Task DeleteReport(int reportId)
         {
-            var client = GetAuthorizedClient(accessToken);
+            var client = GetAuthorizedClient();
 
             _ = await client.DeleteAsync($"/api/horse/reports/{reportId}").ConfigureAwait(false);
         }
         #endregion
 
         #region barn
-        public async Task<List<Barn>> GetBarns(string accessToken)
+        public async Task<List<Barn>> GetBarns()
         {
-            var client = GetAuthorizedClient(accessToken);
+            var client = GetAuthorizedClient();
             var json = await client.GetStringAsync("/api/admin/barns").ConfigureAwait(false);
-            var barns = JsonConvert.DeserializeObject<List<Barn>>(json);
-
-            return barns;
+            return JsonConvert.DeserializeObject<List<Barn>>(json);
         }
         #endregion
 
         #region supportClasses
 
         #region breed
-        public async Task<List<Breed>> GetBreeds(string accessToken)
+        public async Task<List<Breed>> GetBreeds()
         {
-            var client = GetAuthorizedClient(accessToken);
+            var client = GetAuthorizedClient();
             var json = await client.GetStringAsync("/api/admin/breeds").ConfigureAwait(false);
-            var breeds = JsonConvert.DeserializeObject<List<Breed>>(json);
-
-            return breeds;
+            return JsonConvert.DeserializeObject<List<Breed>>(json);
         }
         #endregion
 
         #region coatColor
-        public async Task<List<CoatColor>> GetColors(string accessToken)
+        public async Task<List<CoatColor>> GetColors()
         {
-            var client = GetAuthorizedClient(accessToken);
+            var client = GetAuthorizedClient();
             var json = await client.GetStringAsync("/api/admin/colors").ConfigureAwait(false);
-            var colors = JsonConvert.DeserializeObject<List<CoatColor>>(json);
-
-            return colors;
+            return JsonConvert.DeserializeObject<List<CoatColor>>(json);
         }
         #endregion
 
         #region markings
 
         #region faceMarking
-        public async Task<List<FaceMarking>> GetFaceMarkings(string accessToken)
+        public async Task<List<FaceMarking>> GetFaceMarkings()
         {
-            var client = GetAuthorizedClient(accessToken);
+            var client = GetAuthorizedClient();
             var json = await client.GetStringAsync("/api/admin/markings/face").ConfigureAwait(false);
-            var markings = JsonConvert.DeserializeObject<List<FaceMarking>>(json);
-
-            return markings;
+            return JsonConvert.DeserializeObject<List<FaceMarking>>(json);
         }
         #endregion
 
         #region legMarking
-        public async Task<List<LegMarking>> GetLegMarkings(string accessToken)
+        public async Task<List<LegMarking>> GetLegMarkings()
         {
-            var client = GetAuthorizedClient(accessToken);
+            var client = GetAuthorizedClient();
             var json = await client.GetStringAsync("/api/admin/markings/face").ConfigureAwait(false);
-            var markings = JsonConvert.DeserializeObject<List<LegMarking>>(json);
-
-            return markings;
+            return JsonConvert.DeserializeObject<List<LegMarking>>(json);
         }
         #endregion
 

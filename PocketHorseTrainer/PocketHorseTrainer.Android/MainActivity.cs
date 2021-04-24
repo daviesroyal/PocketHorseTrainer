@@ -1,9 +1,9 @@
 ﻿using System;
-
 using Android.App;
 using Android.Content.PM;
 using Android.Runtime;
 using Android.OS;
+using Matcha.BackgroundService.Droid;
 
 namespace PocketHorseTrainer.Droid
 {
@@ -14,6 +14,7 @@ namespace PocketHorseTrainer.Droid
         {
             base.OnCreate(savedInstanceState);
 
+            BackgroundAggregator.Init(this);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             Xamarin.FormsMaps.Init(this, savedInstanceState);

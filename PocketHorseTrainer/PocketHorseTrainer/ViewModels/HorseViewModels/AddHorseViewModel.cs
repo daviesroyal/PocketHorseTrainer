@@ -11,7 +11,6 @@ namespace PocketHorseTrainer.ViewModels
     public class AddHorseViewModel
     {
         private readonly static ApiServices apiServices = new ApiServices();
-        private readonly static string AccessToken = AccessTokenSettings.AccessToken;
 
         public string Name { get; set; }
         public int Age { get; set; }
@@ -22,11 +21,11 @@ namespace PocketHorseTrainer.ViewModels
         public CoatColor Color { get; set; }
         public Markings Markings { get; set; }
 
-        private static readonly List<Barn> barns = apiServices.GetBarns(AccessToken).Result;
-        private static readonly List<Breed> breeds = apiServices.GetBreeds(AccessToken).Result;
-        private static readonly List<CoatColor> colors = apiServices.GetColors(AccessToken).Result;
-        private static readonly List<FaceMarking> faceMarkings = apiServices.GetFaceMarkings(AccessToken).Result;
-        private static readonly List<LegMarking> legMarkings = apiServices.GetLegMarkings(AccessToken).Result;
+        private static readonly List<Barn> barns = apiServices.GetBarns().Result;
+        private static readonly List<Breed> breeds = apiServices.GetBreeds().Result;
+        private static readonly List<CoatColor> colors = apiServices.GetColors().Result;
+        private static readonly List<FaceMarking> faceMarkings = apiServices.GetFaceMarkings().Result;
+        private static readonly List<LegMarking> legMarkings = apiServices.GetLegMarkings().Result;
 
         public ObservableCollection<Barn> Barns { get; set; } = new ObservableCollection<Barn>(barns);
         public ObservableCollection<Breed> Breeds { get; set; } = new ObservableCollection<Breed>(breeds);
@@ -49,7 +48,7 @@ namespace PocketHorseTrainer.ViewModels
                         Color = Color,
                         Markings = Markings
                     };
-                    await apiServices.AddHorse(horse, AccessTokenSettings.AccessToken).ConfigureAwait(false);
+                    await apiServices.AddHorse(horse).ConfigureAwait(false);
                 });
             }
         }

@@ -33,7 +33,7 @@ namespace PocketHorseTrainer.ViewModels
         {
             get
             {
-                return new Command(async () => await apiServices.DeleteGoal(Id, AccessTokenSettings.AccessToken).ConfigureAwait(false));
+                return new Command(async () => await apiServices.DeleteGoal(Id).ConfigureAwait(false));
             }
         }
     }

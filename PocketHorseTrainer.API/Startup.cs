@@ -20,6 +20,7 @@ using PocketHorseTrainer.API.Models;
 using PocketHorseTrainer.API.Services;
 using System;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace PocketHorseTrainer.API
 {
@@ -35,6 +36,21 @@ namespace PocketHorseTrainer.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSwaggerGen(o =>
+            {
+                o.SwaggerDoc("v1", new OpenApiInfo { Title = "Pocket Horse Trainer", Version = "v1" });
+                o.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n 
+                                    Enter 'Bearer' [space] and then your token in the text input below.
+                                    \r\n\r\nExample: 'Bearer 12345abcdef'",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "Bearer"
+                });
+            });
+
             services.AddDbContext<ApplicationDbContext>(options => options
                 .UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -81,10 +97,21 @@ namespace PocketHorseTrainer.API
                         ValidateLifetime = true,
                         ClockSkew = TimeSpan.Zero
                     };
+                    o.Events = new JwtBearerEvents
+                    {
+                        OnAuthenticationFailed = context =>
+                        {
+                            if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                            {
+                                context.Response.Headers.Add("Token-Expired", "true");
+                            }
+                            return Task.CompletedTask;
+                        }
+                    };
                 })
                 .AddCookie("Identity.Application", o =>
                 {
-                    o.Cookie.Name = "PHTSignInCookie";
+                    o.Cookie.Name = "PHTIdentity";
                     o.Cookie.HttpOnly = true;
                     o.ExpireTimeSpan = TimeSpan.FromDays(5);
                     o.SlidingExpiration = true;
@@ -99,13 +126,6 @@ namespace PocketHorseTrainer.API
 
             services.Configure<EmailConfirmationTokenProviderOptions>(o =>
                 o.TokenLifespan = TimeSpan.FromDays(3));
-
-            services.AddAuthorization(o =>
-            {
-                o.FallbackPolicy = new AuthorizationPolicyBuilder()
-                .RequireAuthenticatedUser()
-                .Build();
-            });
 
             services.AddTransient<IEmailSender, EmailSender>();
 
@@ -125,8 +145,6 @@ namespace PocketHorseTrainer.API
             });
 
             services.AddMvc();
-
-            services.AddSwaggerGen(o => o.SwaggerDoc("v1", new OpenApiInfo { Title = "Pocket Horse Trainer", Version = "v1" }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -136,9 +154,9 @@ namespace PocketHorseTrainer.API
             {
                 app.UseDeveloperExceptionPage();
 
-                app.UseSwagger();
+                //app.UseSwagger();
 
-                app.UseSwaggerUI(o => o.SwaggerEndpoint("/swagger/v1/swagger.json", "PHT V1"));
+                //app.UseSwaggerUI(o => o.SwaggerEndpoint("/swagger/v1/swagger.json", "PHT V1"));
             }
             else
             {
