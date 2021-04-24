@@ -14,5 +14,13 @@ namespace PocketHorseTrainer
                 return (string)Application.Current.Properties["accessToken"];
             }
         }
+
+        public static string RefreshToken
+        {
+            get
+            {
+                return (string)Application.Current.Properties["refreshToken"];
+            }
+        }
     }
 }

@@ -20,15 +20,17 @@ namespace PocketHorseTrainer.ViewModels
                 {
                     var result = await apiServices.LoginAsync(UserName, Password, RememberMe).ConfigureAwait(false);
 
-                    if (!result.Success)
+                    Application.Current.Properties["accessToken"] = result.AccessToken;
+                    Application.Current.Properties["refreshToken"] = result.RefreshToken;
+                    await Application.Current.SavePropertiesAsync().ConfigureAwait(false);
+
+                    if (string.IsNullOrEmpty(AccessTokenSettings.AccessToken))
                     {
-                        await Application.Current.MainPage.DisplayAlert("Uh oh!", result.Message, "OK").ConfigureAwait(false);
+                        await Shell.Current.GoToAsync("//main/home").ConfigureAwait(false);
                     }
                     else
                     {
-                        Application.Current.Properties["accessToken"] = result.Message;
-                        await Application.Current.SavePropertiesAsync().ConfigureAwait(false);
-                        await Shell.Current.GoToAsync("//main/home").ConfigureAwait(false);
+                        await Application.Current.MainPage.DisplayAlert("Uh oh!", "Something went wrong. Check your credentials and make sure your email is verified.", "OK").ConfigureAwait(false);
                     }
                 });
             }

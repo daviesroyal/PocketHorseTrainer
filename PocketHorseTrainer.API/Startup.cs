@@ -128,6 +128,7 @@ namespace PocketHorseTrainer.API
                 o.TokenLifespan = TimeSpan.FromDays(3));
 
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<ITokenService, TokenService>();
 
             services.Configure<SendGridEmailSenderOptions>(options =>
             {
@@ -141,7 +142,8 @@ namespace PocketHorseTrainer.API
                 o.AddPolicy("DefaultCorsPolicy",
                     builder => builder.AllowAnyOrigin()
                     .AllowAnyMethod()
-                    .AllowAnyHeader());
+                    .AllowAnyHeader()
+                    .WithExposedHeaders("Token-Expired"));
             });
 
             services.AddMvc();

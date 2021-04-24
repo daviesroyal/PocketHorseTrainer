@@ -19,18 +19,16 @@ namespace PocketHorseTrainer
 
         public async Task<bool> StartJob()
         {
-            if (string.IsNullOrEmpty(AccessTokenSettings.AccessToken))
+            var tokens = await apiServices.RefreshTokenAsync(AccessTokenSettings.AccessToken, AccessTokenSettings.RefreshToken).ConfigureAwait(false);
+            if (!string.IsNullOrEmpty(tokens.AccessToken) && !string.IsNullOrEmpty(tokens.RefreshToken))
             {
-                var token = await apiServices.RefreshTokenAsync().ConfigureAwait(false);
-                if (token != null)
-                {
-                    Application.Current.Properties["accessToken"] = token;
-                    await Application.Current.SavePropertiesAsync().ConfigureAwait(false);
-                }
-                else
-                {
-                    await Shell.Current.GoToAsync("//login").ConfigureAwait(false);
-                }
+                Application.Current.Properties["accessToken"] = tokens.AccessToken;
+                Application.Current.Properties["refreshToken"] = tokens.RefreshToken;
+                await Application.Current.SavePropertiesAsync().ConfigureAwait(false);
+            }
+            else
+            {
+                await Shell.Current.GoToAsync("//login").ConfigureAwait(false);
             }
             return true;
         }

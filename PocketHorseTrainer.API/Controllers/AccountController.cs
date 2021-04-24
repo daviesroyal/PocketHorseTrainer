@@ -30,15 +30,21 @@ namespace PocketHorseTrainer.API.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
+        private readonly ITokenService _tokenService;
+        private readonly ApplicationDbContext _context;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ITokenService tokenService,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
+            _tokenService = tokenService;
+            _context = context;
         }
 
         [AllowAnonymous]
@@ -99,12 +105,33 @@ namespace PocketHorseTrainer.API.Controllers
                 {
                     return BadRequest("Email has not been confirmed for this account.");
                 }
+
                 Microsoft.AspNetCore.Identity.SignInResult signInResult = await _signInManager.PasswordSignInAsync(user, input.Password, input.RememberMe, lockoutOnFailure: false).ConfigureAwait(false);
+
                 if (!signInResult.Succeeded)
                 {
                     return BadRequest("Invalid Login");
                 }
-                return RedirectToAction("GenerateTokens", "Token", user);
+
+                var claims = new Claim[]
+                {
+                    new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                    new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim(JwtRegisteredClaimNames.Iat, ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64)
+                };
+                // Generate access token
+                string accessToken = _tokenService.GenerateAccessToken(claims);
+
+                // Save refresh token to database
+                user.RefreshToken = _tokenService.GenerateRefreshToken();
+                _context.SaveChanges();
+
+                return new ObjectResult(new
+                {
+                    token = accessToken,
+                    refreshToken = user.RefreshToken
+                });
             }
             //if we got this far, something went wrong
             return BadRequest(ModelState);

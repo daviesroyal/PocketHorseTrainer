@@ -26,39 +26,27 @@ namespace PocketHorseTrainer.API.Controllers
             _context = context;
         }
 
-        [HttpPost("{user}")]
-        public string GenerateTokens([FromRoute] ApplicationUser user)
+        [HttpPost("Refresh")]
+        public IActionResult Refresh([FromBody] TokenModel input)
         {
-            var claims = new Claim[]
+            if (input.AccessToken != null)
+            {
+                var principal = _tokenService.GetPrincipalFromExpiredToken(input.AccessToken);
+
+                var user = _context.Users.SingleOrDefault(u => u.UserName == principal.Identity.Name); //this is mapped to the Name claim by default
+                if (user == null || user.RefreshToken != input.RefreshToken) return BadRequest();
+
+                return new ObjectResult(new
                 {
-                                    new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                                    new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
-                                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                                    new Claim(JwtRegisteredClaimNames.Iat, ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64)
-                };
-
-            // Generate access token
-            string accessToken = _tokenService.GenerateAccessToken(claims);
-
-            // Save refresh token to database
-            user.RefreshToken = _tokenService.GenerateRefreshToken();
-            _context.Update(user);
-            _context.SaveChanges();
-            return accessToken;
+                    token = _tokenService.GenerateAccessToken(principal.Claims),
+                    refreshToken = user.RefreshToken
+                });
+            }
+            return BadRequest();
         }
 
-        [HttpPost]
-        public IActionResult Refresh(string token, string refreshToken)
-        {
-            var principal = _tokenService.GetPrincipalFromExpiredToken(token);
-
-            var user = _context.Users.SingleOrDefault(u => u.UserName == principal.Identity.Name); //this is mapped to the Name claim by default
-            if (user == null || user.RefreshToken != refreshToken) return BadRequest();
-
-            return Ok(GenerateTokens(user));
-        }
-
-        [HttpPost, Authorize]
+        [HttpPost("Revoke")]
+        [Authorize]
         public async Task<IActionResult> Revoke()
         {
             var username = User.Identity.Name;

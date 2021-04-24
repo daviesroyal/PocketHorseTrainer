@@ -23,6 +23,7 @@ namespace PocketHorseTrainer
                 {
                     _ = await apiServices.Logout().ConfigureAwait(false);
                     Application.Current.Properties["accessToken"] = string.Empty;
+                    Application.Current.Properties["refreshToken"] = string.Empty;
                     await Application.Current.SavePropertiesAsync().ConfigureAwait(false);
                     await Current.GoToAsync("//login").ConfigureAwait(false);
                 });
