@@ -13,9 +13,7 @@ namespace PocketHorseTrainer.ViewModels
         public string LastName { get; set; }
         public string DisplayName { get; set; }
         public DateTime DOB { get; set; }
-        public string Email { get; set; }
         public string NewEmail { get; set; }
-        public string Phone { get; set; }
         public string NewPhone { get; set; }
 
         public ICommand UpdateCommand

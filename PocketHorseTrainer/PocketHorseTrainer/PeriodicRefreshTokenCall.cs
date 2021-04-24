@@ -1,5 +1,6 @@
 ﻿using Matcha.BackgroundService;
 using PocketHorseTrainer.Services;
+using PocketHorseTrainer.Views;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,14 +20,8 @@ namespace PocketHorseTrainer
 
         public async Task<bool> StartJob()
         {
-            var tokens = await apiServices.RefreshTokenAsync(AccessTokenSettings.AccessToken, AccessTokenSettings.RefreshToken).ConfigureAwait(false);
-            if (!string.IsNullOrEmpty(tokens.AccessToken) && !string.IsNullOrEmpty(tokens.RefreshToken))
-            {
-                AccessTokenSettings.AccessToken = tokens.AccessToken;
-                AccessTokenSettings.RefreshToken = tokens.RefreshToken;
-                //await Application.Current.SavePropertiesAsync().ConfigureAwait(false);
-            }
-            else
+            apiServices.RefreshTokenAsync(TokenSettings.AccessToken, TokenSettings.RefreshToken);
+            if (string.IsNullOrEmpty(TokenSettings.AccessToken) || string.IsNullOrEmpty(TokenSettings.RefreshToken))
             {
                 await Shell.Current.GoToAsync("//login").ConfigureAwait(false);
             }

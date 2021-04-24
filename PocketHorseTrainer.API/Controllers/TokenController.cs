@@ -27,22 +27,32 @@ namespace PocketHorseTrainer.API.Controllers
         }
 
         [HttpPost("Refresh")]
-        public IActionResult Refresh([FromBody] TokenModel input)
+        public TokenModel Refresh([FromBody] TokenModel input)
         {
-            if (input.AccessToken != null)
+            if (!string.IsNullOrEmpty(input.AccessToken))
             {
                 var principal = _tokenService.GetPrincipalFromExpiredToken(input.AccessToken);
 
                 var user = _context.Users.SingleOrDefault(u => u.UserName == principal.Identity.Name); //this is mapped to the Name claim by default
-                if (user == null || user.RefreshToken != input.RefreshToken) return BadRequest();
-
-                return new ObjectResult(new
+                if (user == null || user.RefreshToken != input.RefreshToken)
                 {
-                    token = _tokenService.GenerateAccessToken(principal.Claims),
-                    refreshToken = user.RefreshToken
-                });
+                    return new TokenModel
+                    {
+                        AccessToken = null,
+                        RefreshToken = null
+                    };
+                }
+                return new TokenModel
+                {
+                    AccessToken = _tokenService.GenerateAccessToken(principal.Claims),
+                    RefreshToken = user.RefreshToken
+                };
             }
-            return BadRequest();
+            return new TokenModel
+            {
+                AccessToken = null,
+                RefreshToken = null
+            };
         }
 
         [HttpPost("Revoke")]

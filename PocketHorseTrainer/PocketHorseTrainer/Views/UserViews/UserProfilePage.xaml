@@ -15,13 +15,13 @@
         <StackLayout>
 
             <Label
+                FontSize="Large"
                 HorizontalOptions="CenterAndExpand"
                 Text="{Binding DisplayName}"
                 VerticalOptions="CenterAndExpand" />
 
             <Button Clicked="OnChangePasswordButtonClicked" Text="Change Password" />
             <Button Clicked="OnUpdateContactButtonClicked" Text="Update Contact Info" />
-            <Button Clicked="OnHorsesButtonClicked" Text="View Horses" />
 
         </StackLayout>
 

@@ -32,7 +32,9 @@ namespace PocketHorseTrainer.Services
         {
             HttpClient client = GetBaseClient();
 
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", AccessTokenSettings.AccessToken);
+            RefreshTokenAsync(TokenSettings.AccessToken, TokenSettings.RefreshToken);
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TokenSettings.AccessToken);
 
             return client;
         }
@@ -64,7 +66,7 @@ namespace PocketHorseTrainer.Services
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<Tokens> LoginAsync(string userName, string password, bool rememberMe)
+        public async Task<bool> LoginAsync(string userName, string password, bool rememberMe)
         {
             var client = GetBaseClient();
 
@@ -88,11 +90,9 @@ namespace PocketHorseTrainer.Services
 
             var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             var tokens = JsonConvert.DeserializeObject<Tokens>(responseContent);
-            return new Tokens
-            {
-                AccessToken = tokens.AccessToken,
-                RefreshToken = tokens.RefreshToken
-            };
+            TokenSettings.AccessToken = tokens.AccessToken;
+            TokenSettings.RefreshToken = tokens.RefreshToken;
+            return true;
         }
 
         public async Task<bool> Logout()
@@ -104,10 +104,13 @@ namespace PocketHorseTrainer.Services
 
             response.EnsureSuccessStatusCode();
 
+            TokenSettings.AccessToken = null;
+            TokenSettings.RefreshToken = null;
+
             return true;
         }
 
-        public async Task<Tokens> RefreshTokenAsync(string accessToken, string refreshToken)
+        public async void RefreshTokenAsync(string accessToken, string refreshToken)
         {
             var client = GetBaseClient();
             var tokens = new
@@ -126,22 +129,10 @@ namespace PocketHorseTrainer.Services
 
             HttpResponseMessage response = await client.SendAsync(request).ConfigureAwait(false);
 
-            if (response.IsSuccessStatusCode)
-            {
-                var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                var result = JsonConvert.DeserializeObject<Tokens>(responseContent);
-                return new Tokens
-                {
-                    AccessToken = result.AccessToken,
-                    RefreshToken = result.RefreshToken
-                };
-            }
-
-            return new Tokens
-            {
-                AccessToken = null,
-                RefreshToken = null
-            };
+            var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var result = JsonConvert.DeserializeObject<Tokens>(responseContent);
+            TokenSettings.AccessToken = result.AccessToken;
+            TokenSettings.RefreshToken = result.RefreshToken;
         }
 
         public async Task<bool> ForgotPasswordAsync(string email)

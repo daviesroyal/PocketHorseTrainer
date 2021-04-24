@@ -18,10 +18,5 @@ namespace PocketHorseTrainer.Views
         {
             await Navigation.PushAsync(new ChangePhoneAndEmailPage()).ConfigureAwait(false);
         }
-
-        private async void OnHorsesButtonClicked(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new HorseListPage()).ConfigureAwait(false);
-        }
     }
 }

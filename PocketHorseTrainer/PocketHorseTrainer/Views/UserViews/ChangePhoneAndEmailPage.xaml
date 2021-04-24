@@ -13,8 +13,10 @@
 
         <StackLayout>
 
+            <Label>New Email Address</Label>
             <Entry Text="{Binding NewEmail}" />
 
+            <Label>New Phone Number</Label>
             <Entry Text="{Binding NewPhone}" />
 
             <Button Command="{Binding UpdateCommand}" Text="Update" />

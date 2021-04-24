@@ -1,4 +1,6 @@
 ﻿using PocketHorseTrainer.Services;
+using PocketHorseTrainer.Views;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -18,15 +20,11 @@ namespace PocketHorseTrainer.ViewModels
             {
                 return new Command(async () =>
                 {
-                    var result = await apiServices.LoginAsync(UserName, Password, RememberMe).ConfigureAwait(false);
+                    _ = await apiServices.LoginAsync(UserName, Password, RememberMe).ConfigureAwait(false);
 
-                    Application.Current.Properties["accessToken"] = result.AccessToken;
-                    Application.Current.Properties["refreshToken"] = result.RefreshToken;
-                    await Application.Current.SavePropertiesAsync().ConfigureAwait(false);
-
-                    if (string.IsNullOrEmpty(AccessTokenSettings.AccessToken))
+                    if (!string.IsNullOrEmpty(TokenSettings.AccessToken))
                     {
-                        await Shell.Current.GoToAsync("//main/home").ConfigureAwait(false);
+                        await Shell.Current.GoToAsync("//main").ConfigureAwait(false);
                     }
                     else
                     {

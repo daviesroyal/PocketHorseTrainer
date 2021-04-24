@@ -16,19 +16,11 @@ namespace PocketHorseTrainer.Views
         {
             base.OnAppearing();
 
-            //Application.Current.Properties["accessToken"] = null;
-            //Application.Current.Properties["refreshToken"] = null;
-            //await Application.Current.SavePropertiesAsync().ConfigureAwait(false);
+            apiServices.RefreshTokenAsync(TokenSettings.AccessToken, TokenSettings.RefreshToken);
 
-            var tokens = await apiServices.RefreshTokenAsync(AccessTokenSettings.AccessToken, AccessTokenSettings.RefreshToken).ConfigureAwait(false);
-
-            AccessTokenSettings.AccessToken = tokens.AccessToken;
-            AccessTokenSettings.RefreshToken = tokens.RefreshToken;
-            //await Application.Current.SavePropertiesAsync().ConfigureAwait(false);
-
-            if (!string.IsNullOrEmpty(AccessTokenSettings.AccessToken) && !string.IsNullOrEmpty(AccessTokenSettings.RefreshToken))
+            if (!string.IsNullOrEmpty(TokenSettings.AccessToken) && !string.IsNullOrEmpty(TokenSettings.RefreshToken))
             {
-                await Shell.Current.GoToAsync("//main").ConfigureAwait(false);
+                await Shell.Current.GoToAsync("//main").ConfigureAwait(false); //breakpoint is triggering, navigation isn't
             }
             else
             {

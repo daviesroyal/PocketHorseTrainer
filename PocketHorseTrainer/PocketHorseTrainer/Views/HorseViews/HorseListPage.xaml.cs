@@ -1,6 +1,7 @@
 ﻿using PocketHorseTrainer.Models;
 using PocketHorseTrainer.Services;
 using System;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -16,8 +17,8 @@ namespace PocketHorseTrainer.Views
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-
-            listView.ItemsSource = await apiServices.GetAllHorses().ConfigureAwait(false);
+            _ = await Task.Run(async () => listView.ItemsSource = await apiServices.GetAllHorses().ConfigureAwait(false)).ConfigureAwait(false);
+            //keep getting an AndroidRuntimeException on this page, likely to do with listView?
         }
 
         private async void OnAddHorseClicked(object sender, EventArgs e)

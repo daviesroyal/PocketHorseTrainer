@@ -120,18 +120,17 @@ namespace PocketHorseTrainer.API.Controllers
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                     new Claim(JwtRegisteredClaimNames.Iat, ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64)
                 };
-                // Generate access token
-                string accessToken = _tokenService.GenerateAccessToken(claims);
 
                 // Save refresh token to database
                 user.RefreshToken = _tokenService.GenerateRefreshToken();
                 _context.SaveChanges();
 
-                return new ObjectResult(new
+                var tokens = new TokenModel
                 {
-                    token = accessToken,
-                    refreshToken = user.RefreshToken
-                });
+                    AccessToken = _tokenService.GenerateAccessToken(claims),
+                    RefreshToken = user.RefreshToken
+                };
+                return Ok(tokens);
             }
             //if we got this far, something went wrong
             return BadRequest(ModelState);

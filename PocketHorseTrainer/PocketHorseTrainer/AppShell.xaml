@@ -88,7 +88,9 @@
     </ShellItem>
 
     <!--  Login and Registration Page  -->
-    <ShellContent ContentTemplate="{DataTemplate local:LoginPage}" Route="login" />
+    <ShellItem Route="login">
+        <ShellContent ContentTemplate="{DataTemplate local:LoginPage}" />
+    </ShellItem>
 
     <!--
         When the Flyout is visible this defines the content to display in the flyout.
