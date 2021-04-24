@@ -22,9 +22,9 @@ namespace PocketHorseTrainer
             var tokens = await apiServices.RefreshTokenAsync(AccessTokenSettings.AccessToken, AccessTokenSettings.RefreshToken).ConfigureAwait(false);
             if (!string.IsNullOrEmpty(tokens.AccessToken) && !string.IsNullOrEmpty(tokens.RefreshToken))
             {
-                Application.Current.Properties["accessToken"] = tokens.AccessToken;
-                Application.Current.Properties["refreshToken"] = tokens.RefreshToken;
-                await Application.Current.SavePropertiesAsync().ConfigureAwait(false);
+                AccessTokenSettings.AccessToken = tokens.AccessToken;
+                AccessTokenSettings.RefreshToken = tokens.RefreshToken;
+                //await Application.Current.SavePropertiesAsync().ConfigureAwait(false);
             }
             else
             {

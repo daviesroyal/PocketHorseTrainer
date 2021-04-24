@@ -16,11 +16,15 @@ namespace PocketHorseTrainer.Views
         {
             base.OnAppearing();
 
+            //Application.Current.Properties["accessToken"] = null;
+            //Application.Current.Properties["refreshToken"] = null;
+            //await Application.Current.SavePropertiesAsync().ConfigureAwait(false);
+
             var tokens = await apiServices.RefreshTokenAsync(AccessTokenSettings.AccessToken, AccessTokenSettings.RefreshToken).ConfigureAwait(false);
 
-            Application.Current.Properties["accessToken"] = tokens.AccessToken;
-            Application.Current.Properties["refreshToken"] = tokens.RefreshToken;
-            await Application.Current.SavePropertiesAsync().ConfigureAwait(false);
+            AccessTokenSettings.AccessToken = tokens.AccessToken;
+            AccessTokenSettings.RefreshToken = tokens.RefreshToken;
+            //await Application.Current.SavePropertiesAsync().ConfigureAwait(false);
 
             if (!string.IsNullOrEmpty(AccessTokenSettings.AccessToken) && !string.IsNullOrEmpty(AccessTokenSettings.RefreshToken))
             {

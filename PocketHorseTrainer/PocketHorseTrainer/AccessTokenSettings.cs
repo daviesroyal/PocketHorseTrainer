@@ -11,7 +11,15 @@ namespace PocketHorseTrainer
         {
             get
             {
-                return (string)Application.Current.Properties["accessToken"];
+                return Application.Current.Properties.ContainsKey("accessToken") ? (string)Application.Current.Properties["accessToken"] : null;
+            }
+            set
+            {
+                if ((string)Application.Current.Properties["accessToken"] != value)
+                {
+                    Application.Current.Properties["accessToken"] = value;
+                    Application.Current.SavePropertiesAsync();
+                }
             }
         }
 
@@ -19,7 +27,15 @@ namespace PocketHorseTrainer
         {
             get
             {
-                return (string)Application.Current.Properties["refreshToken"];
+                return Application.Current.Properties.ContainsKey("refreshToken") ? (string)Application.Current.Properties["refreshToken"] : null;
+            }
+            set
+            {
+                if ((string)Application.Current.Properties["refreshToken"] != value)
+                {
+                    Application.Current.Properties["refreshToken"] = value;
+                    Application.Current.SavePropertiesAsync();
+                }
             }
         }
     }
