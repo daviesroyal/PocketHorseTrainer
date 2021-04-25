@@ -8,7 +8,7 @@ namespace PocketHorseTrainer.ViewModels
     public class UserProfileViewModel
     {
         private readonly ApiServices apiServices = new ApiServices();
-
+        //need to map properties
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string DisplayName { get; set; }

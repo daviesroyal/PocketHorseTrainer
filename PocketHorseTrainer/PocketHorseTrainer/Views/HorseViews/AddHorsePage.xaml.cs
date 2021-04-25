@@ -6,6 +6,9 @@ namespace PocketHorseTrainer.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AddHorsePage : ContentPage
     {
-        public AddHorsePage() => InitializeComponent();
+        public AddHorsePage()
+        {
+            InitializeComponent();
+        }
     }
 }

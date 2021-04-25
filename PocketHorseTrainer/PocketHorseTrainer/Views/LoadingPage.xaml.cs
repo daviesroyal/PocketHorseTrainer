@@ -10,21 +10,19 @@ namespace PocketHorseTrainer.Views
     {
         private readonly static ApiServices apiServices = new ApiServices();
 
-        public LoadingPage() => InitializeComponent();
-
-        protected override async void OnAppearing()
+        public LoadingPage()
         {
-            base.OnAppearing();
+            InitializeComponent();
 
             apiServices.RefreshTokenAsync(TokenSettings.AccessToken, TokenSettings.RefreshToken);
 
             if (!string.IsNullOrEmpty(TokenSettings.AccessToken) && !string.IsNullOrEmpty(TokenSettings.RefreshToken))
             {
-                await Shell.Current.GoToAsync("//main").ConfigureAwait(false); //breakpoint is triggering, navigation isn't
+                Shell.Current.GoToAsync("//main");
             }
             else
             {
-                await Shell.Current.GoToAsync("//login").ConfigureAwait(false);
+                Shell.Current.GoToAsync("//login");
             }
         }
     }

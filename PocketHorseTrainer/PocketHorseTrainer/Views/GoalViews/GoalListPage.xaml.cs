@@ -1,5 +1,6 @@
 ﻿using PocketHorseTrainer.Models;
 using PocketHorseTrainer.Services;
+using PocketHorseTrainer.ViewModels.GoalViewModels;
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -9,15 +10,13 @@ namespace PocketHorseTrainer.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class GoalListPage : ContentPage
     {
-        private readonly ApiServices apiServices = new ApiServices();
-
         public GoalListPage() => InitializeComponent();
 
-        protected override async void OnAppearing()
+        protected override void OnAppearing()
         {
             base.OnAppearing();
 
-            listView.ItemsSource = await apiServices.GetAllGoals(((Goal)BindingContext).Horse.Id).ConfigureAwait(false);
+            Device.BeginInvokeOnMainThread(() => listView.ItemsSource = new GoalListViewModel(((Goal)BindingContext).Horse).Goals);
         }
 
         private async void OnAddGoalClicked(object sender, EventArgs e)

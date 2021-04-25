@@ -1,5 +1,6 @@
 ﻿using PocketHorseTrainer.Models;
 using PocketHorseTrainer.Services;
+using PocketHorseTrainer.ViewModels.JournalEntryViewModels;
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -9,15 +10,13 @@ namespace PocketHorseTrainer.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class JournalEntriesPage : ContentPage
     {
-        private readonly ApiServices apiServices = new ApiServices();
-
         public JournalEntriesPage() => InitializeComponent();
 
         protected async override void OnAppearing()
         {
             base.OnAppearing();
 
-            _ = await apiServices.GetAllJournalEntries(((JournalEntry)BindingContext).Horse.Id).ConfigureAwait(false);
+            Device.BeginInvokeOnMainThread(() => listView.ItemsSource = new JournalEntriesViewModel((Horse)BindingContext).Entries);
         }
 
         private async void OnAddEntryClicked(object sender, EventArgs e)

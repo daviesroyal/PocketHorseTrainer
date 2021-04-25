@@ -10,7 +10,7 @@ namespace PocketHorseTrainer.ViewModels
 {
     public class AddHorseViewModel
     {
-        private readonly static ApiServices apiServices = new ApiServices();
+        private static readonly ApiServices apiServices = new ApiServices();
 
         public string Name { get; set; }
         public int Age { get; set; }
@@ -21,17 +21,11 @@ namespace PocketHorseTrainer.ViewModels
         public CoatColor Color { get; set; }
         public Markings Markings { get; set; }
 
-        private static readonly List<Barn> barns = apiServices.GetBarns().Result;
-        private static readonly List<Breed> breeds = apiServices.GetBreeds().Result;
-        private static readonly List<CoatColor> colors = apiServices.GetColors().Result;
-        private static readonly List<FaceMarking> faceMarkings = apiServices.GetFaceMarkings().Result;
-        private static readonly List<LegMarking> legMarkings = apiServices.GetLegMarkings().Result;
-
-        public ObservableCollection<Barn> Barns { get; set; } = new ObservableCollection<Barn>(barns);
-        public ObservableCollection<Breed> Breeds { get; set; } = new ObservableCollection<Breed>(breeds);
-        public ObservableCollection<CoatColor> Colors { get; set; } = new ObservableCollection<CoatColor>(colors);
-        public ObservableCollection<FaceMarking> FaceMarkings { get; set; } = new ObservableCollection<FaceMarking>(faceMarkings);
-        public ObservableCollection<LegMarking> LegMarkings { get; set; } = new ObservableCollection<LegMarking>(legMarkings);
+        public IList<Barn> Barns = apiServices.GetBarns().Result;
+        public IList<Breed> Breeds = apiServices.GetBreeds().Result;
+        public IList<CoatColor> Colors = apiServices.GetColors().Result;
+        public IList<FaceMarking> FaceMarkings = apiServices.GetFaceMarkings().Result;
+        public IList<LegMarking> LegMarkings = apiServices.GetLegMarkings().Result;
 
         public ICommand AddCommand
         {

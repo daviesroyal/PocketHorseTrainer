@@ -20,11 +20,11 @@ namespace PocketHorseTrainer.ViewModels
             {
                 return new Command(async () =>
                 {
-                    _ = await apiServices.LoginAsync(UserName, Password, RememberMe).ConfigureAwait(false);
+                    await apiServices.LoginAsync(UserName, Password, RememberMe).ConfigureAwait(false);
 
                     if (!string.IsNullOrEmpty(TokenSettings.AccessToken))
                     {
-                        await Shell.Current.GoToAsync("//main").ConfigureAwait(false);
+                        _ = Task.Run(async () => await Shell.Current.GoToAsync("//main").ConfigureAwait(false));
                     }
                     else
                     {
