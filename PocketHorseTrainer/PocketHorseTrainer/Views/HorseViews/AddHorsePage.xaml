@@ -14,57 +14,52 @@
 
         <StackLayout VerticalOptions="Center">
 
-            <Label Text="Name" />
-            <Entry Text="{Binding Name}" />
+            <Entry Placeholder="Name" Text="{Binding Name}" />
 
             <Label Text="Age" />
-            <Entry
-                Keyboard="Numeric"
-                Placeholder="0"
-                Text="{Binding Age}" />
+            <Entry Keyboard="Numeric" Text="{Binding Age}" />
 
             <Label Text="Barn" />
             <Picker
-                ItemDisplayBinding="{Binding Barn.Name}"
+                ItemDisplayBinding="{Binding Name}"
                 ItemsSource="{Binding Barns}"
-                SelectedItem="{Binding Barn}" />
+                SelectedItem="{Binding SelectedBarn}" />
             <Label Text="Breed" />
             <Picker
-                ItemDisplayBinding="{Binding Breed.Name}"
+                ItemDisplayBinding="{Binding Name}"
                 ItemsSource="{Binding Breeds}"
-                SelectedItem="{Binding Breed}" />
+                SelectedItem="{Binding SelectedBreed}" />
             <Label Text="Coat Color" />
             <Picker
-                ItemDisplayBinding="{Binding Color.Name}"
+                ItemDisplayBinding="{Binding Name}"
                 ItemsSource="{Binding Colors}"
-                SelectedItem="{Binding Color}" />
+                SelectedItem="{Binding SelectedColor}" />
 
-            <Label Text="Markings" />
-            <Label Text="Face" />
+            <Label Text="Face Marking" />
             <Picker
-                ItemDisplayBinding="{Binding Markings.FaceMarking.Name}"
+                ItemDisplayBinding="{Binding Name}"
                 ItemsSource="{Binding FaceMarkings}"
-                SelectedItem="{Binding Markings.FaceMarking}" />
-            <Label Text="Front Left Leg" />
+                SelectedItem="{Binding FaceMarking}" />
+            <Label Text="Front Left Leg Marking" />
             <Picker
-                ItemDisplayBinding="{Binding Markings.FrontLeft.Name}"
+                ItemDisplayBinding="{Binding Name}"
                 ItemsSource="{Binding LegMarkings}"
-                SelectedItem="{Binding Markings.FrontLeft}" />
-            <Label Text="Front Right Leg" />
+                SelectedItem="{Binding FrontLeft}" />
+            <Label Text="Front Right Leg Marking" />
             <Picker
-                ItemDisplayBinding="{Binding Markings.FrontRight.Name}"
+                ItemDisplayBinding="{Binding Name}"
                 ItemsSource="{Binding LegMarkings}"
-                SelectedItem="{Binding Markings.FrontRight}" />
-            <Label Text="Back Left Leg" />
+                SelectedItem="{Binding FrontRight}" />
+            <Label Text="Back Left Leg Marking" />
             <Picker
-                ItemDisplayBinding="{Binding Markings.BackLeft.Name}"
+                ItemDisplayBinding="{Binding Name}"
                 ItemsSource="{Binding LegMarkings}"
-                SelectedItem="{Binding Markings.BackLeft}" />
-            <Label Text="Back Right Leg" />
+                SelectedItem="{Binding BackLeft}" />
+            <Label Text="Back Right Leg Marking" />
             <Picker
-                ItemDisplayBinding="{Binding Markings.BackRight.Name}"
+                ItemDisplayBinding="{Binding Name}"
                 ItemsSource="{Binding LegMarkings}"
-                SelectedItem="{Binding Markings.BackRight}" />
+                SelectedItem="{Binding BackRight}" />
 
             <Button Command="{Binding AddCommand}" Text="Add Horse" />
 

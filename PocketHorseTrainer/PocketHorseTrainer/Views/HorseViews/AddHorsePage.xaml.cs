@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using PocketHorseTrainer.ViewModels;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace PocketHorseTrainer.Views
@@ -9,6 +10,8 @@ namespace PocketHorseTrainer.Views
         public AddHorsePage()
         {
             InitializeComponent();
+
+            BindingContext = new AddHorseViewModel();
         }
     }
 }
