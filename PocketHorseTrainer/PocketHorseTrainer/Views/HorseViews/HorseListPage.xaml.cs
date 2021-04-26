@@ -11,7 +11,20 @@ namespace PocketHorseTrainer.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HorseListPage : ContentPage
     {
-        public HorseListPage() => InitializeComponent();
+        public HorseListPage()
+        {
+            InitializeComponent();
+        }
+
+        public HorseListPage(string message)
+        {
+            InitializeComponent();
+
+            BindingContext = new HorseListViewModel
+            {
+                Message = message
+            };
+        }
 
         protected override void OnAppearing()
         {

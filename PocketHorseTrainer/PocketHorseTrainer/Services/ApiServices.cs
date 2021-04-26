@@ -224,28 +224,34 @@ namespace PocketHorseTrainer.Services
             return JsonConvert.DeserializeObject<Horse>(json);
         }
 
-        public async Task AddHorse(Horse horse)
+        public async Task<bool> AddHorse(Horse horse)
         {
             var client = GetAuthorizedClient();
             var json = JsonConvert.SerializeObject(horse);
             HttpContent content = new StringContent(json);
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            _ = await client.PostAsync("/api/horse", content).ConfigureAwait(false);
+            var result = await client.PostAsync("/api/horse/add", content).ConfigureAwait(false);
+
+            return result.IsSuccessStatusCode;
         }
 
-        public async Task EditHorse(Horse horse)
+        public async Task<bool> EditHorse(Horse horse)
         {
             var client = GetAuthorizedClient();
             var json = JsonConvert.SerializeObject(horse);
             HttpContent content = new StringContent(json);
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            _ = await client.PutAsync("/api/horse", content).ConfigureAwait(false);
+            var result = await client.PutAsync("/api/horse/edit", content).ConfigureAwait(false);
+
+            return result.IsSuccessStatusCode;
         }
 
-        public async Task DeleteHorse(int horseId)
+        public async Task<bool> DeleteHorse(int horseId)
         {
             var client = GetAuthorizedClient();
-            _ = await client.DeleteAsync($"/api/horse/{horseId}").ConfigureAwait(false);
+            var result = await client.DeleteAsync($"/api/horse/{horseId}").ConfigureAwait(false);
+
+            return result.IsSuccessStatusCode;
         }
         #endregion
 
@@ -427,7 +433,7 @@ namespace PocketHorseTrainer.Services
         public async Task<List<LegMarking>> GetLegMarkings()
         {
             var client = GetAuthorizedClient();
-            var json = await client.GetStringAsync("/api/admin/markings/face").ConfigureAwait(false);
+            var json = await client.GetStringAsync("/api/admin/markings/leg").ConfigureAwait(false);
             return JsonConvert.DeserializeObject<List<LegMarking>>(json);
         }
         #endregion

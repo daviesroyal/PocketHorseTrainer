@@ -1,9 +1,11 @@
 ﻿using PocketHorseTrainer.Models;
 using PocketHorseTrainer.Models.Horses;
 using PocketHorseTrainer.Services;
+using PocketHorseTrainer.Views;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -16,11 +18,9 @@ namespace PocketHorseTrainer.ViewModels
         public string Name { get; set; }
         public int Age { get; set; }
 
-        //TODO: fix picker source
         public Barn Barn { get; set; }
         public Breed Breed { get; set; }
         public CoatColor Color { get; set; }
-        public Markings Markings { get; set; }
 
         public ICommand AddCommand
         {
@@ -32,12 +32,30 @@ namespace PocketHorseTrainer.ViewModels
                     {
                         Name = Name,
                         Age = Age,
-                        Barn = Barn,
-                        Breed = Breed,
-                        Color = Color,
-                        Markings = Markings
+                        Barn = SelectedBarn,
+                        Breed = SelectedBreed,
+                        Color = SelectedColor,
+                        Markings = new Markings
+                        {
+                            FaceMarking = FaceMarking,
+                            FrontLeft = FrontLeft,
+                            FrontRight = FrontRight,
+                            BackLeft = BackLeft,
+                            BackRight = BackRight
+                        }
                     };
-                    await apiServices.AddHorse(horse).ConfigureAwait(false);
+
+                    var result = await apiServices.AddHorse(horse).ConfigureAwait(false);
+
+                    if (result)
+                    {
+                        //navigation is once again going weird, and messes up other navigation if I try to back out.
+                        _ = Task.Run(async () => await Shell.Current.Navigation.PushAsync(new HorseListPage($"{Name} has been added to your barn!")).ConfigureAwait(false));
+                    }
+                    else
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Uh oh!", "Something went wrong.", "OK").ConfigureAwait(false);
+                    }
                 });
             }
         }

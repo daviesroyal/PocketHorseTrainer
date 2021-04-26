@@ -12,36 +12,36 @@ namespace PocketHorseTrainer.API.Controllers
     [ApiController]
     public class AdminController : ControllerBase
     {
-        private readonly ApplicationDbContext context;
+        private readonly ApplicationDbContext _context;
 
         public AdminController(ApplicationDbContext dbContext)
         {
-            context = dbContext;
+            _context = dbContext;
         }
 
         #region Markings
         [HttpGet("markings/face/{markingId}")]
         public IActionResult GetFaceMarking([FromRoute]int id)
         {
-            return context.FaceMarkings.Find(id) == null ? NotFound() : base.Ok(context.FaceMarkings.Find(id));
+            return _context.FaceMarkings.Find(id) == null ? NotFound() : base.Ok(_context.FaceMarkings.Find(id));
         }
 
         [HttpGet("markings/face")]
         public IActionResult GetFaceMarkings()
         {
-            return base.Ok(context.FaceMarkings.ToList());
+            return base.Ok(_context.FaceMarkings.ToList());
         }
 
         [HttpGet("markings/leg/{markingId}")]
         public IActionResult GetLegMarking([FromRoute]int id)
         {
-            return context.LegMarkings.Find(id) == null ? NotFound() : base.Ok(context.LegMarkings.Find(id));
+            return _context.LegMarkings.Find(id) == null ? NotFound() : base.Ok(_context.LegMarkings.Find(id));
         }
 
         [HttpGet("markings/leg")]
         public IActionResult GetLegMarkings()
         {
-            return base.Ok(context.LegMarkings.ToList());
+            return base.Ok(_context.LegMarkings.ToList());
         }
 
         [HttpPost("markings/face")]
@@ -54,11 +54,12 @@ namespace PocketHorseTrainer.API.Controllers
                     return BadRequest();
                 }
 
-                if (context.FaceMarkings.Find(marking.Id) != null)
+                if (_context.FaceMarkings.Find(marking.Id) != null)
                 {
                     return Conflict("Marking already exists!");
                 }
-                context.FaceMarkings.Add(marking);
+                _context.FaceMarkings.Add(marking);
+                _context.SaveChanges();
             }
             catch (Exception)
             {
@@ -77,11 +78,12 @@ namespace PocketHorseTrainer.API.Controllers
                     return BadRequest();
                 }
 
-                if (context.LegMarkings.Find(marking.Id) != null)
+                if (_context.LegMarkings.Find(marking.Id) != null)
                 {
                     return Conflict("Marking already exists!");
                 }
-                context.LegMarkings.Add(marking);
+                _context.LegMarkings.Add(marking);
+                _context.SaveChanges();
             }
             catch (Exception)
             {
@@ -100,11 +102,12 @@ namespace PocketHorseTrainer.API.Controllers
                     return BadRequest();
                 }
 
-                if (context.FaceMarkings.Find(marking.Id) != null)
+                if (_context.FaceMarkings.Find(marking.Id) != null)
                 {
                     return Conflict("Marking already exists!");
                 }
-                context.FaceMarkings.Update(marking);
+                _context.FaceMarkings.Update(marking);
+                _context.SaveChanges();
             }
             catch (Exception)
             {
@@ -123,11 +126,12 @@ namespace PocketHorseTrainer.API.Controllers
                     return BadRequest();
                 }
 
-                if (context.LegMarkings.Find(marking.Id) != null)
+                if (_context.LegMarkings.Find(marking.Id) != null)
                 {
                     return Conflict("Marking already exists!");
                 }
-                context.LegMarkings.Update(marking);
+                _context.LegMarkings.Update(marking);
+                _context.SaveChanges();
             }
             catch (Exception)
             {
@@ -141,11 +145,12 @@ namespace PocketHorseTrainer.API.Controllers
         {
             try
             {
-                if (context.FaceMarkings.Find(id) == null)
+                if (_context.FaceMarkings.Find(id) == null)
                 {
                     return NotFound();
                 }
-                context.FaceMarkings.Remove(context.FaceMarkings.Find(id));
+                _context.FaceMarkings.Remove(_context.FaceMarkings.Find(id));
+                _context.SaveChanges();
             }
             catch (Exception)
             {
@@ -159,11 +164,12 @@ namespace PocketHorseTrainer.API.Controllers
         {
             try
             {
-                if (context.LegMarkings.Find(id) == null)
+                if (_context.LegMarkings.Find(id) == null)
                 {
                     return NotFound();
                 }
-                context.LegMarkings.Remove(context.LegMarkings.Find(id));
+                _context.LegMarkings.Remove(_context.LegMarkings.Find(id));
+                _context.SaveChanges();
             }
             catch (Exception)
             {
@@ -177,13 +183,13 @@ namespace PocketHorseTrainer.API.Controllers
         [HttpGet("{breedId}")]
         public IActionResult GetBreed([FromRoute] int id)
         {
-            return context.Breeds.Find(id) == null ? NotFound() : base.Ok(context.Breeds.Find(id));
+            return _context.Breeds.Find(id) == null ? NotFound() : base.Ok(_context.Breeds.Find(id));
         }
 
         [HttpGet("breeds")]
         public IActionResult GetBreeds()
         {
-            return base.Ok(context.Breeds.ToList());
+            return base.Ok(_context.Breeds.ToList());
         }
 
         [HttpPost("breed")]
@@ -196,11 +202,12 @@ namespace PocketHorseTrainer.API.Controllers
                     return BadRequest();
                 }
 
-                if (context.Breeds.Find(breed.Id) != null)
+                if (_context.Breeds.Find(breed.Id) != null)
                 {
                     return Conflict("Marking already exists!");
                 }
-                context.Breeds.Add(breed);
+                _context.Breeds.Add(breed);
+                _context.SaveChanges();
             }
             catch (Exception)
             {
@@ -219,11 +226,12 @@ namespace PocketHorseTrainer.API.Controllers
                     return BadRequest();
                 }
 
-                if (context.Breeds.Find(breed.Id) != null)
+                if (_context.Breeds.Find(breed.Id) != null)
                 {
                     return Conflict("Marking already exists!");
                 }
-                context.Breeds.Update(breed);
+                _context.Breeds.Update(breed);
+                _context.SaveChanges();
             }
             catch (Exception)
             {
@@ -237,11 +245,12 @@ namespace PocketHorseTrainer.API.Controllers
         {
             try
             {
-                if (context.Breeds.Find(id) == null)
+                if (_context.Breeds.Find(id) == null)
                 {
                     return NotFound();
                 }
-                context.Breeds.Remove(context.Breeds.Find(id));
+                _context.Breeds.Remove(_context.Breeds.Find(id));
+                _context.SaveChanges();
             }
             catch (Exception)
             {
@@ -255,17 +264,17 @@ namespace PocketHorseTrainer.API.Controllers
         [HttpGet("{colorId}")]
         public IActionResult GetColor([FromRoute] int id)
         {
-            if (context.Colors.Find(id) == null)
+            if (_context.Colors.Find(id) == null)
             {
                 return NotFound();
             }
-            return base.Ok(context.Colors.Find(id));
+            return base.Ok(_context.Colors.Find(id));
         }
 
         [HttpGet("colors")]
         public IActionResult GetColors()
         {
-            return base.Ok(context.Colors.ToList());
+            return base.Ok(_context.Colors.ToList());
         }
 
         [HttpPost("color")]
@@ -278,11 +287,12 @@ namespace PocketHorseTrainer.API.Controllers
                     return BadRequest();
                 }
 
-                if (context.Colors.Find(color.Id) != null)
+                if (_context.Colors.Find(color.Id) != null)
                 {
                     return Conflict("Marking already exists!");
                 }
-                context.Colors.Add(color);
+                _context.Colors.Add(color);
+                _context.SaveChanges();
             }
             catch (Exception)
             {
@@ -301,11 +311,12 @@ namespace PocketHorseTrainer.API.Controllers
                     return BadRequest();
                 }
 
-                if (context.Colors.Find(color.Id) != null)
+                if (_context.Colors.Find(color.Id) != null)
                 {
                     return Conflict("Marking already exists!");
                 }
-                context.Colors.Update(color);
+                _context.Colors.Update(color);
+                _context.SaveChanges();
             }
             catch (Exception)
             {
@@ -319,11 +330,12 @@ namespace PocketHorseTrainer.API.Controllers
         {
             try
             {
-                if (context.Colors.Find(id) == null)
+                if (_context.Colors.Find(id) == null)
                 {
                     return NotFound();
                 }
-                context.Colors.Remove(context.Colors.Find(id));
+                _context.Colors.Remove(_context.Colors.Find(id));
+                _context.SaveChanges();
             }
             catch (Exception)
             {
@@ -337,13 +349,13 @@ namespace PocketHorseTrainer.API.Controllers
         [HttpGet("{barnId}")]
         public IActionResult GetBarn([FromRoute] int id)
         {
-            return context.Barns.Find(id) == null ? NotFound() : base.Ok(context.Barns.Find(id));
+            return _context.Barns.Find(id) == null ? NotFound() : base.Ok(_context.Barns.Find(id));
         }
 
         [HttpGet("barns")]
         public IActionResult GetBarns()
         {
-            return base.Ok(context.Barns.ToList());
+            return base.Ok(_context.Barns.ToList());
         }
 
         [HttpPost("barn")]
@@ -356,11 +368,12 @@ namespace PocketHorseTrainer.API.Controllers
                     return BadRequest();
                 }
 
-                if (context.Barns.Find(barn.Id) != null)
+                if (_context.Barns.Find(barn.Id) != null)
                 {
                     return Conflict("Marking already exists!");
                 }
-                context.Barns.Add(barn);
+                _context.Barns.Add(barn);
+                _context.SaveChanges();
             }
             catch (Exception)
             {
@@ -379,11 +392,12 @@ namespace PocketHorseTrainer.API.Controllers
                     return BadRequest();
                 }
 
-                if (context.Barns.Find(barn.Id) != null)
+                if (_context.Barns.Find(barn.Id) != null)
                 {
                     return Conflict("Marking already exists!");
                 }
-                context.Barns.Update(barn);
+                _context.Barns.Update(barn);
+                _context.SaveChanges();
             }
             catch (Exception)
             {
@@ -397,11 +411,12 @@ namespace PocketHorseTrainer.API.Controllers
         {
             try
             {
-                if (context.Barns.Find(id) == null)
+                if (_context.Barns.Find(id) == null)
                 {
                     return NotFound();
                 }
-                context.Barns.Remove(context.Barns.Find(id));
+                _context.Barns.Remove(_context.Barns.Find(id));
+                _context.SaveChanges();
             }
             catch (Exception)
             {

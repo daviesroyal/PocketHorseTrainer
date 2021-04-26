@@ -3,8 +3,13 @@
     x:Class="PocketHorseTrainer.Views.HorseListPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:PocketHorseTrainer.ViewModels.HorseViewModels"
     Title="Horses"
     Shell.TabBarIsVisible="False">
+
+    <ContentPage.BindingContext>
+        <viewModels:HorseListViewModel />
+    </ContentPage.BindingContext>
 
     <ContentPage.ToolbarItems>
 
@@ -12,22 +17,28 @@
 
     </ContentPage.ToolbarItems>
 
-    <ListView
-        x:Name="listView"
-        Margin="20"
-        ItemSelected="OnHorseSelected">
-        <ListView.ItemTemplate>
-            <DataTemplate>
-                <ViewCell>
-                    <StackLayout
-                        Padding="20,0,0,0"
-                        HorizontalOptions="StartAndExpand"
-                        Orientation="Horizontal">
-                        <Label Text="{Binding Name}" VerticalTextAlignment="Center" />
-                    </StackLayout>
-                </ViewCell>
-            </DataTemplate>
-        </ListView.ItemTemplate>
-    </ListView>
+    <StackLayout>
+
+        <Label IsVisible="{Binding HasMessage}" Text="{Binding Message}" />
+
+        <ListView
+            x:Name="listView"
+            Margin="20"
+            ItemSelected="OnHorseSelected">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout
+                            Padding="20,0,0,0"
+                            HorizontalOptions="StartAndExpand"
+                            Orientation="Horizontal">
+                            <Label Text="{Binding Name}" VerticalTextAlignment="Center" />
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+    </StackLayout>
 
 </ContentPage>

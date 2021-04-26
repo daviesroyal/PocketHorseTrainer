@@ -1,5 +1,7 @@
 ﻿using PocketHorseTrainer.Models;
 using PocketHorseTrainer.Services;
+using PocketHorseTrainer.Views;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -14,7 +16,19 @@ namespace PocketHorseTrainer.ViewModels
         {
             get
             {
-                return new Command(async() => await apiServices.EditHorse(Horse).ConfigureAwait(false));
+                return new Command(async () =>
+                {
+                    var result = await apiServices.EditHorse(Horse).ConfigureAwait(false);
+
+                    if (result)
+                    {
+                        _ = Task.Run(async () => await Shell.Current.Navigation.PushAsync(new HorseListPage($"{Horse.Name}'s info has been updated!")).ConfigureAwait(false));
+                    }
+                    else
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Uh oh!", "Something went wrong.", "OK").ConfigureAwait(false);
+                    }
+                });
             }
         }
     }

@@ -6,10 +6,27 @@ using System.Text;
 
 namespace PocketHorseTrainer.ViewModels.HorseViewModels
 {
-    public class HorseListViewModel
+    public class HorseListViewModel : BaseViewModel
     {
         private readonly static ApiServices apiServices = new ApiServices();
 
         public List<Horse> Horses = apiServices.GetAllHorses().Result;
+
+        private string _message;
+        public string Message
+        {
+            get
+            {
+                return _message;
+            }
+            set
+            {
+                _message = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(HasMessage));
+            }
+        }
+
+        public bool HasMessage => string.IsNullOrEmpty(Message);
     }
 }

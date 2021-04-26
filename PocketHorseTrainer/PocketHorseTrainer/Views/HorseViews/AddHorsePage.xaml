@@ -12,9 +12,10 @@
 
     <ContentPage.Content>
 
-        <StackLayout VerticalOptions="Center">
+        <StackLayout>
 
-            <Entry Placeholder="Name" Text="{Binding Name}" />
+            <Label Text="Name" />
+            <Entry Text="{Binding Name}" />
 
             <Label Text="Age" />
             <Entry Keyboard="Numeric" Text="{Binding Age}" />
@@ -35,32 +36,64 @@
                 ItemsSource="{Binding Colors}"
                 SelectedItem="{Binding SelectedColor}" />
 
-            <Label Text="Face Marking" />
-            <Picker
-                ItemDisplayBinding="{Binding Name}"
-                ItemsSource="{Binding FaceMarkings}"
-                SelectedItem="{Binding FaceMarking}" />
-            <Label Text="Front Left Leg Marking" />
-            <Picker
-                ItemDisplayBinding="{Binding Name}"
-                ItemsSource="{Binding LegMarkings}"
-                SelectedItem="{Binding FrontLeft}" />
-            <Label Text="Front Right Leg Marking" />
-            <Picker
-                ItemDisplayBinding="{Binding Name}"
-                ItemsSource="{Binding LegMarkings}"
-                SelectedItem="{Binding FrontRight}" />
-            <Label Text="Back Left Leg Marking" />
-            <Picker
-                ItemDisplayBinding="{Binding Name}"
-                ItemsSource="{Binding LegMarkings}"
-                SelectedItem="{Binding BackLeft}" />
-            <Label Text="Back Right Leg Marking" />
-            <Picker
-                ItemDisplayBinding="{Binding Name}"
-                ItemsSource="{Binding LegMarkings}"
-                SelectedItem="{Binding BackRight}" />
-
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="55" />
+                    <RowDefinition Height="55" />
+                    <RowDefinition Height="55" />
+                </Grid.RowDefinitions>
+                <Label
+                    Grid.Row="0"
+                    Grid.ColumnSpan="2"
+                    HorizontalOptions="Center"
+                    Text="Face Marking" />
+                <Picker
+                    Grid.Row="0"
+                    Grid.ColumnSpan="2"
+                    ItemDisplayBinding="{Binding Name}"
+                    ItemsSource="{Binding FaceMarkings}"
+                    SelectedItem="{Binding FaceMarking}" />
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Text="Front Left Leg Marking" />
+                <Picker
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    ItemDisplayBinding="{Binding Name}"
+                    ItemsSource="{Binding LegMarkings}"
+                    SelectedItem="{Binding FrontLeft}" />
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Text="Front Right Leg Marking" />
+                <Picker
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    ItemDisplayBinding="{Binding Name}"
+                    ItemsSource="{Binding LegMarkings}"
+                    SelectedItem="{Binding FrontRight}" />
+                <Label
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Text="Back Left Leg Marking" />
+                <Picker
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    ItemDisplayBinding="{Binding Name}"
+                    ItemsSource="{Binding LegMarkings}"
+                    SelectedItem="{Binding BackLeft}" />
+                <Label
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Text="Back Right Leg Marking" />
+                <Picker
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    ItemDisplayBinding="{Binding Name}"
+                    ItemsSource="{Binding LegMarkings}"
+                    SelectedItem="{Binding BackRight}" />
+            </Grid>
             <Button Command="{Binding AddCommand}" Text="Add Horse" />
 
         </StackLayout>

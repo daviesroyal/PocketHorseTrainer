@@ -16,12 +16,12 @@ namespace PocketHorseTrainer.API.Controllers
     [ApiController]
     public class HorseController : ControllerBase
     {
-        private readonly ApplicationDbContext context;
+        private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
         public HorseController(ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager)
         {
-            context = dbContext;
+            _context = dbContext;
             _userManager = userManager;
         }
 
@@ -30,7 +30,7 @@ namespace PocketHorseTrainer.API.Controllers
         public async Task<IActionResult> GetUserHorses()
         {
             var user = await _userManager.GetUserAsync(User).ConfigureAwait(false);
-            var horses = await context.HorseOwners.Where(ho => ho.OwnerId == user.Id).Include(ho => ho.Horse).ToListAsync().ConfigureAwait(false);
+            var horses = await _context.HorseOwners.Where(ho => ho.OwnerId == user.Id).Include(ho => ho.Horse).ToListAsync().ConfigureAwait(false);
 
             if (horses == null)
             {
@@ -44,7 +44,7 @@ namespace PocketHorseTrainer.API.Controllers
         [HttpGet("{horseId}")]
         public IActionResult GetHorseById([FromRoute] int id)
         {
-            var horse = context.Horses.Find(id);
+            var horse = _context.Horses.Find(id);
 
             if (horse == null)
             {
@@ -55,7 +55,7 @@ namespace PocketHorseTrainer.API.Controllers
         }
 
         //Create horse
-        [HttpPost]
+        [HttpPost("add")]
         public IActionResult CreateHorse([FromBody] Horse horse)
         {
             try
@@ -65,14 +65,15 @@ namespace PocketHorseTrainer.API.Controllers
                     return BadRequest();
                 }
 
-                var existingHorse = context.Horses.Find(horse.Id);
+                var existingHorse = _context.Horses.Find(horse.Id);
                 if (existingHorse != null)
                 {
                     return Conflict("Horse already exists!");
                 }
 
-                horse.Owner = (ApplicationUser)User.Identity;
-                context.Horses.Add(horse);
+                horse.Owner = _userManager.GetUserAsync(User).Result;
+                _context.Horses.Add(horse);
+                _context.SaveChanges();
             }
             catch (Exception)
             {
@@ -82,7 +83,7 @@ namespace PocketHorseTrainer.API.Controllers
         }
 
         //Update horse
-        [HttpPut]
+        [HttpPut("edit")]
         public IActionResult EditHorse([FromBody] Horse horse)
         {
             try
@@ -91,12 +92,13 @@ namespace PocketHorseTrainer.API.Controllers
                 {
                     return BadRequest();
                 }
-                var existingHorse = context.Horses.Find(horse.Id);
+                var existingHorse = _context.Horses.Find(horse.Id);
                 if (existingHorse == null)
                 {
                     return NotFound();
                 }
-                context.Horses.Update(horse);
+                _context.Horses.Update(horse);
+                _context.SaveChanges();
             }
             catch (Exception)
             {
@@ -111,12 +113,13 @@ namespace PocketHorseTrainer.API.Controllers
         {
             try
             {
-                var horse = context.Horses.Find(id);
+                var horse = _context.Horses.Find(id);
                 if (horse == null)
                 {
                     return NotFound();
                 }
-                context.Horses.Remove(horse);
+                _context.Horses.Remove(horse);
+                _context.SaveChanges();
             }
             catch (Exception)
             {
@@ -130,7 +133,7 @@ namespace PocketHorseTrainer.API.Controllers
         [HttpGet("{horseId}/journal")]
         public IActionResult GetAllHorseJournals([FromRoute] int id)
         {
-            var entries = context.HorseJournals.Where(hj => hj.HorseId == id).Include(hj => hj.Entry).ToList();
+            var entries = _context.HorseJournals.Where(hj => hj.HorseId == id).Include(hj => hj.Entry).ToList();
 
             if (entries == null)
             {
@@ -144,7 +147,7 @@ namespace PocketHorseTrainer.API.Controllers
         [HttpGet("journal/{entryId}")]
         public IActionResult GetJournalEntryById([FromRoute] int id)
         {
-            var entry = context.JournalEntries.Find(id);
+            var entry = _context.JournalEntries.Find(id);
 
             if (entry == null)
             {
@@ -164,8 +167,9 @@ namespace PocketHorseTrainer.API.Controllers
                 {
                     return BadRequest();
                 }
-                entry.Horse = context.Horses.Find(id);
-                context.JournalEntries.Add(entry);
+                entry.Horse = _context.Horses.Find(id);
+                _context.JournalEntries.Add(entry);
+                _context.SaveChanges();
             }
             catch (Exception)
             {
@@ -185,14 +189,15 @@ namespace PocketHorseTrainer.API.Controllers
                     return BadRequest();
                 }
 
-                var existingEntry = context.JournalEntries.Find(id);
+                var existingEntry = _context.JournalEntries.Find(id);
 
                 if (existingEntry == null)
                 {
                     return NotFound();
                 }
 
-                context.JournalEntries.Update(entry);
+                _context.JournalEntries.Update(entry);
+                _context.SaveChanges();
             }
             catch (Exception)
             {
@@ -207,14 +212,15 @@ namespace PocketHorseTrainer.API.Controllers
         {
             try
             {
-                var entry = context.JournalEntries.Find(id);
+                var entry = _context.JournalEntries.Find(id);
 
                 if (entry == null)
                 {
                     return NotFound();
                 }
 
-                context.JournalEntries.Remove(entry);
+                _context.JournalEntries.Remove(entry);
+                _context.SaveChanges();
             }
             catch (Exception)
             {
@@ -228,7 +234,7 @@ namespace PocketHorseTrainer.API.Controllers
         [HttpGet("{horseId}/reports")]
         public IActionResult GetAllTrainingReports([FromRoute] int id)
         {
-            var reports = context.TrainingReports.Where(r => r.Horse.Id == id).ToList();
+            var reports = _context.TrainingReports.Where(r => r.Horse.Id == id).ToList();
 
             if (reports == null)
             {
@@ -242,7 +248,7 @@ namespace PocketHorseTrainer.API.Controllers
         [HttpGet("reports/{reportId}")]
         public IActionResult GetTrainingReportById([FromRoute] int id)
         {
-            var report = context.TrainingReports.Find(id);
+            var report = _context.TrainingReports.Find(id);
 
             if (report == null)
             {
@@ -273,10 +279,11 @@ namespace PocketHorseTrainer.API.Controllers
 
                 var report = new Report(entries)
                 {
-                    Horse = context.Horses.Find(id)
+                    Horse = _context.Horses.Find(id)
                 };
 
-                context.TrainingReports.Add(report);
+                _context.TrainingReports.Add(report);
+                _context.SaveChanges();
                 return Ok(report);
             }
             catch (Exception)
@@ -296,7 +303,7 @@ namespace PocketHorseTrainer.API.Controllers
                     return BadRequest();
                 }
 
-                var report = context.TrainingReports.Find(id);
+                var report = _context.TrainingReports.Find(id);
 
                 if (report == null)
                 {
@@ -313,7 +320,8 @@ namespace PocketHorseTrainer.API.Controllers
 
                 report = new Report(entries);
 
-                context.TrainingReports.Update(report);
+                _context.TrainingReports.Update(report);
+                _context.SaveChanges();
             }
             catch (Exception)
             {
@@ -328,14 +336,15 @@ namespace PocketHorseTrainer.API.Controllers
         {
             try
             {
-                var report = context.TrainingReports.Find(id);
+                var report = _context.TrainingReports.Find(id);
 
                 if (report == null)
                 {
                     return NotFound();
                 }
 
-                context.TrainingReports.Remove(report);
+                _context.TrainingReports.Remove(report);
+                _context.SaveChanges();
             }
             catch (Exception)
             {
@@ -349,7 +358,7 @@ namespace PocketHorseTrainer.API.Controllers
         [HttpGet("{horseId}/goals")]
         public IActionResult GetAllHorseGoals([FromRoute] int id)
         {
-            var goals = context.HorseGoals.Where(hg => hg.HorseId == id).Include(hg => hg.Goal).ToList();
+            var goals = _context.HorseGoals.Where(hg => hg.HorseId == id).Include(hg => hg.Goal).ToList();
 
             if (goals == null)
             {
@@ -363,7 +372,7 @@ namespace PocketHorseTrainer.API.Controllers
         [HttpGet("goals/{goalId}")]
         public IActionResult GetGoalById([FromRoute] int id)
         {
-            var goal = context.TrainingGoals.Find(id);
+            var goal = _context.TrainingGoals.Find(id);
 
             if (goal == null)
             {
@@ -384,8 +393,9 @@ namespace PocketHorseTrainer.API.Controllers
                     return BadRequest();
                 }
 
-                goal.Horse = context.Horses.Find(id);
-                context.TrainingGoals.Add(goal);
+                goal.Horse = _context.Horses.Find(id);
+                _context.TrainingGoals.Add(goal);
+                _context.SaveChanges();
             }
             catch (Exception)
             {
@@ -405,14 +415,15 @@ namespace PocketHorseTrainer.API.Controllers
                     return BadRequest();
                 }
 
-                var existingGoal = context.TrainingGoals.Find(id);
+                var existingGoal = _context.TrainingGoals.Find(id);
 
                 if (existingGoal == null)
                 {
                     return NotFound();
                 }
 
-                context.TrainingGoals.Add(goal);
+                _context.TrainingGoals.Add(goal);
+                _context.SaveChanges();
             }
             catch (Exception)
             {
@@ -427,14 +438,15 @@ namespace PocketHorseTrainer.API.Controllers
         {
             try
             {
-                var goal = context.TrainingGoals.Find(id);
+                var goal = _context.TrainingGoals.Find(id);
 
                 if (goal == null)
                 {
                     return NotFound();
                 }
 
-                context.TrainingGoals.Remove(goal);
+                _context.TrainingGoals.Remove(goal);
+                _context.SaveChanges();
             }
             catch (Exception)
             {
