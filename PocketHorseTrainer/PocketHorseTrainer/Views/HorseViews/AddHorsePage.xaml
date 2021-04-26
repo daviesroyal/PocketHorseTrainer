@@ -95,6 +95,7 @@
                     SelectedItem="{Binding BackRight}" />
             </Grid>
             <Button Command="{Binding AddCommand}" Text="Add Horse" />
+            <Button Clicked="Button_Clicked" Text="Cancel" />
 
         </StackLayout>
 

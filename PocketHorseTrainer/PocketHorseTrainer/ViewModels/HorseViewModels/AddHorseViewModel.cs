@@ -28,6 +28,17 @@ namespace PocketHorseTrainer.ViewModels
             {
                 return new Command(async () =>
                 {
+                    var markings = new Markings
+                    {
+                        FaceMarking = FaceMarking,
+                        FrontLeft = FrontLeft,
+                        FrontRight = FrontRight,
+                        BackLeft = BackLeft,
+                        BackRight = BackRight
+                    };
+
+                    await apiServices.CreateMarkingsAsync(markings).ConfigureAwait(false);
+
                     var horse = new Horse
                     {
                         Name = Name,
@@ -35,14 +46,7 @@ namespace PocketHorseTrainer.ViewModels
                         Barn = SelectedBarn,
                         Breed = SelectedBreed,
                         Color = SelectedColor,
-                        Markings = new Markings
-                        {
-                            FaceMarking = FaceMarking,
-                            FrontLeft = FrontLeft,
-                            FrontRight = FrontRight,
-                            BackLeft = BackLeft,
-                            BackRight = BackRight
-                        }
+                        Markings = markings
                     };
 
                     var result = await apiServices.AddHorse(horse).ConfigureAwait(false);
@@ -50,7 +54,7 @@ namespace PocketHorseTrainer.ViewModels
                     if (result)
                     {
                         //navigation is once again going weird, and messes up other navigation if I try to back out.
-                        _ = Task.Run(async () => await Shell.Current.Navigation.PushAsync(new HorseListPage($"{Name} has been added to your barn!")).ConfigureAwait(false));
+                        Device.BeginInvokeOnMainThread(() => Task.Run(async () => await Shell.Current.Navigation.PushAsync(new HorseListPage($"{Name} has been added to your barn!")).ConfigureAwait(false)));
                     }
                     else
                     {

@@ -13,14 +13,121 @@
 
         <StackLayout>
 
-            <Label Text="{Binding Date}" />
-            <Label Text="{Binding TimeHandling}" />
-            <Label Text="{Binding TimeRiding}" />
-            <Label Text="{Binding Discipline}" />
-            <Label Text="{Binding Weather}" />
-            <Label Text="{Binding Location}" />
-            <Label Text="{Binding Issues}" />
-            <Label Text="{Binding Strengths}" />
+            <Label>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Date: " />
+                        <Span Text="{Binding Date}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Time Handling Horse: " />
+                        <Span Text="{Binding TimeHandling}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Time Riding Horse: " />
+                        <Span Text="{Binding TimeRiding}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Discipline: " />
+                        <Span Text="{Binding Discipline}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label Text="Weather Report" />
+            <!--  make a grid layout here  -->
+            <Label>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Temperature (F): " />
+                        <Span Text="{Binding Weather.TempF}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Precipitation: " />
+                        <Span Text="{Binding Weather.Precipitation}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Precipitation: " />
+                        <Span Text="{Binding Weather.Precipitation}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Wind: " />
+                        <Span Text="{Binding Weather.Wind}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Cloud Cover: " />
+                        <Span Text="{Binding Weather.CloudCover}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Visibility: " />
+                        <Span Text="{Binding Weather.Visibility}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Ground Condition: " />
+                        <Span Text="{Binding Weather.GroundCondition}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+            <Label>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Location: " />
+                        <Span Text="{Binding Location}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Strengths: " />
+                        <Span Text="{Binding Strengths}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Issues: " />
+                        <Span Text="{Binding Issues}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
 
             <!--  add video and comments later  -->
 

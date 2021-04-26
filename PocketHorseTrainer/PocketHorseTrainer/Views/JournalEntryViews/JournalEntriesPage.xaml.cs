@@ -21,12 +21,12 @@ namespace PocketHorseTrainer.Views
 
         private async void OnAddEntryClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new AddJournalEntryPage()).ConfigureAwait(false);
+            await Shell.Current.Navigation.PushAsync(new AddJournalEntryPage()).ConfigureAwait(false);
         }
 
         private async void OnEntrySelected(object sender, SelectedItemChangedEventArgs e)
         {
-            await Navigation.PushAsync(new JournalEntryPage { BindingContext = e.SelectedItem as JournalEntry }).ConfigureAwait(false);
+            await Shell.Current.Navigation.PushAsync(new JournalEntryPage { BindingContext = e.SelectedItem as JournalEntry }).ConfigureAwait(false);
         }
     }
 }

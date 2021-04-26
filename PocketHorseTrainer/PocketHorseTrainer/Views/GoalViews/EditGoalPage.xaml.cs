@@ -22,5 +22,7 @@ namespace PocketHorseTrainer.Views
         {
             ((Goal)BindingContext).Completed = e.Value;
         }
+
+        protected override bool OnBackButtonPressed() => true;
     }
 }

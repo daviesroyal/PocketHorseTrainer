@@ -12,7 +12,7 @@ namespace PocketHorseTrainer.Views
 
         private void Button_OnClicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new RegisterPage());
+            Shell.Current.Navigation.PushAsync(new RegisterPage());
         }
 
         protected override bool OnBackButtonPressed() => true;

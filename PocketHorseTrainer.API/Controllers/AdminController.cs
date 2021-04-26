@@ -20,6 +20,30 @@ namespace PocketHorseTrainer.API.Controllers
         }
 
         #region Markings
+        [HttpPost("markings")]
+        public IActionResult CreateMarkings([FromBody] Markings markings)
+        {
+            try
+            {
+                var newMarkings = new Markings
+                {
+                    FaceMarking = _context.FaceMarkings.Find(markings.FaceMarking.Id),
+                    FrontLeft = _context.LegMarkings.Find(markings.FrontLeft.Id),
+                    FrontRight = _context.LegMarkings.Find(markings.FrontRight.Id),
+                    BackLeft = _context.LegMarkings.Find(markings.BackLeft.Id),
+                    BackRight = _context.LegMarkings.Find(markings.BackRight.Id)
+                };
+
+                _context.Markings.Add(newMarkings);
+                _context.SaveChanges();
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
         [HttpGet("markings/face/{markingId}")]
         public IActionResult GetFaceMarking([FromRoute]int id)
         {

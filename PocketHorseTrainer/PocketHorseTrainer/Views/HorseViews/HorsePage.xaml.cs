@@ -12,17 +12,17 @@ namespace PocketHorseTrainer.Views
 
         private async void OnEditButtonClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new EditHorsePage((Horse)BindingContext)).ConfigureAwait(false);
+            await Shell.Current.Navigation.PushAsync(new EditHorsePage((Horse)BindingContext)).ConfigureAwait(false);
         }
 
         private void OnGoalButtonClicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new GoalListPage());
+            Shell.Current.Navigation.PushAsync(new GoalListPage());
         }
 
         private void OnJournalButtonClicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new JournalEntriesPage());
+            Shell.Current.Navigation.PushAsync(new JournalEntriesPage());
         }
     }
 }

@@ -5,13 +5,26 @@ using Xamarin.Forms;
 
 namespace PocketHorseTrainer.ViewModels
 {
-    public class UserProfileViewModel
+    public class UserProfileViewModel : BaseViewModel
     {
         private readonly ApiServices apiServices = new ApiServices();
         //need to map properties
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string DisplayName { get; set; }
+
+        private string _displayName;
+        public string DisplayName
+        {
+            get
+            {
+                return _displayName;
+            }
+            private set
+            {
+                _displayName = $"{FirstName} {LastName}";
+                OnPropertyChanged();
+            }
+        }
         public DateTime DOB { get; set; }
         public string NewEmail { get; set; }
         public string NewPhone { get; set; }

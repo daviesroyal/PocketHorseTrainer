@@ -35,12 +35,12 @@ namespace PocketHorseTrainer.Views
 
         private async void OnAddHorseClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new AddHorsePage()).ConfigureAwait(false);
+            await Shell.Current.Navigation.PushAsync(new AddHorsePage()).ConfigureAwait(false);
         }
 
         private async void OnHorseSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            await Navigation.PushAsync(new HorsePage { BindingContext = e.SelectedItem as Horse }).ConfigureAwait(false);
+            await Shell.Current.Navigation.PushAsync(new HorsePage { BindingContext = e.SelectedItem as Horse }).ConfigureAwait(false);
         }
     }
 }

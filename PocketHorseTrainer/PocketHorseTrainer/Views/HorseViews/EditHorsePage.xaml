@@ -13,19 +13,89 @@
 
         <StackLayout>
 
+            <Label Text="Name" />
             <Entry Text="{Binding Horse.Name}" />
-            <Entry Text="{Binding Horse.Age}" />
-            <Picker ItemsSource="{Binding Horse.Barn}" />
-            <Picker ItemsSource="{Binding Horse.Breed}" />
-            <Picker ItemsSource="{Binding Horse.Color}" />
-            <Label Text="Markings" />
-            <Picker ItemsSource="{Binding Horse.Markings.FaceMarking}" />
-            <Picker ItemsSource="{Binding Horse.Markings.FrontLeft}" />
-            <Picker ItemsSource="{Binding Horse.Markings.FrontRight}" />
-            <Picker ItemsSource="{Binding Horse.Markings.BackLeft}" />
-            <Picker ItemsSource="{Binding Horse.Markings.BackRight}" />
+
+            <Label Text="Age" />
+            <Entry Keyboard="Numeric" Text="{Binding Horse.Age}" />
+
+            <Label Text="Barn" />
+            <Picker
+                ItemDisplayBinding="{Binding SelectedBarn.Name}"
+                ItemsSource="{Binding Barns}"
+                SelectedItem="{Binding SelectedBarn}" />
+            <Label Text="Breed" />
+            <Picker
+                ItemDisplayBinding="{Binding SelectedBreed.Name}"
+                ItemsSource="{Binding Breeds}"
+                SelectedItem="{Binding SelectedBreed}" />
+            <Label Text="Coat Color" />
+            <Picker
+                ItemDisplayBinding="{Binding SelectedColor.Name}"
+                ItemsSource="{Binding Colors}"
+                SelectedItem="{Binding SelectedColor}" />
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="55" />
+                    <RowDefinition Height="55" />
+                    <RowDefinition Height="55" />
+                </Grid.RowDefinitions>
+                <Label
+                    Grid.Row="0"
+                    Grid.ColumnSpan="2"
+                    HorizontalOptions="Center"
+                    Text="Face Marking" />
+                <Picker
+                    Grid.Row="0"
+                    Grid.ColumnSpan="2"
+                    ItemDisplayBinding="{Binding FaceMarking.Name}"
+                    ItemsSource="{Binding FaceMarkings}"
+                    SelectedItem="{Binding FaceMarking}" />
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Text="Front Left Leg Marking" />
+                <Picker
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    ItemDisplayBinding="{Binding FrontLeft.Name}"
+                    ItemsSource="{Binding LegMarkings}"
+                    SelectedItem="{Binding FrontLeft}" />
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Text="Front Right Leg Marking" />
+                <Picker
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    ItemDisplayBinding="{Binding FrontRight.Name}"
+                    ItemsSource="{Binding LegMarkings}"
+                    SelectedItem="{Binding FrontRight}" />
+                <Label
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Text="Back Left Leg Marking" />
+                <Picker
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    ItemDisplayBinding="{Binding BackLeft.Name}"
+                    ItemsSource="{Binding LegMarkings}"
+                    SelectedItem="{Binding BackLeft}" />
+                <Label
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Text="Back Right Leg Marking" />
+                <Picker
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    ItemDisplayBinding="{Binding BackRight.Name}"
+                    ItemsSource="{Binding LegMarkings}"
+                    SelectedItem="{Binding BackRight}" />
+            </Grid>
 
             <Button Command="{Binding EditCommand}" Text="Edit Horse" />
+            <Button Clicked="Button_Clicked" Text="Cancel" />
 
         </StackLayout>
 

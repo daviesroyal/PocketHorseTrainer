@@ -420,6 +420,22 @@ namespace PocketHorseTrainer.Services
 
         #region markings
 
+        public async Task CreateMarkingsAsync(Markings markings)
+        {
+            var client = GetAuthorizedClient();
+
+            var json = JsonConvert.SerializeObject(markings);
+
+            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "/api/admin/markings")
+            {
+                Content = content
+            };
+
+            _ = await client.SendAsync(request).ConfigureAwait(false);
+        }
+
         #region faceMarking
         public async Task<List<FaceMarking>> GetFaceMarkings()
         {

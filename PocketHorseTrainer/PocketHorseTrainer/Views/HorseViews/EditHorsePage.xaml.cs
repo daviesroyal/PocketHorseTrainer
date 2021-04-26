@@ -12,10 +12,14 @@ namespace PocketHorseTrainer.Views
         {
             InitializeComponent();
 
-            BindingContext = new EditHorseViewModel
-            {
-                Horse = horse
-            };
+            BindingContext = new EditHorseViewModel(horse);
+        }
+
+        protected override bool OnBackButtonPressed() => true;
+
+        private void Button_Clicked(object sender, System.EventArgs e)
+        {
+            Shell.Current.GoToAsync("//horses");
         }
     }
 }

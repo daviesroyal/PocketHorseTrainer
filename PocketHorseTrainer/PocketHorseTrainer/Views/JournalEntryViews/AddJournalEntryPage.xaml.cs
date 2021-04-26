@@ -11,6 +11,8 @@ namespace PocketHorseTrainer.Views
     {
         public AddJournalEntryPage() => InitializeComponent();
 
+        protected override bool OnBackButtonPressed() => true;
+
         private void OnCollectionViewSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             UpdateSelectionData(e.PreviousSelection, e.CurrentSelection);

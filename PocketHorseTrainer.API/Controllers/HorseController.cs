@@ -25,12 +25,13 @@ namespace PocketHorseTrainer.API.Controllers
             _userManager = userManager;
         }
 
+        #region horse
         //Get all horses belonging to signed in user
         [HttpGet]
         public async Task<IActionResult> GetUserHorses()
         {
             var user = await _userManager.GetUserAsync(User).ConfigureAwait(false);
-            var horses = await _context.HorseOwners.Where(ho => ho.OwnerId == user.Id).Include(ho => ho.Horse).ToListAsync().ConfigureAwait(false);
+            var horses = await _context.Horses.Where(ho => ho.Owner.Id == user.Id).ToListAsync().ConfigureAwait(false);
 
             if (horses == null)
             {
@@ -65,21 +66,26 @@ namespace PocketHorseTrainer.API.Controllers
                     return BadRequest();
                 }
 
-                var existingHorse = _context.Horses.Find(horse.Id);
-                if (existingHorse != null)
+                var newHorse = new Horse
                 {
-                    return Conflict("Horse already exists!");
-                }
+                    Name = horse.Name,
+                    Age = horse.Age,
+                    Owner = _userManager.GetUserAsync(User).Result,
+                    Barn = _context.Barns.Find(horse.Barn.Id),
+                    Breed = _context.Breeds.Find(horse.Breed.Id),
+                    Color = _context.Colors.Find(horse.Color.Id),
+                    Markings = _context.Markings.Find(horse.Markings.Id)
+                };
 
-                horse.Owner = _userManager.GetUserAsync(User).Result;
-                _context.Horses.Add(horse);
+                _context.Horses.Add(newHorse);
                 _context.SaveChanges();
+
+                return Ok(newHorse);
             }
             catch (Exception)
             {
                 return BadRequest();
             }
-            return Ok(horse);
         }
 
         //Update horse
@@ -97,7 +103,19 @@ namespace PocketHorseTrainer.API.Controllers
                 {
                     return NotFound();
                 }
-                _context.Horses.Update(horse);
+
+                var newHorse = new Horse
+                {
+                    Name = horse.Name,
+                    Age = horse.Age,
+                    Owner = _userManager.GetUserAsync(User).Result,
+                    Barn = _context.Barns.Find(horse.Barn.Id),
+                    Breed = _context.Breeds.Find(horse.Breed.Id),
+                    Color = _context.Colors.Find(horse.Color.Id),
+                    Markings = _context.Markings.Find(horse.Markings.Id)
+                };
+
+                _context.Horses.Update(newHorse);
                 _context.SaveChanges();
             }
             catch (Exception)
@@ -128,7 +146,9 @@ namespace PocketHorseTrainer.API.Controllers
 
             return NoContent();
         }
+        #endregion
 
+        #region journals
         //Get all journal entries for a horse
         [HttpGet("{horseId}/journal")]
         public IActionResult GetAllHorseJournals([FromRoute] int id)
@@ -229,7 +249,9 @@ namespace PocketHorseTrainer.API.Controllers
 
             return NoContent();
         }
+        #endregion
 
+        #region reports
         //Get all training reports for a horse
         [HttpGet("{horseId}/reports")]
         public IActionResult GetAllTrainingReports([FromRoute] int id)
@@ -353,7 +375,9 @@ namespace PocketHorseTrainer.API.Controllers
 
             return NoContent();
         }
+        #endregion
 
+        #region goals
         //Get all training goals for a horse
         [HttpGet("{horseId}/goals")]
         public IActionResult GetAllHorseGoals([FromRoute] int id)
@@ -455,5 +479,6 @@ namespace PocketHorseTrainer.API.Controllers
 
             return NoContent();
         }
+        #endregion
     }
 }

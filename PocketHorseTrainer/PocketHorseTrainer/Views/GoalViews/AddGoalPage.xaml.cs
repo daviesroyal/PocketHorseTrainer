@@ -7,5 +7,7 @@ namespace PocketHorseTrainer.Views
     public partial class AddGoalPage : ContentPage
     {
         public AddGoalPage() => InitializeComponent();
+
+        protected override bool OnBackButtonPressed() => true;
     }
 }

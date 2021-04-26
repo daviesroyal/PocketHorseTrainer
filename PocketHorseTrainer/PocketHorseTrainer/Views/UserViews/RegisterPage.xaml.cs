@@ -9,9 +9,11 @@ namespace PocketHorseTrainer.Views
     {
         public RegisterPage() => InitializeComponent();
 
+        protected override bool OnBackButtonPressed() => true;
+
         private async void Button_OnClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new LoginPage()).ConfigureAwait(false);
+            await Shell.Current.Navigation.PushAsync(new LoginPage()).ConfigureAwait(false);
         }
     }
 }

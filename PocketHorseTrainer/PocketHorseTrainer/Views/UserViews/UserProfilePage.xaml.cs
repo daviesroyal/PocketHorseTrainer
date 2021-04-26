@@ -11,12 +11,12 @@ namespace PocketHorseTrainer.Views
 
         private async void OnChangePasswordButtonClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new ChangePasswordPage()).ConfigureAwait(false);
+            await Shell.Current.Navigation.PushAsync(new ChangePasswordPage()).ConfigureAwait(false);
         }
 
         private async void OnUpdateContactButtonClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new ChangePhoneAndEmailPage()).ConfigureAwait(false);
+            await Shell.Current.Navigation.PushAsync(new ChangePhoneAndEmailPage()).ConfigureAwait(false);
         }
     }
 }

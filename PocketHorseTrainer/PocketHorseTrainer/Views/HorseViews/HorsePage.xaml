@@ -12,12 +12,88 @@
 
     <StackLayout Margin="20">
 
-        <Label Text="{Binding Name}" />
-        <Label Text="{Binding Age}" />
-        <Label Text="{Binding Barn}" />
-        <Label Text="{Binding Breed}" />
-        <Label Text="{Binding Color}" />
-        <Label Text="{Binding Markings}" />
+        <Label>
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span Text="Name: " />
+                    <Span Text="{Binding Name}" />
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+        <Label>
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span Text="Age: " />
+                    <Span Text="{Binding Age}" />
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+        <Label>
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span Text="Barn: " />
+                    <Span Text="{Binding Barn.Name}" />
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+        <Label>
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span Text="Breed: " />
+                    <Span Text="{Binding Breed.Name}" />
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+        <Label>
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span Text="Color: " />
+                    <Span Text="{Binding Color.Name}" />
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+
+        <Label Text="Markings" />
+        <Label>
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span Text="Face: " />
+                    <Span Text="{Binding Markings.FaceMarking}" />
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+        <Label>
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span Text="Front Left Leg: " />
+                    <Span Text="{Binding Markings.FrontLeft}" />
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+        <Label>
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span Text="Front Right Leg: " />
+                    <Span Text="{Binding Markings.FrontRight}" />
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+        <Label>
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span Text="Back Left Leg: " />
+                    <Span Text="{Binding Markings.BackLeft}" />
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+        <Label>
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span Text="Back Right Leg: " />
+                    <Span Text="{Binding Markings.BackRight}" />
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
 
         <Button Clicked="OnGoalButtonClicked" Text="Training Goals" />
         <Button Clicked="OnJournalButtonClicked" Text="Training Journal" />

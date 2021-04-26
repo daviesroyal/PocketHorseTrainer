@@ -13,5 +13,10 @@ namespace PocketHorseTrainer.Views
 
             BindingContext = new AddHorseViewModel();
         }
+
+        private void Button_Clicked(object sender, System.EventArgs e)
+        {
+            Shell.Current.GoToAsync("//horses");
+        }
     }
 }
