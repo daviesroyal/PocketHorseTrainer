@@ -380,7 +380,7 @@ namespace PocketHorseTrainer.API.Controllers
         [HttpGet("barns")]
         public IActionResult GetBarns()
         {
-            return base.Ok(_context.Barns.Select(x => new BarnOutput { Id = x.Id, Name = x.Name, Address = x.Address }).ToList());
+            return base.Ok(_context.Barns.ToList());
         }
 
         [HttpPost("barn")]
