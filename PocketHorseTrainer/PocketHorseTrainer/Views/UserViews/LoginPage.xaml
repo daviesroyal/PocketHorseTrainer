@@ -7,17 +7,15 @@
     xmlns:d="http://xamarin.com/schemas/2014/forms/design"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="Login"
+    x:DataType="ViewModels:LoginViewModel"
     Shell.FlyoutBehavior="Disabled"
     Shell.NavBarIsVisible="False"
     Shell.PresentationMode="ModalAnimated"
     Shell.TabBarIsVisible="False"
     mc:Ignorable="d">
 
-    <ContentPage.BindingContext>
-        <ViewModels:LoginViewModel />
-    </ContentPage.BindingContext>
-
     <ContentPage.Content>
+
         <StackLayout Padding="10,0,10,0" VerticalOptions="Center">
 
             <Entry Placeholder="Username" Text="{Binding UserName}" />
@@ -28,7 +26,7 @@
                 Text="{Binding Password}" />
 
             <Label Text="Remember Me?" />
-            <CheckBox CheckedChanged="CheckBox_CheckedChanged" IsChecked="{Binding RememberMe}" />
+            <CheckBox CheckedChanged="CheckBox_CheckedChanged" IsChecked="{Binding RememberMe, Mode=OneWayToSource}" />
 
             <Button
                 Command="{Binding LoginCommand}"
@@ -38,10 +36,12 @@
             <Button Clicked="Button_OnClicked" Text="Register" />
 
             <Button
-                Command="{Binding TapCommand}"
+                Clicked="Button_Clicked"
                 Text="Forgot Password?"
                 VerticalOptions="Center" />
 
         </StackLayout>
+
     </ContentPage.Content>
+
 </ContentPage>

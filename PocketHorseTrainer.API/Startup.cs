@@ -47,6 +47,7 @@ namespace PocketHorseTrainer.API
                     Name = "Authorization",
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.Http,
+                    BearerFormat = "JWT",
                     Scheme = "Bearer"
                 });
             });
@@ -156,9 +157,9 @@ namespace PocketHorseTrainer.API
             {
                 app.UseDeveloperExceptionPage();
 
-                //app.UseSwagger();
+                app.UseSwagger();
 
-                //app.UseSwaggerUI(o => o.SwaggerEndpoint("/swagger/v1/swagger.json", "PHT V1"));
+                app.UseSwaggerUI(o => o.SwaggerEndpoint("/swagger/v1/swagger.json", "PHT V1"));
             }
             else
             {

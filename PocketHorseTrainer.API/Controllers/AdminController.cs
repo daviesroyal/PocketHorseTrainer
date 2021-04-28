@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace PocketHorseTrainer.API.Controllers
 {
-    [Authorize] //for admin roles only
+    [Authorize] //for admin roles only, with get and CreateMarkings exceptions
     [Route("api/[controller]")]
     [ApiController]
     public class AdminController : ControllerBase

@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using PocketHorseTrainer.ViewModels;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace PocketHorseTrainer.Views
@@ -6,7 +7,12 @@ namespace PocketHorseTrainer.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AddGoalPage : ContentPage
     {
-        public AddGoalPage() => InitializeComponent();
+        public AddGoalPage()
+        {
+            InitializeComponent();
+
+            BindingContext = new AddGoalViewModel();
+        }
 
         protected override bool OnBackButtonPressed() => true;
     }

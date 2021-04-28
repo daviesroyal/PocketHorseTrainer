@@ -27,6 +27,6 @@ namespace PocketHorseTrainer.ViewModels.HorseViewModels
             }
         }
 
-        public bool HasMessage => string.IsNullOrEmpty(Message);
+        public bool HasMessage => !string.IsNullOrEmpty(Message);
     }
 }

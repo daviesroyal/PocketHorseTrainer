@@ -12,73 +12,88 @@ namespace PocketHorseTrainer.ViewModels
     public class EditHorseViewModel : BaseViewModel
     {
         private static readonly ApiServices apiServices = new ApiServices();
-        public static Horse Horse { get; set; }
+        private readonly RoutingService _routingService = new RoutingService();
+        private readonly MessageService _messageService = new MessageService();
+
+        public Horse Horse { get; set; }
 
         public EditHorseViewModel(Horse horse)
         {
             Horse = horse;
+
+            EditCommand = new Command(() => Edit());
         }
 
         public EditHorseViewModel()
         {
+            EditCommand = new Command(() => Edit());
         }
 
-        public ICommand EditCommand
+        public ICommand EditCommand { get; set; }
+
+        private async void Edit()
+        {
+            var markings = new Markings
+            {
+                FaceMarking = FaceMarking,
+                FrontLeft = FrontLeft,
+                FrontRight = FrontRight,
+                BackLeft = BackLeft,
+                BackRight = BackRight
+            };
+
+            await apiServices.CreateMarkingsAsync(markings).ConfigureAwait(false);
+
+            var horse = new Horse
+            {
+                Name = Horse.Name,
+                Age = Horse.Age,
+                Barn = SelectedBarn,
+                Breed = SelectedBreed,
+                Color = SelectedColor,
+                Markings = markings
+            };
+
+            var result = await apiServices.EditHorse(horse).ConfigureAwait(false);
+
+            if (result)
+            {
+                _routingService.GoTo(new HorseListPage($"{Horse.Name}'s info has been updated!"));
+            }
+            else
+            {
+                _messageService.DisplayAlert("Uh oh!", "Something went wrong.");
+            }
+        }
+
+        public void Init()
+        {
+            _selectedBarn = Horse.Barn;
+            _selectedBreed = Horse.Breed;
+            _selectedColor = Horse.Color;
+            _faceMarking = Horse.Markings.FaceMarking;
+            _frontLeft = Horse.Markings.FrontLeft;
+            _frontRight = Horse.Markings.FrontRight;
+            _backLeft = Horse.Markings.BackLeft;
+            _backRight = Horse.Markings.BackRight;
+        }
+
+        private Barn _selectedBarn;
+        private Breed _selectedBreed;
+        private CoatColor _selectedColor;
+        private FaceMarking _faceMarking;
+        private LegMarking _frontLeft;
+        private LegMarking _frontRight;
+        private LegMarking _backLeft;
+        private LegMarking _backRight;
+
+        public IList<Barn> Barns
         {
             get
             {
-                return new Command(async () =>
-                {
-                    var markings = new Markings
-                    {
-                        FaceMarking = FaceMarking,
-                        FrontLeft = FrontLeft,
-                        FrontRight = FrontRight,
-                        BackLeft = BackLeft,
-                        BackRight = BackRight
-                    };
-
-                    await apiServices.CreateMarkingsAsync(markings).ConfigureAwait(false);
-
-                    var horse = new Horse
-                    {
-                        Name = Horse.Name,
-                        Age = Horse.Age,
-                        Barn = SelectedBarn,
-                        Breed = SelectedBreed,
-                        Color = SelectedColor,
-                        Markings = markings
-                    };
-
-                    var result = await apiServices.EditHorse(horse).ConfigureAwait(false);
-
-                    if (result)
-                    {
-                        Device.BeginInvokeOnMainThread(() => Task.Run(async () => await Shell.Current.Navigation.PushAsync(new HorseListPage($"{Horse.Name}'s info has been updated!")).ConfigureAwait(false)));
-                    }
-                    else
-                    {
-                        await Application.Current.MainPage.DisplayAlert("Uh oh!", "Something went wrong.", "OK").ConfigureAwait(false);
-                    }
-                });
+                return SupportData.Barns;
             }
         }
-
-        private List<Barn> _barns = apiServices.GetBarns().Result;
-        public List<Barn> Barns
-        {
-            get
-            {
-                return _barns;
-            }
-            private set
-            {
-                _barns = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private Barn _selectedBarn = Horse.Barn;
         public Barn SelectedBarn
         {
             get
@@ -92,21 +107,13 @@ namespace PocketHorseTrainer.ViewModels
             }
         }
 
-        private List<Breed> _breeds = apiServices.GetBreeds().Result;
-        public List<Breed> Breeds
+        public IList<Breed> Breeds
         {
             get
             {
-                return _breeds;
-            }
-            private set
-            {
-                _breeds = value;
-                OnPropertyChanged();
+                return SupportData.Breeds;
             }
         }
-
-        private Breed _selectedBreed = Horse.Breed;
         public Breed SelectedBreed
         {
             get
@@ -120,21 +127,13 @@ namespace PocketHorseTrainer.ViewModels
             }
         }
 
-        private List<CoatColor> _colors = apiServices.GetColors().Result;
-        public List<CoatColor> Colors
+        public IList<CoatColor> Colors
         {
             get
             {
-                return _colors;
-            }
-            private set
-            {
-                _colors = value;
-                OnPropertyChanged();
+                return SupportData.Colors;
             }
         }
-
-        private CoatColor _selectedColor = Horse.Color;
         public CoatColor SelectedColor
         {
             get
@@ -148,21 +147,13 @@ namespace PocketHorseTrainer.ViewModels
             }
         }
 
-        private List<FaceMarking> _faceMarkings = apiServices.GetFaceMarkings().Result;
-        public List<FaceMarking> FaceMarkings
+        public IList<FaceMarking> FaceMarkings
         {
             get
             {
-                return _faceMarkings;
-            }
-            private set
-            {
-                _faceMarkings = value;
-                OnPropertyChanged();
+                return SupportData.FaceMarkings;
             }
         }
-
-        private FaceMarking _faceMarking = Horse.Markings.FaceMarking;
         public FaceMarking FaceMarking
         {
             get
@@ -176,21 +167,13 @@ namespace PocketHorseTrainer.ViewModels
             }
         }
 
-        private List<LegMarking> _legMarkings = apiServices.GetLegMarkings().Result;
-        public List<LegMarking> LegMarkings
+        public IList<LegMarking> LegMarkings
         {
             get
             {
-                return _legMarkings;
-            }
-            private set
-            {
-                _legMarkings = value;
-                OnPropertyChanged();
+                return SupportData.LegMarkings;
             }
         }
-
-        private LegMarking _frontLeft = Horse.Markings.FrontLeft;
         public LegMarking FrontLeft
         {
             get
@@ -203,8 +186,6 @@ namespace PocketHorseTrainer.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        private LegMarking _frontRight = Horse.Markings.FrontRight;
         public LegMarking FrontRight
         {
             get
@@ -217,8 +198,6 @@ namespace PocketHorseTrainer.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        private LegMarking _backLeft = Horse.Markings.BackLeft;
         public LegMarking BackLeft
         {
             get
@@ -231,8 +210,6 @@ namespace PocketHorseTrainer.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        private LegMarking _backRight = Horse.Markings.BackRight;
         public LegMarking BackRight
         {
             get

@@ -1,5 +1,6 @@
 ﻿using PocketHorseTrainer.Models;
 using PocketHorseTrainer.Services;
+using PocketHorseTrainer.ViewModels;
 using PocketHorseTrainer.ViewModels.HorseViewModels;
 using System;
 using System.Threading.Tasks;
@@ -14,6 +15,8 @@ namespace PocketHorseTrainer.Views
         public HorseListPage()
         {
             InitializeComponent();
+
+            BindingContext = new HorseListViewModel();
         }
 
         public HorseListPage(string message)
@@ -40,7 +43,7 @@ namespace PocketHorseTrainer.Views
 
         private async void OnHorseSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            await Shell.Current.Navigation.PushAsync(new HorsePage { BindingContext = e.SelectedItem as Horse }).ConfigureAwait(false);
+            await Shell.Current.Navigation.PushAsync(new HorsePage((Horse)e.SelectedItem)).ConfigureAwait(false);
         }
     }
 }

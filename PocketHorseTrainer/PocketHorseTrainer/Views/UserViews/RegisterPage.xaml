@@ -4,11 +4,8 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ViewModels="clr-namespace:PocketHorseTrainer.ViewModels"
-    Title="Register">
-
-    <ContentPage.BindingContext>
-        <ViewModels:RegisterViewModel />
-    </ContentPage.BindingContext>
+    Title="Register"
+    x:DataType="ViewModels:RegisterViewModel">
 
     <ContentPage.Content>
 

@@ -14,6 +14,12 @@ namespace PocketHorseTrainer
         {
             InitializeComponent();
 
+            Routing.RegisterRoute("login", typeof(LoginPage));
+            Routing.RegisterRoute("register", typeof(RegisterPage));
+            Routing.RegisterRoute("main", typeof(MainPage));
+            Routing.RegisterRoute("horses", typeof(HorseListPage));
+            Routing.RegisterRoute("profile", typeof(UserProfilePage));
+
             BindingContext = this;
         }
 

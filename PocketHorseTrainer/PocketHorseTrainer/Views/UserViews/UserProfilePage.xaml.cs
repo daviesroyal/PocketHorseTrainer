@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PocketHorseTrainer.ViewModels;
+using Splat;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -7,7 +9,12 @@ namespace PocketHorseTrainer.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class UserProfilePage : ContentPage
     {
-        public UserProfilePage() => InitializeComponent();
+        public UserProfilePage()
+        {
+            InitializeComponent();
+
+            BindingContext = new UserProfileViewModel();
+        }
 
         private async void OnChangePasswordButtonClicked(object sender, EventArgs e)
         {

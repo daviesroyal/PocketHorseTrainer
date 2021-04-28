@@ -4,11 +4,8 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:viewModels="clr-namespace:PocketHorseTrainer.ViewModels"
+    x:DataType="viewModels:HorseProfileViewModel"
     Shell.TabBarIsVisible="False">
-
-    <ContentPage.BindingContext>
-        <viewModels:HorseProfileViewModel />
-    </ContentPage.BindingContext>
 
     <StackLayout Margin="20">
 
@@ -16,7 +13,7 @@
             <Label.FormattedText>
                 <FormattedString>
                     <Span Text="Name: " />
-                    <Span Text="{Binding Name}" />
+                    <Span Text="{Binding Horse.Name}" />
                 </FormattedString>
             </Label.FormattedText>
         </Label>
@@ -24,7 +21,7 @@
             <Label.FormattedText>
                 <FormattedString>
                     <Span Text="Age: " />
-                    <Span Text="{Binding Age}" />
+                    <Span Text="{Binding Horse.Age}" />
                 </FormattedString>
             </Label.FormattedText>
         </Label>
@@ -32,7 +29,7 @@
             <Label.FormattedText>
                 <FormattedString>
                     <Span Text="Barn: " />
-                    <Span Text="{Binding Barn.Name}" />
+                    <Span Text="{Binding Horse.Barn.Name}" />
                 </FormattedString>
             </Label.FormattedText>
         </Label>
@@ -40,7 +37,7 @@
             <Label.FormattedText>
                 <FormattedString>
                     <Span Text="Breed: " />
-                    <Span Text="{Binding Breed.Name}" />
+                    <Span Text="{Binding Horse.Breed.Name}" />
                 </FormattedString>
             </Label.FormattedText>
         </Label>
@@ -48,7 +45,7 @@
             <Label.FormattedText>
                 <FormattedString>
                     <Span Text="Color: " />
-                    <Span Text="{Binding Color.Name}" />
+                    <Span Text="{Binding Horse.Color.Name}" />
                 </FormattedString>
             </Label.FormattedText>
         </Label>
@@ -58,7 +55,7 @@
             <Label.FormattedText>
                 <FormattedString>
                     <Span Text="Face: " />
-                    <Span Text="{Binding Markings.FaceMarking}" />
+                    <Span Text="{Binding Horse.Markings.FaceMarking.Name}" />
                 </FormattedString>
             </Label.FormattedText>
         </Label>
@@ -66,7 +63,7 @@
             <Label.FormattedText>
                 <FormattedString>
                     <Span Text="Front Left Leg: " />
-                    <Span Text="{Binding Markings.FrontLeft}" />
+                    <Span Text="{Binding Horse.Markings.FrontLeft.Name}" />
                 </FormattedString>
             </Label.FormattedText>
         </Label>
@@ -74,7 +71,7 @@
             <Label.FormattedText>
                 <FormattedString>
                     <Span Text="Front Right Leg: " />
-                    <Span Text="{Binding Markings.FrontRight}" />
+                    <Span Text="{Binding Horse.Markings.FrontRight.Name}" />
                 </FormattedString>
             </Label.FormattedText>
         </Label>
@@ -82,7 +79,7 @@
             <Label.FormattedText>
                 <FormattedString>
                     <Span Text="Back Left Leg: " />
-                    <Span Text="{Binding Markings.BackLeft}" />
+                    <Span Text="{Binding Horse.Markings.BackLeft.Name}" />
                 </FormattedString>
             </Label.FormattedText>
         </Label>
@@ -90,15 +87,15 @@
             <Label.FormattedText>
                 <FormattedString>
                     <Span Text="Back Right Leg: " />
-                    <Span Text="{Binding Markings.BackRight}" />
+                    <Span Text="{Binding Horse.Markings.BackRight.Name}" />
                 </FormattedString>
             </Label.FormattedText>
         </Label>
 
-        <Button Clicked="OnGoalButtonClicked" Text="Training Goals" />
-        <Button Clicked="OnJournalButtonClicked" Text="Training Journal" />
+        <Button Command="{Binding GoalCommand}" Text="Training Goals" />
+        <Button Command="{Binding JournalCommand}" Text="Training Journal" />
 
-        <Button Clicked="OnEditButtonClicked" Text="Edit Horse" />
+        <Button Command="{Binding EditCommand}" Text="Edit Horse" />
         <Button Command="{Binding DeleteCommand}" Text="Remove Horse" />
 
     </StackLayout>

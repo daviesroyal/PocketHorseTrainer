@@ -4,23 +4,27 @@ using PocketHorseTrainer.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace PocketHorseTrainer.ViewModels
 {
-    public class EditJournalEntryViewModel : INotifyPropertyChanged
+    public class EditJournalEntryViewModel : BaseViewModel
     {
         private readonly ApiServices apiServices = new ApiServices();
 
+        public EditJournalEntryViewModel()
+        {
+            EditCommand = new Command(() => Edit());
+        }
         public JournalEntry Entry { get; set; }
 
-        public ICommand EditCommand
+        public ICommand EditCommand { get; set; }
+
+        private Task Edit()
         {
-            get
-            {
-                return new Command(async () => await apiServices.EditJournalEntry(Entry).ConfigureAwait(false));
-            }
+            return apiServices.EditJournalEntry(Entry);
         }
 
         private TargetAreas selectedArea;
@@ -93,16 +97,5 @@ namespace PocketHorseTrainer.ViewModels
             OnPropertyChanged("SelectedStrengthMessage");
             selectedCount++;
         }
-
-        #region INotifyPropertyChanged
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion
     }
 }

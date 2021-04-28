@@ -10,13 +10,24 @@ namespace PocketHorseTrainer.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class GoalListPage : ContentPage
     {
-        public GoalListPage() => InitializeComponent();
+        public GoalListPage()
+        {
+            InitializeComponent();
+
+            BindingContext = new GoalListViewModel();
+        }
+        public GoalListPage(Horse horse)
+        {
+            InitializeComponent();
+
+            BindingContext = new GoalListViewModel(horse);
+        }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
 
-            Device.BeginInvokeOnMainThread(() => listView.ItemsSource = new GoalListViewModel(((Goal)BindingContext).Horse).Goals);
+            Device.BeginInvokeOnMainThread(() => listView.ItemsSource = new GoalListViewModel().Goals);
         }
 
         private async void OnAddGoalClicked(object sender, EventArgs e)

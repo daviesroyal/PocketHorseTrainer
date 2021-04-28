@@ -1,4 +1,6 @@
-﻿using Xamarin.Forms;
+﻿using PocketHorseTrainer.ViewModels;
+using Splat;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace PocketHorseTrainer.Views
@@ -6,7 +8,12 @@ namespace PocketHorseTrainer.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ChangePhoneAndEmailPage : ContentPage
     {
-        public ChangePhoneAndEmailPage() => InitializeComponent();
+        public ChangePhoneAndEmailPage()
+        {
+            InitializeComponent();
+
+            BindingContext = new UserProfileViewModel();
+        }
 
         protected override bool OnBackButtonPressed() => true;
 

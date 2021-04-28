@@ -1,6 +1,7 @@
 ﻿using Matcha.BackgroundService;
 using PocketHorseTrainer.Services;
 using PocketHorseTrainer.Views;
+using Splat;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,6 +13,8 @@ namespace PocketHorseTrainer
     public class PeriodicRefreshTokenCall : IPeriodicTask
     {
         private readonly static ApiServices apiServices = new ApiServices();
+        private readonly RoutingService _routingService = new RoutingService();
+
         public TimeSpan Interval { get; set; }
         public PeriodicRefreshTokenCall(int minutes)
         {
@@ -23,7 +26,7 @@ namespace PocketHorseTrainer
             apiServices.RefreshTokenAsync(TokenSettings.AccessToken, TokenSettings.RefreshToken);
             if (string.IsNullOrEmpty(TokenSettings.AccessToken) || string.IsNullOrEmpty(TokenSettings.RefreshToken))
             {
-                await Shell.Current.GoToAsync("//login").ConfigureAwait(false);
+                _routingService.NavigateTo("//login");
             }
             return true;
         }

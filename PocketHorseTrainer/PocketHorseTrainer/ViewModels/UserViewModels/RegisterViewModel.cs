@@ -8,7 +8,15 @@ namespace PocketHorseTrainer.ViewModels
 {
     internal class RegisterViewModel
     {
-        private readonly ApiServices _apiConnector = new ApiServices();
+        private readonly ApiServices apiServices = new ApiServices();
+        private readonly RoutingService _routingService = new RoutingService();
+        private readonly MessageService _messageService = new MessageService();
+
+        public RegisterViewModel()
+        {
+            RegisterCommand = new Command(() => Register());
+            BackCommand = new Command(() => Back());
+        }
 
         [Required(ErrorMessage = "Please enter your first name.")]
         [Display(Name = "First Name")]
@@ -51,27 +59,29 @@ namespace PocketHorseTrainer.ViewModels
         public string ConfirmPassword { get; set; }
 
         public string Message { get; set; }
-        public ICommand RegisterCommand
-        {
-            get
-            {
-                return new Command(async () =>
-                {
-                    bool isRegistered = await _apiConnector.RegisterUserAsync(FirstName, LastName, UserName, Email, Phone, DOB, Password, ConfirmPassword).ConfigureAwait(false);
+        public ICommand RegisterCommand { get; set; }
+        public ICommand BackCommand { get; set; }
 
-                    if (isRegistered)
-                    {
-                        Message = $"Registration completed, please verify your email - {Email}";
-                        await Shell.Current.DisplayAlert("Success!", Message, "OK").ConfigureAwait(false);
-                        await Shell.Current.GoToAsync("//login").ConfigureAwait(false);
-                    }
-                    else
-                    {
-                        Message = "Something went wrong. Please try again.";
-                        await Shell.Current.DisplayAlert("Uh oh!", Message, "OK").ConfigureAwait(false);
-                    }
-                });
+        private async void Register()
+        {
+            bool isRegistered = await apiServices.RegisterUserAsync(FirstName, LastName, UserName, Email, Phone, DOB, Password, ConfirmPassword).ConfigureAwait(false);
+
+            if (isRegistered)
+            {
+                Message = $"Registration completed, please verify your email - {Email}";
+                _messageService.DisplayAlert("Success!", Message);
+                _routingService.NavigateTo("//login");
             }
+            else
+            {
+                Message = "Something went wrong. Please try again.";
+                _messageService.DisplayAlert("Uh oh!", Message);
+            }
+        }
+
+        private void Back()
+        {
+            _routingService.GoBack();
         }
     }
 }

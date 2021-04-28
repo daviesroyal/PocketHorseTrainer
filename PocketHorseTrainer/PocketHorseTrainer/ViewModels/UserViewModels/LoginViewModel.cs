@@ -1,6 +1,4 @@
 ﻿using PocketHorseTrainer.Services;
-using PocketHorseTrainer.Views;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -9,51 +7,33 @@ namespace PocketHorseTrainer.ViewModels
     public class LoginViewModel : BaseViewModel
     {
         private readonly ApiServices apiServices = new ApiServices();
+        private readonly RoutingService _routingService = new RoutingService();
+        private readonly MessageService _messageService = new MessageService();
+
+        public LoginViewModel()
+        {
+            LoginCommand = new Command(() => Login());
+        }
 
         public string UserName { get; set; }
         public string Password { get; set; }
         public bool RememberMe { get; set; }
 
-        public ICommand LoginCommand
-        {
-            get
-            {
-                return new Command(async () =>
-                {
-                    await apiServices.LoginAsync(UserName, Password, RememberMe).ConfigureAwait(false);
+        public string Message { get; set; }
+        public ICommand LoginCommand { get; set; }
 
-                    if (!string.IsNullOrEmpty(TokenSettings.AccessToken))
-                    {
-                        _ = Task.Run(async () => await Shell.Current.GoToAsync("//main").ConfigureAwait(false));
-                    }
-                    else
-                    {
-                        await Application.Current.MainPage.DisplayAlert("Uh oh!", "Something went wrong. Check your credentials and make sure your email is verified.", "OK").ConfigureAwait(false);
-                    }
-                });
+        private async void Login()
+        {
+            var result = await apiServices.LoginAsync(UserName, Password, RememberMe).ConfigureAwait(false);
+
+            if (!result)
+            {
+                Message = "Something went wrong. Check your credentials and make sure your email is verified.";
+                _messageService.DisplayAlert("Uh oh!", Message);
             }
-        }
-
-        public ICommand TapCommand
-        {
-            get
+            else
             {
-                return new Command(async () =>
-                {
-                    string email = await Application.Current.MainPage.DisplayPromptAsync("Forgot Password", "Enter your email:").ConfigureAwait(false);
-                    if (email != null)
-                    {
-                        var result = await apiServices.ForgotPasswordAsync(email).ConfigureAwait(false);
-                        if (result)
-                        {
-                            await Application.Current.MainPage.DisplayAlert("Success", "A link to reset your password has been sent to your email.", "OK").ConfigureAwait(false);
-                        }
-                        else
-                        {
-                            await Shell.Current.GoToAsync("//login").ConfigureAwait(false);
-                        }
-                    }
-                });
+                _routingService.NavigateTo("//main");
             }
         }
     }

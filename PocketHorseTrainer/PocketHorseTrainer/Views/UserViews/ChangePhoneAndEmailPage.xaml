@@ -3,11 +3,9 @@
     x:Class="PocketHorseTrainer.Views.ChangePhoneAndEmailPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:viewModels="clr-namespace:PocketHorseTrainer.ViewModels">
-
-    <ContentPage.BindingContext>
-        <viewModels:UserProfileViewModel />
-    </ContentPage.BindingContext>
+    xmlns:viewModels="clr-namespace:PocketHorseTrainer.ViewModels"
+    Title="Change Contact Info"
+    x:DataType="viewModels:UserProfileViewModel">
 
     <ContentPage.Content>
 

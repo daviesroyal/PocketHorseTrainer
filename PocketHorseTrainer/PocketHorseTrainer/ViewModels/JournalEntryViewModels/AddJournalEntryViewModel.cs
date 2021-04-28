@@ -6,14 +6,20 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace PocketHorseTrainer.ViewModels
 {
-    public class AddJournalEntryViewModel : INotifyPropertyChanged
+    public class AddJournalEntryViewModel : BaseViewModel
     {
         private readonly ApiServices apiServices = new ApiServices();
+
+        public AddJournalEntryViewModel()
+        {
+            AddCommand = new Command(() => Add());
+        }
 
         public DateTime Date { get; set; }
         public float TimeHandling { get; set; }
@@ -24,27 +30,23 @@ namespace PocketHorseTrainer.ViewModels
         public List<TargetAreas> Issues { get; set; }
         public List<TargetAreas> Strengths { get; set; }
 
-        public ICommand AddCommand
-        {
-            get
-            {
-                return new Command(async () =>
-                {
-                    JournalEntry entry = new JournalEntry
-                    {
-                        Date = Date,
-                        TimeHandling = TimeHandling,
-                        TimeRiding = TimeRiding,
-                        Discipline = Discipline,
-                        Weather = Weather,
-                        Location = Location,
-                        Issues = Issues,
-                        Strengths = Strengths
-                    };
+        public ICommand AddCommand { get; set; }
 
-                    await apiServices.AddJournalEntry(entry.Horse.Id, entry).ConfigureAwait(false);
-                });
-            }
+        private Task Add()
+        {
+            JournalEntry entry = new JournalEntry
+            {
+                Date = Date,
+                TimeHandling = TimeHandling,
+                TimeRiding = TimeRiding,
+                Discipline = Discipline,
+                Weather = Weather,
+                Location = Location,
+                Issues = Issues,
+                Strengths = Strengths
+            };
+
+            return apiServices.AddJournalEntry(entry.Horse.Id, entry);
         }
 
         private TargetAreas selectedArea;
@@ -117,16 +119,5 @@ namespace PocketHorseTrainer.ViewModels
             OnPropertyChanged("SelectedStrengthMessage");
             selectedCount++;
         }
-
-        #region INotifyPropertyChanged
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion
     }
 }

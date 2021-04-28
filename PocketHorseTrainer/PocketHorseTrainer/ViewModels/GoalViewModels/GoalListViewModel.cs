@@ -10,19 +10,15 @@ namespace PocketHorseTrainer.ViewModels.GoalViewModels
     {
         private static readonly ApiServices apiServices = new ApiServices();
 
-        public Horse Horse { get; set; }
+        public static Horse Horse { get; set; }
 
-        public List<Goal> Goals
-        {
-            get
-            {
-                return apiServices.GetAllGoals(Horse.Id).Result;
-            }
-        }
+        public List<Goal> Goals = apiServices.GetAllGoals(Horse.Id).Result;
 
         public GoalListViewModel(Horse horse)
         {
             Horse = horse;
         }
+
+        public GoalListViewModel() { }
     }
 }

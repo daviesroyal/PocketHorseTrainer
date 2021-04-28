@@ -12,8 +12,12 @@ namespace PocketHorseTrainer.Views
         {
             InitializeComponent();
 
-            BindingContext = new EditHorseViewModel(horse);
+            Horse = horse;
+
+            BindingContext = new EditHorseViewModel(Horse);
         }
+
+        internal static Horse Horse { get; set; }
 
         protected override bool OnBackButtonPressed() => true;
 

@@ -88,11 +88,16 @@ namespace PocketHorseTrainer.Services
 
             HttpResponseMessage response = await client.SendAsync(request).ConfigureAwait(false);
 
-            var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-            var tokens = JsonConvert.DeserializeObject<Tokens>(responseContent);
-            TokenSettings.AccessToken = tokens.AccessToken;
-            TokenSettings.RefreshToken = tokens.RefreshToken;
-            return true;
+            if (response.IsSuccessStatusCode)
+            {
+                var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                var tokens = JsonConvert.DeserializeObject<Tokens>(responseContent);
+                TokenSettings.AccessToken = tokens.AccessToken;
+                TokenSettings.RefreshToken = tokens.RefreshToken;
+                return true;
+            }
+
+            return false;
         }
 
         public async Task<bool> Logout()
@@ -139,12 +144,7 @@ namespace PocketHorseTrainer.Services
         {
             var client = GetBaseClient();
 
-            StringContent content = new StringContent(email, Encoding.UTF8, "application/json");
-
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "/api/account/forgotpassword")
-            {
-                Content = content
-            };
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, $"/api/account/forgotpassword/{email}");
 
             HttpResponseMessage response = await client.SendAsync(request).ConfigureAwait(false);
 
@@ -179,12 +179,7 @@ namespace PocketHorseTrainer.Services
         {
             var client = GetAuthorizedClient();
 
-            StringContent content = new StringContent(email, Encoding.UTF8, "application/json");
-
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "/api/account/changeemail")
-            {
-                Content = content
-            };
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, $"/api/account/changeemail/{email}");
 
             HttpResponseMessage response = await client.SendAsync(request).ConfigureAwait(false);
 
@@ -195,12 +190,7 @@ namespace PocketHorseTrainer.Services
         {
             var client = GetAuthorizedClient();
 
-            StringContent content = new StringContent(phone, Encoding.UTF8, "application/json");
-
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "/api/account/changephone")
-            {
-                Content = content
-            };
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, $"/api/account/changephone/{phone}");
 
             HttpResponseMessage response = await client.SendAsync(request).ConfigureAwait(false);
 
@@ -389,6 +379,8 @@ namespace PocketHorseTrainer.Services
         }
         #endregion
 
+        #region supportClasses
+
         #region barn
         public async Task<List<Barn>> GetBarns()
         {
@@ -397,8 +389,6 @@ namespace PocketHorseTrainer.Services
             return JsonConvert.DeserializeObject<List<Barn>>(json);
         }
         #endregion
-
-        #region supportClasses
 
         #region breed
         public async Task<List<Breed>> GetBreeds()

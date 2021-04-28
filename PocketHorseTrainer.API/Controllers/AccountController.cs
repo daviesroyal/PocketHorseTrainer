@@ -24,7 +24,7 @@ namespace PocketHorseTrainer.API.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("api/account")]
+    [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -137,8 +137,8 @@ namespace PocketHorseTrainer.API.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("ForgotPassword")]
-        public async Task<IActionResult> ForgotPassword(string email)
+        [HttpPost("ForgotPassword/{email}")]
+        public async Task<IActionResult> ForgotPassword([FromRoute] string email)
         {
             ApplicationUser user = await _userManager.FindByEmailAsync(email).ConfigureAwait(false);
             if (user == null || !(await _userManager.IsEmailConfirmedAsync(user).ConfigureAwait(false)))
@@ -159,7 +159,7 @@ namespace PocketHorseTrainer.API.Controllers
         }
 
         [HttpPost("ChangePassword")]
-        public async Task<IActionResult> ChangePassword(string oldPassword, string newPassword)
+        public async Task<IActionResult> ChangePassword([FromBody] PasswordInput passwords)
         {
             ApplicationUser user = await _userManager.GetUserAsync(User).ConfigureAwait(false);
             if (user == null)
@@ -167,7 +167,7 @@ namespace PocketHorseTrainer.API.Controllers
                 return NotFound();
             }
 
-            IdentityResult changePasswordResult = await _userManager.ChangePasswordAsync(user, oldPassword, newPassword).ConfigureAwait(false);
+            IdentityResult changePasswordResult = await _userManager.ChangePasswordAsync(user, passwords.OldPassword, passwords.NewPassword).ConfigureAwait(false);
             if (!changePasswordResult.Succeeded)
             {
                 foreach (var error in changePasswordResult.Errors)
@@ -181,8 +181,8 @@ namespace PocketHorseTrainer.API.Controllers
             return Ok();
         }
 
-        [HttpPost("ChangeEmail")]
-        public async Task<IActionResult> ChangeEmail(string email)
+        [HttpPost("ChangeEmail/{email}")]
+        public async Task<IActionResult> ChangeEmail([FromRoute] string email)
         {
             ApplicationUser user = await _userManager.GetUserAsync(User).ConfigureAwait(false);
             string currentEmail = await _userManager.GetEmailAsync(user).ConfigureAwait(false);
@@ -201,8 +201,8 @@ namespace PocketHorseTrainer.API.Controllers
             return Ok();
         }
 
-        [HttpPost("ChangePhone")]
-        public async Task<IActionResult> ChangePhone(string phone)
+        [HttpPost("ChangePhone/{phone}")]
+        public async Task<IActionResult> ChangePhone([FromRoute] string phone)
         {
             ApplicationUser user = await _userManager.GetUserAsync(User).ConfigureAwait(false);
             string currentPhone = await _userManager.GetPhoneNumberAsync(user).ConfigureAwait(false);

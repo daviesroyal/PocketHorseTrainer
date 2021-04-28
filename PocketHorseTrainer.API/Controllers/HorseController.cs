@@ -31,7 +31,10 @@ namespace PocketHorseTrainer.API.Controllers
         public async Task<IActionResult> GetUserHorses()
         {
             var user = await _userManager.GetUserAsync(User).ConfigureAwait(false);
-            var horses = await _context.Horses.Where(ho => ho.Owner.Id == user.Id).ToListAsync().ConfigureAwait(false);
+            var horses = await _context.Horses.Where(h => h.Owner.Id == user.Id)
+                                              .Select(h => new Horse { Id = h.Id, Name = h.Name, Age = h.Age, Barn = h.Barn, Breed = h.Breed, Color = h.Color, Markings = new Markings { FaceMarking = h.Markings.FaceMarking, FrontLeft = h.Markings.FrontLeft, FrontRight = h.Markings.FrontRight, BackLeft = h.Markings.BackLeft, BackRight = h.Markings.BackRight} })
+                                              .ToListAsync()
+                                              .ConfigureAwait(false);
 
             if (horses == null)
             {

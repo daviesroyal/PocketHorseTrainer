@@ -10,9 +10,14 @@ namespace PocketHorseTrainer.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class JournalEntriesPage : ContentPage
     {
-        public JournalEntriesPage() => InitializeComponent();
+        public JournalEntriesPage(Horse horse)
+        {
+            InitializeComponent();
 
-        protected async override void OnAppearing()
+            BindingContext = new JournalEntriesViewModel(horse);
+        }
+
+        protected override void OnAppearing()
         {
             base.OnAppearing();
 

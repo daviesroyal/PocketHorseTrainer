@@ -1,4 +1,5 @@
 ﻿using PocketHorseTrainer.Services;
+using Splat;
 using System.ComponentModel.DataAnnotations;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -8,6 +9,13 @@ namespace PocketHorseTrainer.ViewModels
     public class ChangePasswordViewModel
     {
         private readonly ApiServices apiServices = new ApiServices();
+        private readonly RoutingService _routingService = new RoutingService();
+        private readonly MessageService _messageService = new MessageService();
+
+        public ChangePasswordViewModel()
+        {
+            ChangeCommand = new Command(() => Change());
+        }
 
         [Required]
         [DataType(DataType.Password)]
@@ -23,29 +31,22 @@ namespace PocketHorseTrainer.ViewModels
         [DataType(DataType.Password)]
         [Display(Name = "Confirm new password")]
         [Compare("NewPassword", ErrorMessage = "The new passwords do not match.")]
-        public string ConfirmPassword
-        {
-            get; set;
-        }
+        public string ConfirmPassword { get; set; }
 
-        public ICommand ChangeCommand
+        public ICommand ChangeCommand { get; set; }
+
+        private async void Change()
         {
-            get
+            var result = await apiServices.ChangePasswordAsync(OldPassword, NewPassword).ConfigureAwait(false);
+
+            if (result)
             {
-                return new Command(async () =>
-                {
-                    var result = await apiServices.ChangePasswordAsync(OldPassword, NewPassword).ConfigureAwait(false);
-
-                    if (result)
-                    {
-                        await Application.Current.MainPage.DisplayAlert("Success!", "Your password has been changed!", "OK").ConfigureAwait(false);
-                        await Shell.Current.GoToAsync("//profile").ConfigureAwait(false);
-                    }
-                    else
-                    {
-                        await Application.Current.MainPage.DisplayAlert("Uh oh!", "Something went wrong.", "OK").ConfigureAwait(false);
-                    }
-                });
+                _messageService.DisplayAlert("Success!", "Your password has been changed!");
+                _routingService.NavigateTo("//profile");
+            }
+            else
+            {
+                _messageService.DisplayAlert("Uh oh!", "Something went wrong.");
             }
         }
     }
