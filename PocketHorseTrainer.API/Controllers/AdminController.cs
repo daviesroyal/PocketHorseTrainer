@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PocketHorseTrainer.API.Data;
 using PocketHorseTrainer.API.Models;
-using PocketHorseTrainer.API.Models.SupportModels;
 using System;
 using System.Linq;
 
