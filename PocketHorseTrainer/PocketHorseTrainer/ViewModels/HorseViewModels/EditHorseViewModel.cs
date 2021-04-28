@@ -66,17 +66,11 @@ namespace PocketHorseTrainer.ViewModels
             }
         }
 
-        public void Init()
-        {
-            _selectedBarn = Horse.Barn;
-            _selectedBreed = Horse.Breed;
-            _selectedColor = Horse.Color;
-            _faceMarking = Horse.Markings.FaceMarking;
-            _frontLeft = Horse.Markings.FrontLeft;
-            _frontRight = Horse.Markings.FrontRight;
-            _backLeft = Horse.Markings.BackLeft;
-            _backRight = Horse.Markings.BackRight;
-        }
+        private List<Barn> _barns = apiServices.GetBarns().Result;
+        private List<Breed> _breeds;
+        private List<CoatColor> _colors;
+        private List<FaceMarking> _faceMarkings;
+        private List<LegMarking> _legMarkings;
 
         private Barn _selectedBarn;
         private Breed _selectedBreed;
@@ -87,11 +81,19 @@ namespace PocketHorseTrainer.ViewModels
         private LegMarking _backLeft;
         private LegMarking _backRight;
 
-        public IList<Barn> Barns
+        public List<Barn> Barns
         {
             get
             {
-                return SupportData.Barns;
+                return _barns;
+            }
+            set
+            {
+                if (_barns != value)
+                {
+                    _barns = value;
+                    OnPropertyChanged();
+                }
             }
         }
         public Barn SelectedBarn
@@ -102,16 +104,23 @@ namespace PocketHorseTrainer.ViewModels
             }
             set
             {
-                _selectedBarn = value;
-                OnPropertyChanged();
+                if (_selectedBarn != value)
+                {
+                    _selectedBarn = value;
+                    OnPropertyChanged();
+                }
             }
         }
 
-        public IList<Breed> Breeds
+        public List<Breed> Breeds
         {
             get
             {
-                return SupportData.Breeds;
+                return _breeds;
+            }
+            set
+            {
+                _breeds = apiServices.GetBreeds().Result;
             }
         }
         public Breed SelectedBreed
@@ -122,16 +131,27 @@ namespace PocketHorseTrainer.ViewModels
             }
             set
             {
-                _selectedBreed = value;
-                OnPropertyChanged();
+                if (_selectedBreed != value)
+                {
+                    _selectedBreed = value;
+                    OnPropertyChanged();
+                }
             }
         }
 
-        public IList<CoatColor> Colors
+        public List<CoatColor> Colors
         {
             get
             {
-                return SupportData.Colors;
+                return _colors;
+            }
+            set
+            {
+                if (_colors != value)
+                {
+                    _colors = value;
+                    OnPropertyChanged();
+                }
             }
         }
         public CoatColor SelectedColor
@@ -142,16 +162,27 @@ namespace PocketHorseTrainer.ViewModels
             }
             set
             {
-                _selectedColor = value;
-                OnPropertyChanged();
+                if (_selectedColor != value)
+                {
+                    _selectedColor = value;
+                    OnPropertyChanged();
+                }
             }
         }
 
-        public IList<FaceMarking> FaceMarkings
+        public List<FaceMarking> FaceMarkings
         {
             get
             {
-                return SupportData.FaceMarkings;
+                return _faceMarkings;
+            }
+            set
+            {
+                if (_faceMarkings != value)
+                {
+                    _faceMarkings = value;
+                    OnPropertyChanged();
+                }
             }
         }
         public FaceMarking FaceMarking
@@ -162,16 +193,27 @@ namespace PocketHorseTrainer.ViewModels
             }
             set
             {
-                _faceMarking = value;
-                OnPropertyChanged();
+                if (_faceMarking != value)
+                {
+                    _faceMarking = value;
+                    OnPropertyChanged();
+                }
             }
         }
 
-        public IList<LegMarking> LegMarkings
+        public List<LegMarking> LegMarkings
         {
             get
             {
-                return SupportData.LegMarkings;
+                return _legMarkings;
+            }
+            set
+            {
+                if (_legMarkings != value)
+                {
+                    _legMarkings = value;
+                    OnPropertyChanged();
+                }
             }
         }
         public LegMarking FrontLeft
@@ -182,8 +224,11 @@ namespace PocketHorseTrainer.ViewModels
             }
             set
             {
-                _frontLeft = value;
-                OnPropertyChanged();
+                if (_frontLeft != value)
+                {
+                    _frontLeft = value;
+                    OnPropertyChanged();
+                }
             }
         }
         public LegMarking FrontRight
@@ -194,8 +239,11 @@ namespace PocketHorseTrainer.ViewModels
             }
             set
             {
-                _frontRight = value;
-                OnPropertyChanged();
+                if (_frontRight != value)
+                {
+                    _frontRight = value;
+                    OnPropertyChanged();
+                }
             }
         }
         public LegMarking BackLeft
@@ -206,8 +254,11 @@ namespace PocketHorseTrainer.ViewModels
             }
             set
             {
-                _backLeft = value;
-                OnPropertyChanged();
+                if (_backLeft != value)
+                {
+                    _backLeft = value;
+                    OnPropertyChanged();
+                }
             }
         }
         public LegMarking BackRight
@@ -218,8 +269,11 @@ namespace PocketHorseTrainer.ViewModels
             }
             set
             {
-                _backRight = value;
-                OnPropertyChanged();
+                if (_backRight != value)
+                {
+                    _backRight = value;
+                    OnPropertyChanged();
+                }
             }
         }
     }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PocketHorseTrainer.API.Data;
 using PocketHorseTrainer.API.Models;
+using PocketHorseTrainer.API.Models.SupportModels;
 using System;
 using System.Linq;
 
@@ -379,7 +380,7 @@ namespace PocketHorseTrainer.API.Controllers
         [HttpGet("barns")]
         public IActionResult GetBarns()
         {
-            return base.Ok(_context.Barns.ToList());
+            return base.Ok(_context.Barns.Select(x => new BarnOutput { Id = x.Id, Name = x.Name, Address = x.Address }).ToList());
         }
 
         [HttpPost("barn")]

@@ -1,12 +1,7 @@
 ﻿using Matcha.BackgroundService;
 using PocketHorseTrainer.Services;
-using PocketHorseTrainer.Views;
-using Splat;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using Xamarin.Forms;
 
 namespace PocketHorseTrainer
 {

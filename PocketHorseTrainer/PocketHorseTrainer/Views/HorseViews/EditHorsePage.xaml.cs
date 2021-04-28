@@ -1,5 +1,8 @@
 ﻿using PocketHorseTrainer.Models;
+using PocketHorseTrainer.Models.Horses;
+using PocketHorseTrainer.Services;
 using PocketHorseTrainer.ViewModels;
+using System.Collections.Generic;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 

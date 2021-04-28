@@ -66,6 +66,12 @@ namespace PocketHorseTrainer.ViewModels
             }
         }
 
+        private List<Barn> _barns;
+        private List<Breed> _breeds;
+        private List<CoatColor> _colors;
+        private List<FaceMarking> _faceMarkings;
+        private List<LegMarking> _legMarkings;
+
         private Barn _selectedBarn;
         private Breed _selectedBreed;
         private CoatColor _selectedColor;
@@ -75,11 +81,15 @@ namespace PocketHorseTrainer.ViewModels
         private LegMarking _backLeft;
         private LegMarking _backRight;
 
-        public IList<Barn> Barns
+        public List<Barn> Barns
         {
             get
             {
-                return SupportData.Barns;
+                return _barns;
+            }
+            set
+            {
+                _barns = new List<Barn>(apiServices.GetBarns().Result);
             }
         }
         public Barn SelectedBarn
@@ -95,11 +105,15 @@ namespace PocketHorseTrainer.ViewModels
             }
         }
 
-        public IList<Breed> Breeds
+        public List<Breed> Breeds
         {
             get
             {
-                return SupportData.Breeds;
+                return _breeds;
+            }
+            set
+            {
+                _breeds = new List<Breed>(apiServices.GetBreeds().Result);
             }
         }
         public Breed SelectedBreed
@@ -115,11 +129,15 @@ namespace PocketHorseTrainer.ViewModels
             }
         }
 
-        public IList<CoatColor> Colors
+        public List<CoatColor> Colors
         {
             get
             {
-                return SupportData.Colors;
+                return _colors;
+            }
+            set
+            {
+                _colors = new List<CoatColor>(apiServices.GetColors().Result);
             }
         }
         public CoatColor SelectedColor
@@ -135,11 +153,15 @@ namespace PocketHorseTrainer.ViewModels
             }
         }
 
-        public IList<FaceMarking> FaceMarkings
+        public List<FaceMarking> FaceMarkings
         {
             get
             {
-                return SupportData.FaceMarkings;
+                return _faceMarkings;
+            }
+            set
+            {
+                _faceMarkings = new List<FaceMarking>(apiServices.GetFaceMarkings().Result);
             }
         }
         public FaceMarking FaceMarking
@@ -155,11 +177,15 @@ namespace PocketHorseTrainer.ViewModels
             }
         }
 
-        public IList<LegMarking> LegMarkings
+        public List<LegMarking> LegMarkings
         {
             get
             {
-                return SupportData.LegMarkings;
+                return _legMarkings;
+            }
+            set
+            {
+                _legMarkings = new List<LegMarking>(apiServices.GetLegMarkings().Result);
             }
         }
         public LegMarking FrontLeft
