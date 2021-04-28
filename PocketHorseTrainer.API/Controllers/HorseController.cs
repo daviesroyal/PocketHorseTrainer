@@ -107,18 +107,9 @@ namespace PocketHorseTrainer.API.Controllers
                     return NotFound();
                 }
 
-                var newHorse = new Horse
-                {
-                    Name = horse.Name,
-                    Age = horse.Age,
-                    Owner = _userManager.GetUserAsync(User).Result,
-                    Barn = _context.Barns.Find(horse.Barn.Id),
-                    Breed = _context.Breeds.Find(horse.Breed.Id),
-                    Color = _context.Colors.Find(horse.Color.Id),
-                    Markings = _context.Markings.Find(horse.Markings.Id)
-                };
+                horse.Owner = _userManager.GetUserAsync(User).Result;
 
-                _context.Horses.Update(newHorse);
+                _context.Entry(existingHorse).CurrentValues.SetValues(horse);
                 _context.SaveChanges();
             }
             catch (Exception)
@@ -219,7 +210,7 @@ namespace PocketHorseTrainer.API.Controllers
                     return NotFound();
                 }
 
-                _context.JournalEntries.Update(entry);
+                _context.Entry(existingEntry).CurrentValues.SetValues(entry);
                 _context.SaveChanges();
             }
             catch (Exception)
@@ -343,9 +334,9 @@ namespace PocketHorseTrainer.API.Controllers
                     }
                 }
 
-                report = new Report(entries);
+                //report = new Report(entries);
 
-                _context.TrainingReports.Update(report);
+                _context.Entry(report).CurrentValues.SetValues(entries);
                 _context.SaveChanges();
             }
             catch (Exception)
@@ -449,7 +440,7 @@ namespace PocketHorseTrainer.API.Controllers
                     return NotFound();
                 }
 
-                _context.TrainingGoals.Add(goal);
+                _context.Entry(existingGoal).CurrentValues.SetValues(goal);
                 _context.SaveChanges();
             }
             catch (Exception)

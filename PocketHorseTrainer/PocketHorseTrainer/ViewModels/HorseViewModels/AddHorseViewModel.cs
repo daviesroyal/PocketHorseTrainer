@@ -66,11 +66,11 @@ namespace PocketHorseTrainer.ViewModels
             }
         }
 
-        private List<Barn> _barns;
-        private List<Breed> _breeds;
-        private List<CoatColor> _colors;
-        private List<FaceMarking> _faceMarkings;
-        private List<LegMarking> _legMarkings;
+        private List<Barn> _barns = apiServices.GetBarns().Result;
+        private List<Breed> _breeds = apiServices.GetBreeds().Result;
+        private List<CoatColor> _colors = apiServices.GetColors().Result;
+        private List<FaceMarking> _faceMarkings = apiServices.GetFaceMarkings().Result;
+        private List<LegMarking> _legMarkings = apiServices.GetLegMarkings().Result;
 
         private Barn _selectedBarn;
         private Breed _selectedBreed;
@@ -89,7 +89,11 @@ namespace PocketHorseTrainer.ViewModels
             }
             set
             {
-                _barns = new List<Barn>(apiServices.GetBarns().Result);
+                if (_barns != value)
+                {
+                    _barns = value;
+                    OnPropertyChanged();
+                }
             }
         }
         public Barn SelectedBarn
@@ -100,8 +104,11 @@ namespace PocketHorseTrainer.ViewModels
             }
             set
             {
-                _selectedBarn = value;
-                OnPropertyChanged();
+                if (_selectedBarn != value)
+                {
+                    _selectedBarn = value;
+                    OnPropertyChanged();
+                }
             }
         }
 
@@ -113,7 +120,11 @@ namespace PocketHorseTrainer.ViewModels
             }
             set
             {
-                _breeds = new List<Breed>(apiServices.GetBreeds().Result);
+                if (_breeds != value)
+                {
+                    _breeds = value;
+                    OnPropertyChanged();
+                }
             }
         }
         public Breed SelectedBreed
@@ -124,8 +135,11 @@ namespace PocketHorseTrainer.ViewModels
             }
             set
             {
-                _selectedBreed = value;
-                OnPropertyChanged();
+                if (_selectedBreed != value)
+                {
+                    _selectedBreed = value;
+                    OnPropertyChanged();
+                }
             }
         }
 
@@ -137,7 +151,11 @@ namespace PocketHorseTrainer.ViewModels
             }
             set
             {
-                _colors = new List<CoatColor>(apiServices.GetColors().Result);
+                if (_colors != value)
+                {
+                    _colors = value;
+                    OnPropertyChanged();
+                }
             }
         }
         public CoatColor SelectedColor
@@ -148,8 +166,11 @@ namespace PocketHorseTrainer.ViewModels
             }
             set
             {
-                _selectedColor = value;
-                OnPropertyChanged();
+                if (_selectedColor != value)
+                {
+                    _selectedColor = value;
+                    OnPropertyChanged();
+                }
             }
         }
 
@@ -161,7 +182,11 @@ namespace PocketHorseTrainer.ViewModels
             }
             set
             {
-                _faceMarkings = new List<FaceMarking>(apiServices.GetFaceMarkings().Result);
+                if (_faceMarkings != value)
+                {
+                    _faceMarkings = value;
+                    OnPropertyChanged();
+                }
             }
         }
         public FaceMarking FaceMarking
@@ -172,8 +197,11 @@ namespace PocketHorseTrainer.ViewModels
             }
             set
             {
-                _faceMarking = value;
-                OnPropertyChanged();
+                if (_faceMarking != value)
+                {
+                    _faceMarking = value;
+                    OnPropertyChanged();
+                }
             }
         }
 
@@ -185,7 +213,11 @@ namespace PocketHorseTrainer.ViewModels
             }
             set
             {
-                _legMarkings = new List<LegMarking>(apiServices.GetLegMarkings().Result);
+                if (_legMarkings != value)
+                {
+                    _legMarkings = value;
+                    OnPropertyChanged();
+                }
             }
         }
         public LegMarking FrontLeft
@@ -196,8 +228,11 @@ namespace PocketHorseTrainer.ViewModels
             }
             set
             {
-                _frontLeft = value;
-                OnPropertyChanged();
+                if (_frontLeft != value)
+                {
+                    _frontLeft = value;
+                    OnPropertyChanged();
+                }
             }
         }
         public LegMarking FrontRight
@@ -208,8 +243,11 @@ namespace PocketHorseTrainer.ViewModels
             }
             set
             {
-                _frontRight = value;
-                OnPropertyChanged();
+                if (_frontRight != value)
+                {
+                    _frontRight = value;
+                    OnPropertyChanged();
+                }
             }
         }
         public LegMarking BackLeft
@@ -220,8 +258,11 @@ namespace PocketHorseTrainer.ViewModels
             }
             set
             {
-                _backLeft = value;
-                OnPropertyChanged();
+                if (_backLeft != value)
+                {
+                    _backLeft = value;
+                    OnPropertyChanged();
+                }
             }
         }
         public LegMarking BackRight
@@ -232,8 +273,11 @@ namespace PocketHorseTrainer.ViewModels
             }
             set
             {
-                _backRight = value;
-                OnPropertyChanged();
+                if (_backRight != value)
+                {
+                    _backRight = value;
+                    OnPropertyChanged();
+                }
             }
         }
     }

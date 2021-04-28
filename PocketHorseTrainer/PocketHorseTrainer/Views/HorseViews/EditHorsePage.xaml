@@ -19,17 +19,17 @@
 
             <Label Text="Barn" />
             <Picker
-                ItemDisplayBinding="{Binding SelectedBarn.Name}"
+                ItemDisplayBinding="{Binding Name}"
                 ItemsSource="{Binding Barns}"
                 SelectedItem="{Binding SelectedBarn}" />
             <Label Text="Breed" />
             <Picker
-                ItemDisplayBinding="{Binding SelectedBreed.Name}"
+                ItemDisplayBinding="{Binding Name}"
                 ItemsSource="{Binding Breeds}"
                 SelectedItem="{Binding SelectedBreed}" />
             <Label Text="Coat Color" />
             <Picker
-                ItemDisplayBinding="{Binding SelectedColor.Name}"
+                ItemDisplayBinding="{Binding Name}"
                 ItemsSource="{Binding Colors}"
                 SelectedItem="{Binding SelectedColor}" />
 
@@ -47,7 +47,7 @@
                 <Picker
                     Grid.Row="0"
                     Grid.ColumnSpan="2"
-                    ItemDisplayBinding="{Binding FaceMarking.Name}"
+                    ItemDisplayBinding="{Binding Name}"
                     ItemsSource="{Binding FaceMarkings}"
                     SelectedItem="{Binding FaceMarking}" />
                 <Label
@@ -57,7 +57,7 @@
                 <Picker
                     Grid.Row="1"
                     Grid.Column="0"
-                    ItemDisplayBinding="{Binding FrontLeft.Name}"
+                    ItemDisplayBinding="{Binding Name}"
                     ItemsSource="{Binding LegMarkings}"
                     SelectedItem="{Binding FrontLeft}" />
                 <Label
@@ -67,7 +67,7 @@
                 <Picker
                     Grid.Row="1"
                     Grid.Column="1"
-                    ItemDisplayBinding="{Binding FrontRight.Name}"
+                    ItemDisplayBinding="{Binding Name}"
                     ItemsSource="{Binding LegMarkings}"
                     SelectedItem="{Binding FrontRight}" />
                 <Label
@@ -77,7 +77,7 @@
                 <Picker
                     Grid.Row="2"
                     Grid.Column="0"
-                    ItemDisplayBinding="{Binding BackLeft.Name}"
+                    ItemDisplayBinding="{Binding Name}"
                     ItemsSource="{Binding LegMarkings}"
                     SelectedItem="{Binding BackLeft}" />
                 <Label
@@ -87,7 +87,7 @@
                 <Picker
                     Grid.Row="2"
                     Grid.Column="1"
-                    ItemDisplayBinding="{Binding BackRight.Name}"
+                    ItemDisplayBinding="{Binding Name}"
                     ItemsSource="{Binding LegMarkings}"
                     SelectedItem="{Binding BackRight}" />
             </Grid>

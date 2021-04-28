@@ -44,17 +44,14 @@ namespace PocketHorseTrainer.ViewModels
 
             await apiServices.CreateMarkingsAsync(markings).ConfigureAwait(false);
 
-            var horse = new Horse
-            {
-                Name = Horse.Name,
-                Age = Horse.Age,
-                Barn = SelectedBarn,
-                Breed = SelectedBreed,
-                Color = SelectedColor,
-                Markings = markings
-            };
+            Horse.Name = Horse.Name;
+            Horse.Age = Horse.Age;
+            Horse.Barn = SelectedBarn;
+            Horse.Breed = SelectedBreed;
+            Horse.Color = SelectedColor;
+            Horse.Markings = markings;
 
-            var result = await apiServices.EditHorse(horse).ConfigureAwait(false);
+            var result = await apiServices.EditHorse(Horse).ConfigureAwait(false);
 
             if (result)
             {
@@ -67,11 +64,12 @@ namespace PocketHorseTrainer.ViewModels
         }
 
         private List<Barn> _barns = apiServices.GetBarns().Result;
-        private List<Breed> _breeds;
-        private List<CoatColor> _colors;
-        private List<FaceMarking> _faceMarkings;
-        private List<LegMarking> _legMarkings;
+        private List<Breed> _breeds = apiServices.GetBreeds().Result;
+        private List<CoatColor> _colors = apiServices.GetColors().Result;
+        private List<FaceMarking> _faceMarkings = apiServices.GetFaceMarkings().Result;
+        private List<LegMarking> _legMarkings = apiServices.GetLegMarkings().Result;
 
+        //TODO: persist current data to form fields
         private Barn _selectedBarn;
         private Breed _selectedBreed;
         private CoatColor _selectedColor;
@@ -120,7 +118,11 @@ namespace PocketHorseTrainer.ViewModels
             }
             set
             {
-                _breeds = apiServices.GetBreeds().Result;
+                if (_breeds != value)
+                {
+                    _breeds = value;
+                    OnPropertyChanged();
+                }
             }
         }
         public Breed SelectedBreed
