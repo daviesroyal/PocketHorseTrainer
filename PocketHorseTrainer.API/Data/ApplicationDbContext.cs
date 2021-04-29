@@ -1,13 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using PocketHorseTrainer.API.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 
 namespace PocketHorseTrainer.API.Data
 {
@@ -26,6 +20,8 @@ namespace PocketHorseTrainer.API.Data
         public DbSet<Markings> Markings { get; set; }
         public DbSet<FaceMarking> FaceMarkings { get; set; }
         public DbSet<LegMarking> LegMarkings { get; set; }
+        public DbSet<Weather> Weather { get; set; }
+        public DbSet<TargetAreas> Areas { get; set; }
 
         public DbSet<HorseOwner> HorseOwners { get; set; }
         public DbSet<HorseGoal> HorseGoals { get; set; }

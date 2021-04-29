@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using PocketHorseTrainer.Models;
 using PocketHorseTrainer.Models.Horses;
+using PocketHorseTrainer.Models.Training;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -305,7 +306,7 @@ namespace PocketHorseTrainer.Services
             return JsonConvert.DeserializeObject<Goal>(json);
         }
 
-        public async Task AddGoal(int horseId, Goal goal)
+        public async Task<bool> AddGoal(int horseId, Goal goal)
         {
             var client = GetAuthorizedClient();
 
@@ -313,7 +314,9 @@ namespace PocketHorseTrainer.Services
             HttpContent content = new StringContent(json);
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-            _ = await client.PostAsync($"/api/horse/{horseId}/goal/", content).ConfigureAwait(false);
+            var result = await client.PostAsync($"/api/horse/{horseId}/goal/", content).ConfigureAwait(false);
+
+            return result.IsSuccessStatusCode;
         }
 
         public async Task EditGoal(Goal goal)
@@ -380,6 +383,15 @@ namespace PocketHorseTrainer.Services
         #endregion
 
         #region supportClasses
+
+        #region areas
+        public async Task<List<TargetAreas>> GetAreas()
+        {
+            var client = GetAuthorizedClient();
+            var json = await client.GetStringAsync("/api/admin/areas").ConfigureAwait(false);
+            return JsonConvert.DeserializeObject<List<TargetAreas>>(json);
+        }
+        #endregion
 
         #region barn
         public async Task<List<Barn>> GetBarns()

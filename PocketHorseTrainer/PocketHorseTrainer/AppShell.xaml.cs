@@ -9,6 +9,7 @@ namespace PocketHorseTrainer
     public partial class AppShell : Shell
     {
         private readonly ApiServices apiServices = new ApiServices();
+        private readonly RoutingService _routingService = new RoutingService();
 
         public AppShell()
         {
@@ -19,6 +20,8 @@ namespace PocketHorseTrainer
             Routing.RegisterRoute("main", typeof(MainPage));
             Routing.RegisterRoute("horses", typeof(HorseListPage));
             Routing.RegisterRoute("profile", typeof(UserProfilePage));
+            Routing.RegisterRoute("goals", typeof(GoalListPage));
+            Routing.RegisterRoute("journal", typeof(JournalEntriesPage));
 
             BindingContext = this;
         }
@@ -31,7 +34,7 @@ namespace PocketHorseTrainer
                 {
                     _ = await apiServices.Logout().ConfigureAwait(false);
 
-                    _ = Task.Run(async () => await Current.GoToAsync("//login").ConfigureAwait(false));
+                    _routingService.NavigateTo("//login");
                 });
             }
         }

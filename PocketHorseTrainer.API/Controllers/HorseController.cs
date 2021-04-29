@@ -419,7 +419,7 @@ namespace PocketHorseTrainer.API.Controllers
             {
                 return BadRequest();
             }
-            return Ok(goal);
+            return Ok();
         }
 
         //Update specific training goal

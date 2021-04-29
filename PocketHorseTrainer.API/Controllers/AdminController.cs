@@ -126,11 +126,13 @@ namespace PocketHorseTrainer.API.Controllers
                     return BadRequest();
                 }
 
-                if (_context.FaceMarkings.Find(marking.Id) != null)
+                var existing = _context.FaceMarkings.Find(marking.Id);
+                if (existing == null)
                 {
-                    return Conflict("Marking already exists!");
+                    return NotFound();
                 }
-                _context.FaceMarkings.Update(marking);
+
+                _context.Entry(existing).CurrentValues.SetValues(marking);
                 _context.SaveChanges();
             }
             catch (Exception)
@@ -150,11 +152,13 @@ namespace PocketHorseTrainer.API.Controllers
                     return BadRequest();
                 }
 
-                if (_context.LegMarkings.Find(marking.Id) != null)
+                var existing = _context.LegMarkings.Find(marking.Id);
+                if (existing == null)
                 {
-                    return Conflict("Marking already exists!");
+                    return NotFound();
                 }
-                _context.LegMarkings.Update(marking);
+
+                _context.Entry(existing).CurrentValues.SetValues(marking);
                 _context.SaveChanges();
             }
             catch (Exception)
@@ -228,7 +232,7 @@ namespace PocketHorseTrainer.API.Controllers
 
                 if (_context.Breeds.Find(breed.Id) != null)
                 {
-                    return Conflict("Marking already exists!");
+                    return Conflict("Breed already exists!");
                 }
                 _context.Breeds.Add(breed);
                 _context.SaveChanges();
@@ -250,11 +254,13 @@ namespace PocketHorseTrainer.API.Controllers
                     return BadRequest();
                 }
 
-                if (_context.Breeds.Find(breed.Id) != null)
+                var existing = _context.Breeds.Find(breed.Id);
+                if (existing == null)
                 {
-                    return Conflict("Marking already exists!");
+                    return NotFound();
                 }
-                _context.Breeds.Update(breed);
+
+                _context.Entry(existing).CurrentValues.SetValues(breed);
                 _context.SaveChanges();
             }
             catch (Exception)
@@ -313,7 +319,7 @@ namespace PocketHorseTrainer.API.Controllers
 
                 if (_context.Colors.Find(color.Id) != null)
                 {
-                    return Conflict("Marking already exists!");
+                    return Conflict("Color already exists!");
                 }
                 _context.Colors.Add(color);
                 _context.SaveChanges();
@@ -335,11 +341,13 @@ namespace PocketHorseTrainer.API.Controllers
                     return BadRequest();
                 }
 
-                if (_context.Colors.Find(color.Id) != null)
+                var existing = _context.Colors.Find(color.Id);
+                if (existing == null)
                 {
-                    return Conflict("Marking already exists!");
+                    return NotFound();
                 }
-                _context.Colors.Update(color);
+
+                _context.Entry(existing).CurrentValues.SetValues(color);
                 _context.SaveChanges();
             }
             catch (Exception)
@@ -394,7 +402,7 @@ namespace PocketHorseTrainer.API.Controllers
 
                 if (_context.Barns.Find(barn.Id) != null)
                 {
-                    return Conflict("Marking already exists!");
+                    return Conflict("Barn already exists!");
                 }
                 _context.Barns.Add(barn);
                 _context.SaveChanges();
@@ -416,11 +424,13 @@ namespace PocketHorseTrainer.API.Controllers
                     return BadRequest();
                 }
 
-                if (_context.Barns.Find(barn.Id) != null)
+                var existing = _context.Barns.Find(barn.Id);
+                if (existing == null)
                 {
-                    return Conflict("Marking already exists!");
+                    return NotFound();
                 }
-                _context.Barns.Update(barn);
+
+                _context.Entry(existing).CurrentValues.SetValues(barn);
                 _context.SaveChanges();
             }
             catch (Exception)
@@ -440,6 +450,89 @@ namespace PocketHorseTrainer.API.Controllers
                     return NotFound();
                 }
                 _context.Barns.Remove(_context.Barns.Find(id));
+                _context.SaveChanges();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+            return NoContent();
+        }
+        #endregion
+
+        #region TargetAreas
+        [HttpGet("{areaId}")]
+        public IActionResult GetArea([FromRoute] int id)
+        {
+            return _context.Areas.Find(id) == null ? NotFound() : base.Ok(_context.Areas.Find(id));
+        }
+
+        [HttpGet("areas")]
+        public IActionResult GetAreas()
+        {
+            return base.Ok(_context.Areas.ToList());
+        }
+
+        [HttpPost("area")]
+        public IActionResult AddArea([FromBody] TargetAreas area)
+        {
+            try
+            {
+                if (area == null || !ModelState.IsValid)
+                {
+                    return BadRequest();
+                }
+
+                if (_context.Areas.Find(area.Id) != null)
+                {
+                    return Conflict("Area already exists!");
+                }
+                _context.Areas.Add(area);
+                _context.SaveChanges();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+
+        [HttpPut("area")]
+        public IActionResult EditArea([FromBody] TargetAreas area)
+        {
+            try
+            {
+                if (area == null || !ModelState.IsValid)
+                {
+                    return BadRequest();
+                }
+
+                var existing = _context.Areas.Find(area.Id);
+                if (existing == null)
+                {
+                    return NotFound();
+                }
+
+                _context.Entry(existing).CurrentValues.SetValues(area);
+                _context.SaveChanges();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+
+        [HttpDelete("{areaId}")]
+        public IActionResult DeleteArea([FromRoute] int id)
+        {
+            try
+            {
+                if (_context.Areas.Find(id) == null)
+                {
+                    return NotFound();
+                }
+                _context.Areas.Remove(_context.Areas.Find(id));
                 _context.SaveChanges();
             }
             catch (Exception)

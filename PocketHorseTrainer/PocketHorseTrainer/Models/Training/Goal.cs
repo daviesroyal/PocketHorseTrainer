@@ -3,7 +3,7 @@ using System;
 
 namespace PocketHorseTrainer.Models
 {
-    public enum TimeLength
+    public enum Interval
     {
         daily,
         weekly,
@@ -17,7 +17,7 @@ namespace PocketHorseTrainer.Models
         public string Name { get; set; }
         public Horse Horse { get; set; }
 
-        public TimeLength TimeSpan { get; set; }
+        public Interval Interval { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 

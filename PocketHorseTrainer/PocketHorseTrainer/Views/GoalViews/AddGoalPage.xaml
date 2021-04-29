@@ -14,12 +14,19 @@
         <StackLayout>
 
             <Entry Text="{Binding Name}" />
-            <Picker ItemsSource="{Binding TimeLength}" SelectedItem="{Binding TimeSpan}" />
+
+            <Picker ItemsSource="{Binding Interval}" SelectedItem="{Binding Interval}" />
+
             <DatePicker Date="{Binding StartDate}" />
             <DatePicker Date="{Binding EndDate}" />
-            <Picker ItemsSource="{Binding AreaOfImprovement}" />
+
+            <Picker
+                ItemDisplayBinding="{Binding Name}"
+                ItemsSource="{Binding Areas}"
+                SelectedItem="{Binding SelectedArea}" />
 
             <Button Command="{Binding AddCommand}" Text="Add Goal" />
+
         </StackLayout>
 
     </ContentPage.Content>
