@@ -1,6 +1,7 @@
 ﻿using PocketHorseTrainer.Models;
 using PocketHorseTrainer.Models.Training;
 using PocketHorseTrainer.Services;
+using PocketHorseTrainer.Views;
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
@@ -14,12 +15,19 @@ namespace PocketHorseTrainer.ViewModels
         private readonly RoutingService _routingService = new RoutingService();
         private readonly MessageService _messageService = new MessageService();
 
-        public AddGoalViewModel()
+        public AddGoalViewModel(Horse horse)
         {
+            Horse = horse;
             AddCommand = new Command(() => Add());
         }
 
+        public AddGoalViewModel()
+        {
+        }
+
         public string Name { get; set; }
+
+        public Horse Horse { get; set; }
         public Interval Interval { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
@@ -32,7 +40,8 @@ namespace PocketHorseTrainer.ViewModels
             var goal = new Goal
             {
                 Name = Name,
-                Interval = Interval,
+                Horse = Horse,
+                Interval = SelectedInterval,
                 StartDate = StartDate,
                 EndDate = EndDate,
                 AreaOfImprovement = SelectedArea,
@@ -42,7 +51,7 @@ namespace PocketHorseTrainer.ViewModels
             var result = await apiServices.AddGoal(goal.Horse.Id, goal).ConfigureAwait(false);
             if (result)
             {
-                _routingService.NavigateTo("//goals");
+                _routingService.GoTo(new GoalListPage(Horse));
             }
             else
             {
@@ -82,6 +91,18 @@ namespace PocketHorseTrainer.ViewModels
                 }
             }
         }
-        //TODO: add picker for enum
+
+        private Interval _selectedInterval;
+        public Interval SelectedInterval
+        {
+            get
+            {
+                return _selectedInterval;
+            }
+            set
+            {
+                SetProperty(ref _selectedInterval, value);
+            }
+        }
     }
 }

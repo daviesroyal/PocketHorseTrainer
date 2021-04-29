@@ -16,7 +16,7 @@
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="Name: " />
-                        <Span Text="{Binding Name}" />
+                        <Span Text="{Binding Goal.Name}" />
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
@@ -24,7 +24,7 @@
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="Length of Goal: " />
-                        <Span Text="{Binding TimeSpan}" />
+                        <Span Text="{Binding Goal.Interval}" />
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
@@ -32,7 +32,7 @@
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="Start Date: " />
-                        <Span Text="{Binding StartDate}" />
+                        <Span Text="{Binding Goal.StartDate}" />
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
@@ -40,7 +40,7 @@
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="End Date: " />
-                        <Span Text="{Binding EndDate}" />
+                        <Span Text="{Binding Goal.EndDate}" />
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
@@ -48,7 +48,7 @@
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="Target Area of Improvement: " />
-                        <Span Text="{Binding AreaOfImprovement}" />
+                        <Span Text="{Binding Goal.AreaOfImprovement}" />
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
@@ -56,7 +56,7 @@
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="Completed: " />
-                        <Span Text="{Binding Completed}" />
+                        <Span Text="{Binding Goal.Completed}" />
                     </FormattedString>
                 </Label.FormattedText>
             </Label>

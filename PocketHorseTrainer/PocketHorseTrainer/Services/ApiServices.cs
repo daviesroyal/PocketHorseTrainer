@@ -319,7 +319,7 @@ namespace PocketHorseTrainer.Services
             return result.IsSuccessStatusCode;
         }
 
-        public async Task EditGoal(Goal goal)
+        public async Task<bool> EditGoal(Goal goal)
         {
             var client = GetAuthorizedClient();
 
@@ -327,14 +327,17 @@ namespace PocketHorseTrainer.Services
             HttpContent content = new StringContent(json);
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-            _ = await client.PutAsync($"/api/horse/goals/{goal.Id}", content).ConfigureAwait(false);
+            var result = await client.PutAsync($"/api/horse/goals/{goal.Id}", content).ConfigureAwait(false);
+
+            return result.IsSuccessStatusCode;
         }
 
-        public async Task DeleteGoal(int goalId)
+        public async Task<bool> DeleteGoal(int goalId)
         {
             var client = GetAuthorizedClient();
 
-            _ = await client.DeleteAsync($"/api/horse/goals/{goalId}").ConfigureAwait(false);
+            var result = await client.DeleteAsync($"/api/horse/goals/{goalId}").ConfigureAwait(false);
+            return result.IsSuccessStatusCode;
         }
         #endregion
 

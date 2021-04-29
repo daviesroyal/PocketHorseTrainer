@@ -14,10 +14,17 @@
         <StackLayout>
 
             <Entry Text="{Binding Goal.Name}" />
-            <Picker ItemsSource="{Binding Goal.TimeSpan}" />
+
+            <Picker ItemsSource="{Binding Goal.Interval}" SelectedItem="{Binding SelectedInterval}" />
+
             <DatePicker Date="{Binding Goal.StartDate}" />
             <DatePicker Date="{Binding Goal.EndDate}" />
-            <Picker ItemsSource="{Binding Goal.AreaOfImprovement}" />
+
+            <Picker
+                ItemDisplayBinding="{Binding Name}"
+                ItemsSource="{Binding Areas}"
+                SelectedItem="{Binding SelectedArea}" />
+
             <CheckBox CheckedChanged="CheckBox_CheckedChanged" IsChecked="{Binding Goal.Completed}" />
 
             <Button Command="{Binding EditCommand}" Text="Edit Goal" />

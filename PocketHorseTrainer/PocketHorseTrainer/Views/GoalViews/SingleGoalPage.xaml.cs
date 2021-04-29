@@ -9,11 +9,11 @@ namespace PocketHorseTrainer.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SingleGoalPage : ContentPage
     {
-        public SingleGoalPage()
+        public SingleGoalPage(Goal goal)
         {
             InitializeComponent();
 
-            BindingContext = new GoalViewModel();
+            BindingContext = new GoalViewModel(goal);
         }
 
         private async void OnEditButtonClicked(object sender, EventArgs e)

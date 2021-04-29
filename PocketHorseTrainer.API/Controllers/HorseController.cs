@@ -82,8 +82,7 @@ namespace PocketHorseTrainer.API.Controllers
 
                 _context.Horses.Add(newHorse);
                 _context.SaveChanges();
-
-                return Ok(newHorse);
+                return Ok();
             }
             catch (Exception)
             {
@@ -111,19 +110,18 @@ namespace PocketHorseTrainer.API.Controllers
 
                 _context.Entry(existingHorse).CurrentValues.SetValues(horse);
                 _context.SaveChanges();
+                return NoContent();
             }
             catch (Exception)
             {
                 return BadRequest();
             }
-            return NoContent();
         }
 
         //Delete horse
         [HttpDelete("{horseId}")]
         public IActionResult DeleteHorse([FromRoute] int id)
-        {
-            try
+        {try
             {
                 var horse = _context.Horses.Find(id);
                 if (horse == null)
@@ -132,13 +130,9 @@ namespace PocketHorseTrainer.API.Controllers
                 }
                 _context.Horses.Remove(horse);
                 _context.SaveChanges();
+                return NoContent();
             }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
-
-            return NoContent();
+            catch (Exception) { return BadRequest(); }
         }
         #endregion
 
@@ -184,12 +178,12 @@ namespace PocketHorseTrainer.API.Controllers
                 entry.Horse = _context.Horses.Find(id);
                 _context.JournalEntries.Add(entry);
                 _context.SaveChanges();
+                return Ok();
             }
             catch (Exception)
             {
                 return BadRequest();
             }
-            return Ok(entry);
         }
 
         //Update specific journal entry
@@ -212,12 +206,12 @@ namespace PocketHorseTrainer.API.Controllers
 
                 _context.Entry(existingEntry).CurrentValues.SetValues(entry);
                 _context.SaveChanges();
+                return NoContent();
             }
             catch (Exception)
             {
                 return BadRequest();
             }
-            return NoContent();
         }
 
         //Delete specific journal entry
@@ -235,13 +229,12 @@ namespace PocketHorseTrainer.API.Controllers
 
                 _context.JournalEntries.Remove(entry);
                 _context.SaveChanges();
+                return NoContent();
             }
             catch (Exception)
             {
                 return BadRequest();
             }
-
-            return NoContent();
         }
         #endregion
 
@@ -300,7 +293,7 @@ namespace PocketHorseTrainer.API.Controllers
 
                 _context.TrainingReports.Add(report);
                 _context.SaveChanges();
-                return Ok(report);
+                return Ok();
             }
             catch (Exception)
             {
@@ -338,12 +331,12 @@ namespace PocketHorseTrainer.API.Controllers
 
                 _context.Entry(report).CurrentValues.SetValues(entries);
                 _context.SaveChanges();
+                return NoContent();
             }
             catch (Exception)
             {
                 return BadRequest();
             }
-            return NoContent();
         }
 
         //Delete specific training report
@@ -361,13 +354,12 @@ namespace PocketHorseTrainer.API.Controllers
 
                 _context.TrainingReports.Remove(report);
                 _context.SaveChanges();
+                return NoContent();
             }
             catch (Exception)
             {
                 return BadRequest();
             }
-
-            return NoContent();
         }
         #endregion
 
@@ -414,12 +406,12 @@ namespace PocketHorseTrainer.API.Controllers
                 goal.Horse = _context.Horses.Find(id);
                 _context.TrainingGoals.Add(goal);
                 _context.SaveChanges();
+                return Ok();
             }
             catch (Exception)
             {
                 return BadRequest();
             }
-            return Ok();
         }
 
         //Update specific training goal
@@ -442,12 +434,12 @@ namespace PocketHorseTrainer.API.Controllers
 
                 _context.Entry(existingGoal).CurrentValues.SetValues(goal);
                 _context.SaveChanges();
+                return NoContent();
             }
             catch (Exception)
             {
                 return BadRequest();
             }
-            return NoContent();
         }
 
         //Delete specific training goal
@@ -465,13 +457,12 @@ namespace PocketHorseTrainer.API.Controllers
 
                 _context.TrainingGoals.Remove(goal);
                 _context.SaveChanges();
+                return NoContent();
             }
             catch (Exception)
             {
                 return BadRequest();
             }
-
-            return NoContent();
         }
         #endregion
     }

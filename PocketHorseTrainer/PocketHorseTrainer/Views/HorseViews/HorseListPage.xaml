@@ -5,40 +5,37 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:viewModels="clr-namespace:PocketHorseTrainer.ViewModels.HorseViewModels"
     Title="Horses"
+    x:DataType="viewModels:HorseListViewModel"
     Shell.TabBarIsVisible="False">
 
-    <ContentPage.BindingContext>
-        <viewModels:HorseListViewModel />
-    </ContentPage.BindingContext>
+    <ContentPage.Content>
 
-    <ContentPage.ToolbarItems>
+        <StackLayout>
 
-        <ToolbarItem Clicked="OnAddHorseClicked" Text="Add New Horse" />
+            <Button Clicked="OnAddHorseClicked" Text="Add New Horse" />
 
-    </ContentPage.ToolbarItems>
+            <Label IsVisible="{Binding HasMessage}" Text="{Binding Message}" />
 
-    <StackLayout>
+            <ListView
+                x:Name="listView"
+                Margin="20"
+                ItemSelected="OnHorseSelected">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout
+                                Padding="20,0,0,0"
+                                HorizontalOptions="StartAndExpand"
+                                Orientation="Horizontal">
+                                <Label Text="{Binding Name}" VerticalTextAlignment="Center" />
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
 
-        <Label IsVisible="{Binding HasMessage}" Text="{Binding Message}" />
+        </StackLayout>
 
-        <ListView
-            x:Name="listView"
-            Margin="20"
-            ItemSelected="OnHorseSelected">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <StackLayout
-                            Padding="20,0,0,0"
-                            HorizontalOptions="StartAndExpand"
-                            Orientation="Horizontal">
-                            <Label Text="{Binding Name}" VerticalTextAlignment="Center" />
-                        </StackLayout>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-
-    </StackLayout>
+    </ContentPage.Content>
 
 </ContentPage>

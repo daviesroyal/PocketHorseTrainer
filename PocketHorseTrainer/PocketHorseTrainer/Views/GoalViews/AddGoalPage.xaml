@@ -15,7 +15,7 @@
 
             <Entry Text="{Binding Name}" />
 
-            <Picker ItemsSource="{Binding Interval}" SelectedItem="{Binding Interval}" />
+            <Picker ItemsSource="{Binding Interval}" SelectedItem="{Binding SelectedInterval}" />
 
             <DatePicker Date="{Binding StartDate}" />
             <DatePicker Date="{Binding EndDate}" />
