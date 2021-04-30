@@ -33,7 +33,7 @@ namespace PocketHorseTrainer.ViewModels
 
         private async void Add()
         {
-            var markings = new Markings
+            var newMarkings = new Markings
             {
                 FaceMarking = FaceMarking,
                 FrontLeft = FrontLeft,
@@ -42,7 +42,7 @@ namespace PocketHorseTrainer.ViewModels
                 BackRight = BackRight
             };
 
-            await apiServices.CreateMarkingsAsync(markings).ConfigureAwait(false);
+            var markings = await apiServices.CreateMarkingsAsync(newMarkings).ConfigureAwait(false);
 
             var horse = new Horse
             {

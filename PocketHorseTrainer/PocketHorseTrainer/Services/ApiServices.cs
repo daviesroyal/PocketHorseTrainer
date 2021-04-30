@@ -435,7 +435,7 @@ namespace PocketHorseTrainer.Services
         #endregion
 
         #region markings
-        public async Task CreateMarkingsAsync(Markings markings)
+        public async Task<Markings> CreateMarkingsAsync(Markings markings)
         {
             var client = GetAuthorizedClient();
 
@@ -448,7 +448,9 @@ namespace PocketHorseTrainer.Services
                 Content = content
             };
 
-            _ = await client.SendAsync(request).ConfigureAwait(false);
+            HttpResponseMessage result = await client.SendAsync(request).ConfigureAwait(false);
+            var newMarkings = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
+            return JsonConvert.DeserializeObject<Markings>(newMarkings);
         }
 
         #region faceMarking

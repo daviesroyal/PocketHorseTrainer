@@ -36,7 +36,7 @@ namespace PocketHorseTrainer.API.Controllers
 
                 _context.Markings.Add(newMarkings);
                 _context.SaveChanges();
-                return Ok();
+                return Ok(newMarkings);
             }
             catch (Exception)
             {
