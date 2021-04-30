@@ -19,16 +19,16 @@ namespace PocketHorseTrainer.ViewModels
             Horse = horse;
             EditCommand = new Command(() => Edit());
             DeleteCommand = new Command(() => Delete());
-            GoalCommand = new Command(() => Goal());
-            JournalCommand = new Command(() => Journal());
+            //GoalCommand = new Command(() => Goal());
+            //JournalCommand = new Command(() => Journal());
         }
 
         public Horse Horse { get; set; }
 
         public ICommand EditCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
-        public ICommand GoalCommand { get; set; }
-        public ICommand JournalCommand { get; set; }
+        //public ICommand GoalCommand { get; set; }
+        //public ICommand JournalCommand { get; set; }
 
         private void Edit()
         {
@@ -49,14 +49,14 @@ namespace PocketHorseTrainer.ViewModels
             }
         }
 
-        private void Goal()
-        {
-            _routingService.GoTo(new GoalListPage(Horse));
-        }
+        //private void Goal()
+        //{
+        //    _routingService.GoTo(new GoalListPage(Horse));
+        //}
 
-        private void Journal()
-        {
-            _routingService.GoTo(new JournalEntriesPage(Horse));
-        }
+        //private void Journal()
+        //{
+        //    _routingService.GoTo(new JournalEntriesPage(Horse));
+        //}
     }
 }

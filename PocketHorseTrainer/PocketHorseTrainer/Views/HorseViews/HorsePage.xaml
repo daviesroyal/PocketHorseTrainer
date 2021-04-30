@@ -92,8 +92,8 @@
             </Label.FormattedText>
         </Label>
 
-        <Button Command="{Binding GoalCommand}" Text="Training Goals" />
-        <Button Command="{Binding JournalCommand}" Text="Training Journal" />
+        <!--<Button Command="{Binding GoalCommand}" Text="Training Goals" />
+        <Button Command="{Binding JournalCommand}" Text="Training Journal" />-->
 
         <Button Command="{Binding EditCommand}" Text="Edit Horse" />
         <Button Command="{Binding DeleteCommand}" Text="Remove Horse" />
