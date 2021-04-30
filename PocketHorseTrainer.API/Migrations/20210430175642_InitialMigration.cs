@@ -14,6 +14,7 @@ namespace PocketHorseTrainer.API.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AppointmentDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
                     Recurring = table.Column<bool>(type: "bit", nullable: false),
                     NumOfWeeks = table.Column<int>(type: "int", nullable: false),
                     NextAppDate = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -48,6 +49,7 @@ namespace PocketHorseTrainer.API.Migrations
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DOB = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -69,15 +71,55 @@ namespace PocketHorseTrainer.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Markings",
+                name: "Breeds",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1")
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Markings", x => x.Id);
+                    table.PrimaryKey("PK_Breeds", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Colors",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Colors", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FaceMarkings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FaceMarkings", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LegMarkings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LegMarkings", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -86,26 +128,11 @@ namespace PocketHorseTrainer.API.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<int>(type: "int", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TargetAreas", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TrainingReports",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TimeSpan = table.Column<int>(type: "int", nullable: false),
-                    TimeHandling = table.Column<float>(type: "real", nullable: false),
-                    TimeRiding = table.Column<float>(type: "real", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TrainingReports", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -114,7 +141,12 @@ namespace PocketHorseTrainer.API.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TempF = table.Column<float>(type: "real", nullable: false)
+                    TempF = table.Column<float>(type: "real", nullable: false),
+                    Precipitation = table.Column<int>(type: "int", nullable: false),
+                    Wind = table.Column<int>(type: "int", nullable: false),
+                    CloudCover = table.Column<int>(type: "int", nullable: false),
+                    Visibility = table.Column<int>(type: "int", nullable: false),
+                    GroundCondition = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -256,12 +288,173 @@ namespace PocketHorseTrainer.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Markings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FaceMarkingId = table.Column<int>(type: "int", nullable: true),
+                    FrontLeftId = table.Column<int>(type: "int", nullable: true),
+                    FrontRightId = table.Column<int>(type: "int", nullable: true),
+                    BackLeftId = table.Column<int>(type: "int", nullable: true),
+                    BackRightId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Markings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Markings_FaceMarkings_FaceMarkingId",
+                        column: x => x.FaceMarkingId,
+                        principalTable: "FaceMarkings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Markings_LegMarkings_BackLeftId",
+                        column: x => x.BackLeftId,
+                        principalTable: "LegMarkings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Markings_LegMarkings_BackRightId",
+                        column: x => x.BackRightId,
+                        principalTable: "LegMarkings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Markings_LegMarkings_FrontLeftId",
+                        column: x => x.FrontLeftId,
+                        principalTable: "LegMarkings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Markings_LegMarkings_FrontRightId",
+                        column: x => x.FrontRightId,
+                        principalTable: "LegMarkings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Horses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OwnerId = table.Column<int>(type: "int", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Age = table.Column<int>(type: "int", nullable: false),
+                    BarnId = table.Column<int>(type: "int", nullable: true),
+                    BreedId = table.Column<int>(type: "int", nullable: true),
+                    ColorId = table.Column<int>(type: "int", nullable: true),
+                    MarkingsId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Horses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Horses_AspNetUsers_OwnerId",
+                        column: x => x.OwnerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Horses_Barns_BarnId",
+                        column: x => x.BarnId,
+                        principalTable: "Barns",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Horses_Breeds_BreedId",
+                        column: x => x.BreedId,
+                        principalTable: "Breeds",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Horses_Colors_ColorId",
+                        column: x => x.ColorId,
+                        principalTable: "Colors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Horses_Markings_MarkingsId",
+                        column: x => x.MarkingsId,
+                        principalTable: "Markings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BarnHorses",
+                columns: table => new
+                {
+                    HorseId = table.Column<int>(type: "int", nullable: false),
+                    BarnId = table.Column<int>(type: "int", nullable: false),
+                    HorseBarnBarnId = table.Column<int>(type: "int", nullable: true),
+                    HorseBarnHorseId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BarnHorses", x => new { x.HorseId, x.BarnId });
+                    table.ForeignKey(
+                        name: "FK_BarnHorses_BarnHorses_HorseBarnHorseId_HorseBarnBarnId",
+                        columns: x => new { x.HorseBarnHorseId, x.HorseBarnBarnId },
+                        principalTable: "BarnHorses",
+                        principalColumns: new[] { "HorseId", "BarnId" },
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_BarnHorses_Barns_BarnId",
+                        column: x => x.BarnId,
+                        principalTable: "Barns",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BarnHorses_Horses_HorseId",
+                        column: x => x.HorseId,
+                        principalTable: "Horses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "HorseOwners",
+                columns: table => new
+                {
+                    HorseId = table.Column<int>(type: "int", nullable: false),
+                    OwnerId = table.Column<int>(type: "int", nullable: false),
+                    HorseOwnerHorseId = table.Column<int>(type: "int", nullable: true),
+                    HorseOwnerOwnerId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HorseOwners", x => new { x.HorseId, x.OwnerId });
+                    table.ForeignKey(
+                        name: "FK_HorseOwners_AspNetUsers_OwnerId",
+                        column: x => x.OwnerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_HorseOwners_HorseOwners_HorseOwnerHorseId_HorseOwnerOwnerId",
+                        columns: x => new { x.HorseOwnerHorseId, x.HorseOwnerOwnerId },
+                        principalTable: "HorseOwners",
+                        principalColumns: new[] { "HorseId", "OwnerId" },
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_HorseOwners_Horses_HorseId",
+                        column: x => x.HorseId,
+                        principalTable: "Horses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TrainingGoals",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    HorseId = table.Column<int>(type: "int", nullable: true),
                     TimeSpan = table.Column<int>(type: "int", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -272,9 +465,91 @@ namespace PocketHorseTrainer.API.Migrations
                 {
                     table.PrimaryKey("PK_TrainingGoals", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_TrainingGoals_Horses_HorseId",
+                        column: x => x.HorseId,
+                        principalTable: "Horses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_TrainingGoals_TargetAreas_AreaOfImprovementId",
                         column: x => x.AreaOfImprovementId,
                         principalTable: "TargetAreas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TrainingReports",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    HorseId = table.Column<int>(type: "int", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TimeHandling = table.Column<float>(type: "real", nullable: false),
+                    TimeRiding = table.Column<float>(type: "real", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TrainingReports", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TrainingReports_Horses_HorseId",
+                        column: x => x.HorseId,
+                        principalTable: "Horses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "HorseGoals",
+                columns: table => new
+                {
+                    HorseId = table.Column<int>(type: "int", nullable: false),
+                    GoalId = table.Column<int>(type: "int", nullable: false),
+                    HorseGoalGoalId = table.Column<int>(type: "int", nullable: true),
+                    HorseGoalHorseId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HorseGoals", x => new { x.HorseId, x.GoalId });
+                    table.ForeignKey(
+                        name: "FK_HorseGoals_HorseGoals_HorseGoalHorseId_HorseGoalGoalId",
+                        columns: x => new { x.HorseGoalHorseId, x.HorseGoalGoalId },
+                        principalTable: "HorseGoals",
+                        principalColumns: new[] { "HorseId", "GoalId" },
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_HorseGoals_Horses_HorseId",
+                        column: x => x.HorseId,
+                        principalTable: "Horses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_HorseGoals_TrainingGoals_GoalId",
+                        column: x => x.GoalId,
+                        principalTable: "TrainingGoals",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Comments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ReportId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Comments_TrainingReports_ReportId",
+                        column: x => x.ReportId,
+                        principalTable: "TrainingReports",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -344,132 +619,6 @@ namespace PocketHorseTrainer.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Horses",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Age = table.Column<int>(type: "int", nullable: false),
-                    BarnId = table.Column<int>(type: "int", nullable: true),
-                    Breed = table.Column<int>(type: "int", nullable: false),
-                    Color = table.Column<int>(type: "int", nullable: false),
-                    MarkingsId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Horses", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Horses_Barns_BarnId",
-                        column: x => x.BarnId,
-                        principalTable: "Barns",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Horses_Markings_MarkingsId",
-                        column: x => x.MarkingsId,
-                        principalTable: "Markings",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "BarnHorses",
-                columns: table => new
-                {
-                    HorseId = table.Column<int>(type: "int", nullable: false),
-                    BarnId = table.Column<int>(type: "int", nullable: false),
-                    HorseBarnBarnId = table.Column<int>(type: "int", nullable: true),
-                    HorseBarnHorseId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BarnHorses", x => new { x.HorseId, x.BarnId });
-                    table.ForeignKey(
-                        name: "FK_BarnHorses_BarnHorses_HorseBarnHorseId_HorseBarnBarnId",
-                        columns: x => new { x.HorseBarnHorseId, x.HorseBarnBarnId },
-                        principalTable: "BarnHorses",
-                        principalColumns: new[] { "HorseId", "BarnId" },
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_BarnHorses_Barns_BarnId",
-                        column: x => x.BarnId,
-                        principalTable: "Barns",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_BarnHorses_Horses_HorseId",
-                        column: x => x.HorseId,
-                        principalTable: "Horses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "HorseGoals",
-                columns: table => new
-                {
-                    HorseId = table.Column<int>(type: "int", nullable: false),
-                    GoalId = table.Column<int>(type: "int", nullable: false),
-                    HorseGoalGoalId = table.Column<int>(type: "int", nullable: true),
-                    HorseGoalHorseId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_HorseGoals", x => new { x.HorseId, x.GoalId });
-                    table.ForeignKey(
-                        name: "FK_HorseGoals_HorseGoals_HorseGoalHorseId_HorseGoalGoalId",
-                        columns: x => new { x.HorseGoalHorseId, x.HorseGoalGoalId },
-                        principalTable: "HorseGoals",
-                        principalColumns: new[] { "HorseId", "GoalId" },
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_HorseGoals_Horses_HorseId",
-                        column: x => x.HorseId,
-                        principalTable: "Horses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_HorseGoals_TrainingGoals_GoalId",
-                        column: x => x.GoalId,
-                        principalTable: "TrainingGoals",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "HorseOwners",
-                columns: table => new
-                {
-                    HorseId = table.Column<int>(type: "int", nullable: false),
-                    OwnerId = table.Column<int>(type: "int", nullable: false),
-                    HorseOwnerHorseId = table.Column<int>(type: "int", nullable: true),
-                    HorseOwnerOwnerId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_HorseOwners", x => new { x.HorseId, x.OwnerId });
-                    table.ForeignKey(
-                        name: "FK_HorseOwners_AspNetUsers_OwnerId",
-                        column: x => x.OwnerId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_HorseOwners_HorseOwners_HorseOwnerHorseId_HorseOwnerOwnerId",
-                        columns: x => new { x.HorseOwnerHorseId, x.HorseOwnerOwnerId },
-                        principalTable: "HorseOwners",
-                        principalColumns: new[] { "HorseId", "OwnerId" },
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_HorseOwners_Horses_HorseId",
-                        column: x => x.HorseId,
-                        principalTable: "Horses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "JournalEntries",
                 columns: table => new
                 {
@@ -479,9 +628,10 @@ namespace PocketHorseTrainer.API.Migrations
                     TimeHandling = table.Column<float>(type: "real", nullable: false),
                     TimeRiding = table.Column<float>(type: "real", nullable: false),
                     HorseId = table.Column<int>(type: "int", nullable: true),
+                    Discipline = table.Column<int>(type: "int", nullable: false),
                     WeatherId = table.Column<int>(type: "int", nullable: true),
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Comments = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CommentsId = table.Column<int>(type: "int", nullable: true),
                     Video = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TrainerId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -492,6 +642,12 @@ namespace PocketHorseTrainer.API.Migrations
                         name: "FK_JournalEntries_AspNetUsers_TrainerId",
                         column: x => x.TrainerId,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_JournalEntries_Comments_CommentsId",
+                        column: x => x.CommentsId,
+                        principalTable: "Comments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -506,6 +662,38 @@ namespace PocketHorseTrainer.API.Migrations
                         principalTable: "Weather",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "HorseJournals",
+                columns: table => new
+                {
+                    HorseId = table.Column<int>(type: "int", nullable: false),
+                    EntryId = table.Column<int>(type: "int", nullable: false),
+                    HorseJournalEntryId = table.Column<int>(type: "int", nullable: true),
+                    HorseJournalHorseId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HorseJournals", x => new { x.HorseId, x.EntryId });
+                    table.ForeignKey(
+                        name: "FK_HorseJournals_HorseJournals_HorseJournalHorseId_HorseJournalEntryId",
+                        columns: x => new { x.HorseJournalHorseId, x.HorseJournalEntryId },
+                        principalTable: "HorseJournals",
+                        principalColumns: new[] { "HorseId", "EntryId" },
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_HorseJournals_Horses_HorseId",
+                        column: x => x.HorseId,
+                        principalTable: "Horses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_HorseJournals_JournalEntries_EntryId",
+                        column: x => x.EntryId,
+                        principalTable: "JournalEntries",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -632,6 +820,11 @@ namespace PocketHorseTrainer.API.Migrations
                 column: "OwnerId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Comments_ReportId",
+                table: "Comments",
+                column: "ReportId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_HorseGoals_GoalId",
                 table: "HorseGoals",
                 column: "GoalId");
@@ -640,6 +833,16 @@ namespace PocketHorseTrainer.API.Migrations
                 name: "IX_HorseGoals_HorseGoalHorseId_HorseGoalGoalId",
                 table: "HorseGoals",
                 columns: new[] { "HorseGoalHorseId", "HorseGoalGoalId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HorseJournals_EntryId",
+                table: "HorseJournals",
+                column: "EntryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HorseJournals_HorseJournalHorseId_HorseJournalEntryId",
+                table: "HorseJournals",
+                columns: new[] { "HorseJournalHorseId", "HorseJournalEntryId" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_HorseOwners_HorseOwnerHorseId_HorseOwnerOwnerId",
@@ -657,9 +860,29 @@ namespace PocketHorseTrainer.API.Migrations
                 column: "BarnId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Horses_BreedId",
+                table: "Horses",
+                column: "BreedId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Horses_ColorId",
+                table: "Horses",
+                column: "ColorId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Horses_MarkingsId",
                 table: "Horses",
                 column: "MarkingsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Horses_OwnerId",
+                table: "Horses",
+                column: "OwnerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_JournalEntries_CommentsId",
+                table: "JournalEntries",
+                column: "CommentsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_JournalEntries_HorseId",
@@ -697,6 +920,31 @@ namespace PocketHorseTrainer.API.Migrations
                 column: "StrengthId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Markings_BackLeftId",
+                table: "Markings",
+                column: "BackLeftId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Markings_BackRightId",
+                table: "Markings",
+                column: "BackRightId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Markings_FaceMarkingId",
+                table: "Markings",
+                column: "FaceMarkingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Markings_FrontLeftId",
+                table: "Markings",
+                column: "FrontLeftId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Markings_FrontRightId",
+                table: "Markings",
+                column: "FrontRightId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ReportIssues_IssueId",
                 table: "ReportIssues",
                 column: "IssueId");
@@ -720,6 +968,16 @@ namespace PocketHorseTrainer.API.Migrations
                 name: "IX_TrainingGoals_AreaOfImprovementId",
                 table: "TrainingGoals",
                 column: "AreaOfImprovementId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TrainingGoals_HorseId",
+                table: "TrainingGoals",
+                column: "HorseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TrainingReports_HorseId",
+                table: "TrainingReports",
+                column: "HorseId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -749,6 +1007,9 @@ namespace PocketHorseTrainer.API.Migrations
                 name: "HorseGoals");
 
             migrationBuilder.DropTable(
+                name: "HorseJournals");
+
+            migrationBuilder.DropTable(
                 name: "HorseOwners");
 
             migrationBuilder.DropTable(
@@ -773,25 +1034,40 @@ namespace PocketHorseTrainer.API.Migrations
                 name: "JournalEntries");
 
             migrationBuilder.DropTable(
-                name: "TrainingReports");
-
-            migrationBuilder.DropTable(
                 name: "TargetAreas");
 
             migrationBuilder.DropTable(
-                name: "Horses");
+                name: "Comments");
 
             migrationBuilder.DropTable(
                 name: "Weather");
 
             migrationBuilder.DropTable(
+                name: "TrainingReports");
+
+            migrationBuilder.DropTable(
+                name: "Horses");
+
+            migrationBuilder.DropTable(
                 name: "Barns");
+
+            migrationBuilder.DropTable(
+                name: "Breeds");
+
+            migrationBuilder.DropTable(
+                name: "Colors");
 
             migrationBuilder.DropTable(
                 name: "Markings");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "FaceMarkings");
+
+            migrationBuilder.DropTable(
+                name: "LegMarkings");
         }
     }
 }
