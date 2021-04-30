@@ -1,21 +1,10 @@
-﻿using PocketHorseTrainer.Models.Training;
+﻿using PocketHorseTrainer.Models.Enums;
+using PocketHorseTrainer.Models.Training;
 using System;
 using System.Collections.Generic;
 
 namespace PocketHorseTrainer.Models
 {
-    public enum Discipline
-    {
-        Western,
-        English,
-        Endurance,
-        Natural,
-        Stock,
-        Driving,
-        Groundwork,
-        Any
-    }
-
     public class JournalEntry
     {
         public int Id { get; set; }

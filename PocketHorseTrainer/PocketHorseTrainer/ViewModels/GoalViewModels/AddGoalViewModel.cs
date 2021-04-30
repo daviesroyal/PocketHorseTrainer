@@ -1,4 +1,5 @@
 ﻿using PocketHorseTrainer.Models;
+using PocketHorseTrainer.Models.Enums;
 using PocketHorseTrainer.Models.Training;
 using PocketHorseTrainer.Services;
 using PocketHorseTrainer.Views;
@@ -102,15 +103,11 @@ namespace PocketHorseTrainer.ViewModels
             }
             set
             {
-                SetProperty(ref _selectedInterval, value);
-            }
-        }
-
-        public List<string> IntervalNames
-        {
-            get
-            {
-                return Enum.GetNames(typeof(Interval)).ToList();
+                if (_selectedInterval != value)
+                {
+                    _selectedInterval = value;
+                    OnPropertyChanged();
+                }
             }
         }
     }

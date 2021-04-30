@@ -1,40 +1,7 @@
-﻿namespace PocketHorseTrainer.Models.Training
+﻿using PocketHorseTrainer.Models.Enums;
+
+namespace PocketHorseTrainer.Models.Training
 {
-    public enum Precipitation
-    {
-        None,
-        Snow,
-        Sleet,
-        Hail,
-        Rain
-    }
-    public enum Wind
-    {
-        None,
-        Mild,
-        Moderate,
-        Severe,
-        Extreme
-    }
-    public enum CloudCover
-    {
-        Clear,
-        Partial,
-        Overcast,
-        Heavy
-    }
-    public enum Visibility
-    {
-        Low,
-        Medium,
-        High
-    }
-    public enum GroundCondition
-    {
-        Ice,
-        Mud,
-        Firm
-    }
 
     public class Weather
     {

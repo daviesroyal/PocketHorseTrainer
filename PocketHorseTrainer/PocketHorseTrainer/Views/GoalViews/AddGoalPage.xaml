@@ -3,15 +3,10 @@
     x:Class="PocketHorseTrainer.Views.AddGoalPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:converters="clr-namespace:PocketHorseTrainer.Models"
+    xmlns:controls="clr-namespace:PocketHorseTrainer.Models"
+    xmlns:enums="clr-namespace:PocketHorseTrainer.Models.Enums"
     xmlns:viewModels="clr-namespace:PocketHorseTrainer.ViewModels"
     x:DataType="viewModels:AddGoalViewModel">
-
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <converters:IntEnumConverter x:Key="IntEnum" />
-        </ResourceDictionary>
-    </ContentPage.Resources>
 
     <ContentPage.Content>
 
@@ -21,7 +16,7 @@
             <Entry Text="{Binding Name}" />
 
             <Label Text="Goal Interval" />
-            <Picker ItemsSource="{Binding IntervalNames}" SelectedItem="{Binding SelectedInterval}" />
+            <controls:EnumBindablePicker x:TypeArguments="enums:Interval" SelectedItem="{Binding SelectedInterval}" />
 
             <Label Text="Start Date" />
             <DatePicker Date="{Binding StartDate}" />

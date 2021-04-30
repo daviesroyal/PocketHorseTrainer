@@ -1,16 +1,9 @@
-﻿using PocketHorseTrainer.Models.Training;
+﻿using PocketHorseTrainer.Models.Enums;
+using PocketHorseTrainer.Models.Training;
 using System;
 
 namespace PocketHorseTrainer.Models
 {
-    public enum Interval
-    {
-        daily,
-        weekly,
-        monthly,
-        yearly
-    }
-
     public class Goal
     {
         public int Id { get; set; }

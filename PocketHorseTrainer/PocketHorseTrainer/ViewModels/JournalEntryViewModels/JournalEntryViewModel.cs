@@ -1,4 +1,5 @@
 ﻿using PocketHorseTrainer.Models;
+using PocketHorseTrainer.Models.Enums;
 using PocketHorseTrainer.Models.Training;
 using PocketHorseTrainer.Services;
 using System;
