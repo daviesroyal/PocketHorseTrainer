@@ -44,6 +44,31 @@ namespace PocketHorseTrainer.API.Controllers
             }
         }
 
+        [HttpPut("markings")]
+        public IActionResult UpdateMarkings([FromBody] Markings markings)
+        {
+            try
+            {
+                if (markings == null || !ModelState.IsValid)
+                {
+                    return BadRequest();
+                }
+
+                var existing = _context.Markings.Find(markings.Id);
+                if (existing == null)
+                {
+                    return NotFound();
+                }
+                _context.Entry(existing).CurrentValues.SetValues(markings);
+                _context.SaveChanges();
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
         [HttpGet("markings/face/{markingId}")]
         public IActionResult GetFaceMarking([FromRoute]int id)
         {
@@ -84,12 +109,12 @@ namespace PocketHorseTrainer.API.Controllers
                 }
                 _context.FaceMarkings.Add(marking);
                 _context.SaveChanges();
+                return Ok();
             }
             catch (Exception)
             {
                 return BadRequest();
             }
-            return Ok();
         }
 
         [HttpPost("markings/leg")]
@@ -108,12 +133,12 @@ namespace PocketHorseTrainer.API.Controllers
                 }
                 _context.LegMarkings.Add(marking);
                 _context.SaveChanges();
+                return Ok();
             }
             catch (Exception)
             {
                 return BadRequest();
             }
-            return Ok();
         }
 
         [HttpPut("markings/face")]
@@ -134,12 +159,12 @@ namespace PocketHorseTrainer.API.Controllers
 
                 _context.Entry(existing).CurrentValues.SetValues(marking);
                 _context.SaveChanges();
+                return Ok();
             }
             catch (Exception)
             {
                 return BadRequest();
             }
-            return Ok();
         }
 
         [HttpPut("markings/leg")]
@@ -160,12 +185,12 @@ namespace PocketHorseTrainer.API.Controllers
 
                 _context.Entry(existing).CurrentValues.SetValues(marking);
                 _context.SaveChanges();
+                return Ok();
             }
             catch (Exception)
             {
                 return BadRequest();
             }
-            return Ok();
         }
 
         [HttpDelete("markings/face/{markingId}")]
@@ -179,12 +204,12 @@ namespace PocketHorseTrainer.API.Controllers
                 }
                 _context.FaceMarkings.Remove(_context.FaceMarkings.Find(id));
                 _context.SaveChanges();
+                return NoContent();
             }
             catch (Exception)
             {
                 return BadRequest();
             }
-            return NoContent();
         }
 
         [HttpDelete("markings/leg/{markingId}")]
@@ -198,12 +223,12 @@ namespace PocketHorseTrainer.API.Controllers
                 }
                 _context.LegMarkings.Remove(_context.LegMarkings.Find(id));
                 _context.SaveChanges();
+                return NoContent();
             }
             catch (Exception)
             {
                 return BadRequest();
             }
-            return NoContent();
         }
         #endregion
 

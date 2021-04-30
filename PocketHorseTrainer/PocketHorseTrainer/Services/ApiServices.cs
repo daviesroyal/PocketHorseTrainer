@@ -448,9 +448,26 @@ namespace PocketHorseTrainer.Services
                 Content = content
             };
 
-            HttpResponseMessage result = await client.SendAsync(request).ConfigureAwait(false);
-            var newMarkings = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
-            return JsonConvert.DeserializeObject<Markings>(newMarkings);
+            HttpResponseMessage response = await client.SendAsync(request).ConfigureAwait(false);
+            var result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            return JsonConvert.DeserializeObject<Markings>(result);
+        }
+
+        public async Task<bool> UpdateMarkingsAsync(Markings markings)
+        {
+            var client = GetAuthorizedClient();
+
+            var json = JsonConvert.SerializeObject(markings);
+
+            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, "/api/admin/markings")
+            {
+                Content = content
+            };
+
+            HttpResponseMessage response = await client.SendAsync(request).ConfigureAwait(false);
+            return response.IsSuccessStatusCode;
         }
 
         #region faceMarking

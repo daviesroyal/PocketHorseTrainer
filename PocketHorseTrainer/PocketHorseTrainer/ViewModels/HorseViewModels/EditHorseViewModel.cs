@@ -42,14 +42,18 @@ namespace PocketHorseTrainer.ViewModels
                 BackRight = BackRight
             };
 
-            await apiServices.CreateMarkingsAsync(markings).ConfigureAwait(false);
+            var response = await apiServices.UpdateMarkingsAsync(markings).ConfigureAwait(false);
+
+            if (!response)
+            {
+                Horse.Markings = await apiServices.CreateMarkingsAsync(markings).ConfigureAwait(false);
+            }
 
             Horse.Name = Horse.Name;
             Horse.Age = Horse.Age;
             Horse.Barn = SelectedBarn;
             Horse.Breed = SelectedBreed;
             Horse.Color = SelectedColor;
-            Horse.Markings = markings;
 
             var result = await apiServices.EditHorse(Horse).ConfigureAwait(false);
 
