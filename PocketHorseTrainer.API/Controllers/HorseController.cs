@@ -119,8 +119,8 @@ namespace PocketHorseTrainer.API.Controllers
         }
 
         //Delete horse
-        [HttpDelete("{horseId}")]
-        public IActionResult DeleteHorse([FromRoute] int id)
+        [HttpDelete("delete")]
+        public IActionResult DeleteHorse([FromRoute]int id)
         {try
             {
                 var horse = _context.Horses.Find(id);
@@ -132,7 +132,10 @@ namespace PocketHorseTrainer.API.Controllers
                 _context.SaveChanges();
                 return NoContent();
             }
-            catch (Exception) { return BadRequest(); }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
         #endregion
 

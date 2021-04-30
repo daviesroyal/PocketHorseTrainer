@@ -17,9 +17,13 @@ namespace PocketHorseTrainer.ViewModels
 
         public Horse Horse { get; set; }
 
+        public Markings Markings { get; set; }
+
         public EditHorseViewModel(Horse horse)
         {
             Horse = horse;
+
+            Markings = horse.Markings;
 
             EditCommand = new Command(() => Edit());
         }
@@ -33,14 +37,13 @@ namespace PocketHorseTrainer.ViewModels
 
         private async void Edit()
         {
-            var markings = new Markings
-            {
-                FaceMarking = FaceMarking,
-                FrontLeft = FrontLeft,
-                FrontRight = FrontRight,
-                BackLeft = BackLeft,
-                BackRight = BackRight
-            };
+            var markings = Markings;
+
+            markings.FaceMarking = FaceMarking;
+            markings.FrontLeft = FrontLeft;
+            markings.FrontRight = FrontRight;
+            markings.BackLeft = BackLeft;
+            markings.BackRight = BackRight;
 
             var response = await apiServices.UpdateMarkingsAsync(markings).ConfigureAwait(false);
 
