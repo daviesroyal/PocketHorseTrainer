@@ -12,6 +12,10 @@ namespace PocketHorseTrainer.ViewModels.HorseViewModels
 
         public List<Horse> Horses = apiServices.GetAllHorses().Result;
 
+        public HorseListViewModel()
+        {
+        }
+
         private string _message;
         public string Message
         {

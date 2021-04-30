@@ -19,22 +19,12 @@ namespace PocketHorseTrainer.Views
 
         protected override bool OnBackButtonPressed() => true;
 
-        private void OnCollectionViewSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Issues_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            UpdateSelectionData(e.PreviousSelection, e.CurrentSelection);
         }
 
-        private void UpdateSelectionData(IEnumerable<object> previousSelectedItems, IEnumerable<object> currentSelectedItems)
+        private void Strengths_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            previousSelectedItemLabel.Text = string.IsNullOrWhiteSpace(ToList(previousSelectedItems)) ? "[none]" : ToList(previousSelectedItems);
-            currentSelectedItemLabel.Text = string.IsNullOrWhiteSpace(ToList(currentSelectedItems)) ? "[none]" : ToList(currentSelectedItems);
-        }
-
-        private static string ToList(IEnumerable<object> items)
-        {
-            return items == null
-                ? string.Empty
-                : items.Aggregate(string.Empty, (sender, obj) => sender + (sender.Length == 0 ? "" : ", ") + ((TargetAreas)obj).Name);
         }
     }
 }

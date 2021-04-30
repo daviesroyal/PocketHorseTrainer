@@ -3,75 +3,118 @@
     x:Class="PocketHorseTrainer.Views.AddJournalEntryPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:viewModels="clr-namespace:PocketHorseTrainer.ViewModels">
-
-    <ContentPage.BindingContext>
-        <viewModels:AddJournalEntryViewModel />
-    </ContentPage.BindingContext>
+    xmlns:viewModels="clr-namespace:PocketHorseTrainer.ViewModels"
+    x:DataType="viewModels:AddJournalEntryViewModel"
+    Shell.TabBarIsVisible="False">
 
     <ContentPage.Content>
 
-        <StackLayout>
+        <FlexLayout Direction="Column">
 
             <DatePicker Date="{Binding Date}" />
+
             <Entry Text="{Binding TimeHandling}" />
             <Entry Text="{Binding TimeRiding}" />
-            <Picker ItemsSource="{Binding Discipline}" />
+
+            <Picker ItemsSource="{Binding Discipline}" SelectedItem="{Binding SelectedDiscipline}" />
             <Entry Text="{Binding Location}" />
 
-            <Label Text="Weather" />
-            <Entry Text="{Binding Weather.TempF}" />
-            <Picker ItemsSource="{Binding Weather.Precipitation}" />
-            <Picker ItemsSource="{Binding Weather.Wind}" />
-            <Picker ItemsSource="{Binding Weather.CloudCover}" />
-            <Picker ItemsSource="{Binding Weather.GroundCondition}" />
-            <Picker ItemsSource="{Binding Weather.Visibility}" />
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="55" />
+                    <RowDefinition Height="55" />
+                    <RowDefinition Height="55" />
+                </Grid.RowDefinitions>
 
-            <ScrollView HeightRequest="150">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <Label Text="Previous selected item:" />
-                    <Label x:Name="previousSelectedItemLabel" Grid.Column="1" />
-                    <Label Grid.Row="1" Text="Current selected item:" />
-                    <Label
-                        x:Name="currentSelectedItemLabel"
-                        Grid.Row="1"
-                        Grid.Column="1" />
-                </Grid>
-            </ScrollView>
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    HorizontalOptions="Center"
+                    Text="Temperature (F): " />
+                <Stepper
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Value="{Binding Weather.TempF}" />
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Text="Precipitation" />
+                <Picker
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    ItemsSource="{Binding Weather.Precipitation}"
+                    SelectedItem="{Binding SelectedPrecipitation}" />
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Text="Wind" />
+                <Picker
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    ItemsSource="{Binding Weather.Wind}"
+                    SelectedItem="{Binding SelectedWind}" />
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Text="Cloud Cover" />
+                <Picker
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    ItemsSource="{Binding Weather.CloudCover}"
+                    SelectedItem="{Binding SelectedCloudCover}" />
+                <Label
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Text="Visibility" />
+                <Picker
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    ItemsSource="{Binding Weather.Visibility}"
+                    SelectedItem="{Binding SelectedVisibility}" />
+                <Label
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Text="Ground Condition" />
+                <Picker
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    ItemsSource="{Binding Weather.GroundCondition}"
+                    SelectedItem="{Binding SelectedGroundContiton}" />
+            </Grid>
 
             <CollectionView
-                ItemsSource="{Binding TargetAreas}"
-                SelectionChanged="OnCollectionViewSelectionChanged"
+                x:Name="issues"
+                ItemsSource="{Binding Areas}"
+                SelectedItems="{Binding SelectedIssues, Mode=TwoWay}"
+                SelectionChanged="Issues_SelectionChanged"
                 SelectionMode="Multiple">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Label Text="{Binding Name}" />
+                        <ViewCell>
+                            <Label Text="{Binding Name}" />
+                        </ViewCell>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
             <CollectionView
-                ItemsSource="{Binding TargetAreas}"
-                SelectionChanged="OnCollectionViewSelectionChanged"
+                x:Name="strengths"
+                ItemsSource="{Binding Areas}"
+                SelectedItems="{Binding SelectedStrengths, Mode=TwoWay}"
+                SelectionChanged="Strengths_SelectionChanged"
                 SelectionMode="Multiple">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Label Text="{Binding Name}" />
+                        <ViewCell>
+                            <Label Text="{Binding Name}" />
+                        </ViewCell>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
             <Button Command="{Binding AddCommand}" Text="Add Goal" />
 
-        </StackLayout>
+        </FlexLayout>
 
     </ContentPage.Content>
 

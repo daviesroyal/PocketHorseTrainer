@@ -11,7 +11,8 @@ namespace PocketHorseTrainer.API.Models
         Natural,
         Stock,
         Driving,
-        Groundwork
+        Groundwork,
+        Any
     }
 
     public class JournalEntry

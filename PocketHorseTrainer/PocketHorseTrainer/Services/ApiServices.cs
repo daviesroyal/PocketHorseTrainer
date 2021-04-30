@@ -386,6 +386,17 @@ namespace PocketHorseTrainer.Services
         #endregion
 
         #region supportClasses
+        public async Task CreateWeatherAsync(Weather weather)
+        {
+            var client = GetAuthorizedClient();
+            var json = JsonConvert.SerializeObject(weather);
+            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "/api/admin/weather")
+            {
+                Content = content
+            };
+            _ = await client.SendAsync(request).ConfigureAwait(false);
+        }
 
         #region areas
         public async Task<List<TargetAreas>> GetAreas()
@@ -424,7 +435,6 @@ namespace PocketHorseTrainer.Services
         #endregion
 
         #region markings
-
         public async Task CreateMarkingsAsync(Markings markings)
         {
             var client = GetAuthorizedClient();

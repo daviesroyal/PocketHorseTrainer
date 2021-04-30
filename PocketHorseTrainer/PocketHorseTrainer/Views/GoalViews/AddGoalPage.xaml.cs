@@ -14,7 +14,5 @@ namespace PocketHorseTrainer.Views
 
             BindingContext = new AddGoalViewModel(horse);
         }
-
-        protected override bool OnBackButtonPressed() => true;
     }
 }

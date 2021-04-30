@@ -4,6 +4,7 @@ using PocketHorseTrainer.Services;
 using PocketHorseTrainer.Views;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -102,6 +103,14 @@ namespace PocketHorseTrainer.ViewModels
             set
             {
                 SetProperty(ref _selectedInterval, value);
+            }
+        }
+
+        public List<string> IntervalNames
+        {
+            get
+            {
+                return Enum.GetNames(typeof(Interval)).ToList();
             }
         }
     }

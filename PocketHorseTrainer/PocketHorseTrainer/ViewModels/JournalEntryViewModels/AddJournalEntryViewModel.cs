@@ -1,6 +1,7 @@
 ﻿using PocketHorseTrainer.Models;
 using PocketHorseTrainer.Models.Training;
 using PocketHorseTrainer.Services;
+using PocketHorseTrainer.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,9 +20,11 @@ namespace PocketHorseTrainer.ViewModels
         public AddJournalEntryViewModel()
         {
             AddCommand = new Command(() => Add());
+            Areas = apiServices.GetAreas().Result;
         }
 
         public DateTime Date { get; set; }
+        public string Name { get; set; }
         public float TimeHandling { get; set; }
         public float TimeRiding { get; set; }
         public Discipline Discipline { get; set; }
@@ -32,26 +35,140 @@ namespace PocketHorseTrainer.ViewModels
 
         public ICommand AddCommand { get; set; }
 
-        private Task Add()
+        private void Add()
         {
+            Weather weather = new Weather
+            {
+                TempF = Weather.TempF,
+                Precipitation = SelectedPrecipitation,
+                Wind = SelectedWind,
+                CloudCover = SelectedCloudCover,
+                Visibility = SelectedVisibility,
+                GroundCondition = SelectedGroundContiton
+            };
+            _ = apiServices.CreateWeatherAsync(weather);
             JournalEntry entry = new JournalEntry
             {
                 Date = Date,
                 TimeHandling = TimeHandling,
                 TimeRiding = TimeRiding,
-                Discipline = Discipline,
-                Weather = Weather,
+                Discipline = SelectedDiscipline,
+                Weather = weather,
                 Location = Location,
-                Issues = Issues,
-                Strengths = Strengths
+                Issues = SelectedIssues,
+                Strengths = SelectedStrengths
             };
 
-            return apiServices.AddJournalEntry(entry.Horse.Id, entry);
+            _ = apiServices.AddJournalEntry(entry.Horse.Id, entry);
         }
 
-        private TargetAreas selectedArea;
-        private int selectedCount = 0;
+        #region enums
+        private Discipline _selectedDiscipline;
+        public Discipline SelectedDiscipline
+        {
+            get
+            {
+                return _selectedDiscipline;
+            }
+            set
+            {
+                if (_selectedDiscipline != value)
+                {
+                    _selectedDiscipline = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
+        private Precipitation _selectedPrecipitation;
+        public Precipitation SelectedPrecipitation
+        {
+            get
+            {
+                return _selectedPrecipitation;
+            }
+            set
+            {
+                if (_selectedPrecipitation != value)
+                {
+                    _selectedPrecipitation = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private Wind _selectedWind;
+        public Wind SelectedWind
+        {
+            get
+            {
+                return _selectedWind;
+            }
+            set
+            {
+                if (_selectedWind != value)
+                {
+                    _selectedWind = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private CloudCover _selectedCloudCover;
+        public CloudCover SelectedCloudCover
+        {
+            get
+            {
+                return _selectedCloudCover;
+            }
+            set
+            {
+                if (_selectedCloudCover != value)
+                {
+                    _selectedCloudCover = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private Visibility _selectedVisibility;
+        public Visibility SelectedVisibility
+        {
+            get
+            {
+                return _selectedVisibility;
+            }
+            set
+            {
+                if (_selectedVisibility != value)
+                {
+                    _selectedVisibility = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private GroundCondition _selectedGroundContiton;
+        public GroundCondition SelectedGroundContiton
+        {
+            get
+            {
+                return _selectedGroundContiton;
+            }
+            set
+            {
+                if (_selectedGroundContiton != value)
+                {
+                    _selectedGroundContiton = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        #endregion
+
+        public List<TargetAreas> Areas { get; set; }
+
+        private TargetAreas selectedArea;
         public TargetAreas SelectedArea
         {
             get
@@ -67,10 +184,8 @@ namespace PocketHorseTrainer.ViewModels
             }
         }
 
-        public ObservableCollection<TargetAreas> TargetAreas { get; }
-
-        private ObservableCollection<TargetAreas> selectedIssues;
-        public ObservableCollection<TargetAreas> SelectedIssues
+        private List<TargetAreas> selectedIssues;
+        public List<TargetAreas> SelectedIssues
         {
             get
             {
@@ -85,8 +200,8 @@ namespace PocketHorseTrainer.ViewModels
             }
         }
 
-        private ObservableCollection<TargetAreas> selectedStrengths;
-        public ObservableCollection<TargetAreas> SelectedStrengths
+        private List<TargetAreas> selectedStrengths;
+        public List<TargetAreas> SelectedStrengths
         {
             get
             {
@@ -99,25 +214,6 @@ namespace PocketHorseTrainer.ViewModels
                     selectedStrengths = value;
                 }
             }
-        }
-
-        public string SelectedIssueMessage { get; private set; }
-        public string SelectedStrengthMessage { get; private set; }
-        public ICommand IssueSelectionChangedCommand => new Command(IssueSelectionChanged);
-        public ICommand StrengthSelectionChangedCommand => new Command(StrengthSelectionChanged);
-
-        private void IssueSelectionChanged()
-        {
-            SelectedIssueMessage = $"Selection {selectedCount}: {SelectedArea.Name}";
-            OnPropertyChanged("SelectedIssueMessage");
-            selectedCount++;
-        }
-
-        private void StrengthSelectionChanged()
-        {
-            SelectedStrengthMessage = $"Selection {selectedCount}: {SelectedArea.Name}";
-            OnPropertyChanged("SelectedStrengthMessage");
-            selectedCount++;
         }
     }
 }

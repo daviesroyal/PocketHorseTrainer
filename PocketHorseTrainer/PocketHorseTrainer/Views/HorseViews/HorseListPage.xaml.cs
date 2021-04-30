@@ -32,8 +32,8 @@ namespace PocketHorseTrainer.Views
         protected override void OnAppearing()
         {
             base.OnAppearing();
-
-            Device.BeginInvokeOnMainThread(() => listView.ItemsSource = new HorseListViewModel().Horses);
+            Device.BeginInvokeOnMainThread(() => listView.ItemsSource = ((HorseListViewModel)BindingContext).Horses);
+            Device.BeginInvokeOnMainThread(() => listView.SelectedItem = null);
         }
 
         private async void OnAddHorseClicked(object sender, EventArgs e)
@@ -43,7 +43,10 @@ namespace PocketHorseTrainer.Views
 
         private async void OnHorseSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            await Shell.Current.Navigation.PushAsync(new HorsePage((Horse)e.SelectedItem)).ConfigureAwait(false);
+            if (e.SelectedItem != null)
+            {
+                await Shell.Current.Navigation.PushAsync(new HorsePage((Horse)e.SelectedItem)).ConfigureAwait(false);
+            }
         }
     }
 }

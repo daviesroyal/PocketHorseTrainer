@@ -2,33 +2,36 @@
 <ContentPage
     x:Class="PocketHorseTrainer.Views.JournalEntriesPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Shell.TabBarIsVisible="False">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Clicked="OnAddEntryClicked" Text="Add New Journal Entry" />
+    </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
 
-        <Button Clicked="OnAddEntryClicked" Text="Add New Journal Entry" />
+        <ListView
+            x:Name="listView"
+            Margin="20"
+            ItemSelected="OnEntrySelected">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout
+                            Padding="20,0,0,0"
+                            HorizontalOptions="StartAndExpand"
+                            Orientation="Horizontal">
+                            <Label Text="{Binding Date}" VerticalTextAlignment="Center" />
+                            <Label Text="{Binding Horse}" />
+                            <Label Text="{Binding Discipline}" />
+                            <Label Text="{Binding Location}" />
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
 
     </ContentPage.Content>
-
-    <ListView
-        x:Name="listView"
-        Margin="20"
-        ItemSelected="OnEntrySelected">
-        <ListView.ItemTemplate>
-            <DataTemplate>
-                <ViewCell>
-                    <StackLayout
-                        Padding="20,0,0,0"
-                        HorizontalOptions="StartAndExpand"
-                        Orientation="Horizontal">
-                        <Label Text="{Binding Date}" VerticalTextAlignment="Center" />
-                        <Label Text="{Binding Horse}" />
-                        <Label Text="{Binding Discipline}" />
-                        <Label Text="{Binding Location}" />
-                    </StackLayout>
-                </ViewCell>
-            </DataTemplate>
-        </ListView.ItemTemplate>
-    </ListView>
 
 </ContentPage>

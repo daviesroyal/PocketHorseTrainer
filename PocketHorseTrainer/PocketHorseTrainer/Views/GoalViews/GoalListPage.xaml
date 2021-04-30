@@ -3,30 +3,20 @@
     x:Class="PocketHorseTrainer.Views.GoalListPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:viewModels="clr-namespace:PocketHorseTrainer.ViewModels"
-    x:DataType="viewModels:GoalListViewModel"
     Shell.TabBarIsVisible="False">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Clicked="OnAddGoalClicked" Text="Add New Goal" />
+    </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
 
         <StackLayout>
-
-            <Button Clicked="OnAddGoalClicked" Text="Add New Goal" />
-
-            <StackLayout Padding="10" Orientation="Horizontal">
-                <Label Text="Filter Items:" VerticalOptions="Center" />
-                <Picker
-                    HorizontalOptions="FillAndExpand"
-                    ItemsSource="{Binding FilterOptions}"
-                    SelectedItem="{Binding SelectedFilter}"
-                    VerticalOptions="Center" />
-            </StackLayout>
-
+            <!--  TODO: create filter for goal list based on completion  -->
             <ListView
                 x:Name="listView"
                 Margin="20"
-                ItemSelected="OnGoalSelected"
-                ItemsSource="{Binding Goals}">
+                ItemSelected="OnGoalSelected">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>

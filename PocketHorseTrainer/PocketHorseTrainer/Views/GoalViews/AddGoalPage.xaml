@@ -3,23 +3,32 @@
     x:Class="PocketHorseTrainer.Views.AddGoalPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:viewModels="clr-namespace:PocketHorseTrainer.ViewModels">
+    xmlns:converters="clr-namespace:PocketHorseTrainer.Models"
+    xmlns:viewModels="clr-namespace:PocketHorseTrainer.ViewModels"
+    x:DataType="viewModels:AddGoalViewModel">
 
-    <ContentPage.BindingContext>
-        <viewModels:AddGoalViewModel />
-    </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:IntEnumConverter x:Key="IntEnum" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <ContentPage.Content>
 
         <StackLayout>
 
+            <Label Text="Goal Name" />
             <Entry Text="{Binding Name}" />
 
-            <Picker ItemsSource="{Binding Interval}" SelectedItem="{Binding SelectedInterval}" />
+            <Label Text="Goal Interval" />
+            <Picker ItemsSource="{Binding IntervalNames}" SelectedItem="{Binding SelectedInterval}" />
 
+            <Label Text="Start Date" />
             <DatePicker Date="{Binding StartDate}" />
+            <Label Text="End Date" />
             <DatePicker Date="{Binding EndDate}" />
 
+            <Label Text="Target Area" />
             <Picker
                 ItemDisplayBinding="{Binding Name}"
                 ItemsSource="{Binding Areas}"

@@ -464,13 +464,13 @@ namespace PocketHorseTrainer.API.Controllers
         [HttpGet("{areaId}")]
         public IActionResult GetArea([FromRoute] int id)
         {
-            return _context.Areas.Find(id) == null ? NotFound() : base.Ok(_context.Areas.Find(id));
+            return _context.TargetAreas.Find(id) == null ? NotFound() : base.Ok(_context.TargetAreas.Find(id));
         }
 
         [HttpGet("areas")]
         public IActionResult GetAreas()
         {
-            return base.Ok(_context.Areas.ToList());
+            return base.Ok(_context.TargetAreas.ToList());
         }
 
         [HttpPost("area")]
@@ -483,11 +483,11 @@ namespace PocketHorseTrainer.API.Controllers
                     return BadRequest();
                 }
 
-                if (_context.Areas.Find(area.Id) != null)
+                if (_context.TargetAreas.Find(area.Id) != null)
                 {
                     return Conflict("Area already exists!");
                 }
-                _context.Areas.Add(area);
+                _context.TargetAreas.Add(area);
                 _context.SaveChanges();
             }
             catch (Exception)
@@ -507,7 +507,7 @@ namespace PocketHorseTrainer.API.Controllers
                     return BadRequest();
                 }
 
-                var existing = _context.Areas.Find(area.Id);
+                var existing = _context.TargetAreas.Find(area.Id);
                 if (existing == null)
                 {
                     return NotFound();
@@ -528,11 +528,11 @@ namespace PocketHorseTrainer.API.Controllers
         {
             try
             {
-                if (_context.Areas.Find(id) == null)
+                if (_context.TargetAreas.Find(id) == null)
                 {
                     return NotFound();
                 }
-                _context.Areas.Remove(_context.Areas.Find(id));
+                _context.TargetAreas.Remove(_context.TargetAreas.Find(id));
                 _context.SaveChanges();
             }
             catch (Exception)
@@ -540,6 +540,23 @@ namespace PocketHorseTrainer.API.Controllers
                 return BadRequest();
             }
             return NoContent();
+        }
+        #endregion
+
+        #region Weather
+        [HttpPost("weather")]
+        public IActionResult CreateWeather([FromBody] Weather weather)
+        {
+            try
+            {
+                _context.Weather.Add(weather);
+                _context.SaveChanges();
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
         #endregion
     }

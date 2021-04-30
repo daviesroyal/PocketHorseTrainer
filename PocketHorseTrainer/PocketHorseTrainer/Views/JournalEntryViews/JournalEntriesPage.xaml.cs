@@ -21,7 +21,7 @@ namespace PocketHorseTrainer.Views
         {
             base.OnAppearing();
 
-            Device.BeginInvokeOnMainThread(() => listView.ItemsSource = new JournalEntriesViewModel((Horse)BindingContext).Entries);
+            Device.BeginInvokeOnMainThread(() => listView.ItemsSource = ((JournalEntriesViewModel)BindingContext).Entries);
         }
 
         private async void OnAddEntryClicked(object sender, EventArgs e)

@@ -18,9 +18,6 @@ namespace PocketHorseTrainer.ViewModels
         private static readonly ApiServices apiServices = new ApiServices();
 
         public Horse Horse { get; set; }
-        public string Name { get; set; }
-        public Interval Interval { get; set; }
-        public TargetAreas AreaOfImprovement { get; set; }
 
         public GoalListViewModel(Horse horse)
         {

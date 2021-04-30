@@ -21,6 +21,13 @@ namespace PocketHorseTrainer.Views
 
         private static Horse Horse { get; set; }
 
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            Device.BeginInvokeOnMainThread(() => listView.SelectedItem = null);
+            Device.BeginInvokeOnMainThread(() => listView.ItemsSource = ((GoalListViewModel)BindingContext).Goals);
+        }
+
         private async void OnAddGoalClicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new AddGoalPage(Horse)).ConfigureAwait(false);
@@ -28,7 +35,10 @@ namespace PocketHorseTrainer.Views
 
         private async void OnGoalSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            await Navigation.PushAsync(new SingleGoalPage((Goal)e.SelectedItem)).ConfigureAwait(false);
+            if (e.SelectedItem != null)
+            {
+                await Navigation.PushAsync(new SingleGoalPage((Goal)e.SelectedItem)).ConfigureAwait(false);
+            }
         }
     }
 }

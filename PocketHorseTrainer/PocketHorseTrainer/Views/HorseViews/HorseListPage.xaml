@@ -3,18 +3,22 @@
     x:Class="PocketHorseTrainer.Views.HorseListPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:viewModels="clr-namespace:PocketHorseTrainer.ViewModels.HorseViewModels"
+    xmlns:viewModel="clr-namespace:PocketHorseTrainer.ViewModels.HorseViewModels"
     Title="Horses"
-    x:DataType="viewModels:HorseListViewModel"
     Shell.TabBarIsVisible="False">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Clicked="OnAddHorseClicked" Text="Add New Horse" />
+    </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
 
         <StackLayout>
 
-            <Button Clicked="OnAddHorseClicked" Text="Add New Horse" />
-
-            <Label IsVisible="{Binding HasMessage}" Text="{Binding Message}" />
+            <Label
+                x:DataType="viewModel:HorseListViewModel"
+                IsVisible="{Binding HasMessage}"
+                Text="{Binding Message}" />
 
             <ListView
                 x:Name="listView"
