@@ -23,7 +23,7 @@ namespace PocketHorseTrainer.ViewModels
         {
             Horse = horse;
 
-            Markings = horse.Markings;
+            Markings.Id = horse.Markings.Id;
 
             EditCommand = new Command(() => Edit());
         }
