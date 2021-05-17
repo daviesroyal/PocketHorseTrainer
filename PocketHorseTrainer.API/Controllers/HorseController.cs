@@ -119,9 +119,10 @@ namespace PocketHorseTrainer.API.Controllers
         }
 
         //Delete horse
-        [HttpDelete("delete")]
-        public IActionResult DeleteHorse([FromRoute]int id)
-        {try
+        [HttpDelete("{horseId}")]
+        public IActionResult DeleteHorse([FromRoute] int id)
+        {
+            try
             {
                 var horse = _context.Horses.Find(id);
                 if (horse == null)
